@@ -1,10 +1,14 @@
 from django import forms
 from matches.models import Countries
 from django.forms.widgets import Select
+from django.db.utils import OperationalError
 
 
 class SelectAllCountriesForm(forms.Form):
-    countries = [(item.name, item.name) for item in Countries.objects.all()]
+    try:
+        countries = [(item.name, item.name) for item in Countries.objects.all()]
+    except OperationalError:
+        countries = (None, None)
     user_prediction = forms.CharField(widget=Select(choices=countries), label='Избери държава')
 
 
