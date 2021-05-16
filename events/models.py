@@ -20,7 +20,10 @@ class EventGroups(models.Model):
     edited_on = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'{self.event} -> {self.group}'
+        return f'{self.event} -> {self.event_group}'
+
+    class Meta:
+        unique_together = ['event', 'event_group']
 
 
 class EventPhases(models.Model):
@@ -28,6 +31,12 @@ class EventPhases(models.Model):
     phase = models.CharField(max_length=20, choices=event_settings.PHASE_SELECTOR)
     created_on = models.DateTimeField(auto_now_add=True)
     edited_on = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.event} -> {self.get_phase_display()}'
+
+    class Meta:
+        unique_together = ['event', 'phase']
 
 
 class EventMatchStates(models.Model):
@@ -39,13 +48,18 @@ class EventMatchStates(models.Model):
     def __str__(self):
         return f'{self.event} -> {self.match_state}'
 
+    class Meta:
+        unique_together = ['event', 'match_state']
+
 
 class Teams(models.Model):
     group = models.ForeignKey(EventGroups, on_delete=models.CASCADE, related_name='group')
     name = models.CharField(max_length=100, blank=False, unique=True)
-    short_name = models.CharField(max_length=2)
     created_on = models.DateTimeField(auto_now_add=True)
     edited_on = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.name
+        return f'{self.group} -> {self.name}'
+
+    class Meta:
+        unique_together = ['group', 'name']

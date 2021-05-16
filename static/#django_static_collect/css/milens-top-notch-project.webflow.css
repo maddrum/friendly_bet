@@ -1,0 +1,1660 @@
+.brand {
+    z-index: 1001;
+    width: 227px;
+    height: 54px;
+    margin-top: 24px;
+    margin-left: 20px;
+    background-image: url('../images/Logo.png');
+    background-position: 0px 0px;
+    background-size: 227px;
+    background-repeat: no-repeat;
+}
+
+.navbar {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    display: block;
+    height: 98px;
+    margin-right: auto;
+    margin-left: auto;
+    background-image: url('../images/Pattern1.svg');
+    background-position: 0px 50%;
+    background-size: 1060px 136px;
+    background-repeat: repeat-x;
+    box-shadow: 3px 3px 13px -4px rgba(0, 0, 0, .5);
+}
+
+.nav-link {
+    height: 50px;
+    padding-top: 39px;
+    font-family: 'Dusha fifa world cup 2018', sans-serif;
+    color: #fff;
+    font-size: 18px;
+    text-transform: uppercase;
+}
+
+.nav-link.w--current {
+    border-bottom: 8px solid #f3daa8;
+    color: #fff;
+}
+
+.nav-link.bonus {
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    color: #f3daa8;
+    text-align: right;
+}
+
+.nav-link.bb {
+    color: #f3daa8;
+}
+.nav-link.bb-blink {
+    color: #f3daa8;
+    animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+.container {
+    max-width: 1160px;
+}
+
+.hero {
+    height: 830px;
+    background-color: #1c6bb4;
+    background-image: url('../images/Bg.png');
+    background-position: 0px 0px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.hero-wrp {
+    position: relative;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    height: 830px;
+    max-width: 1160px;
+    margin-right: auto;
+    margin-left: auto;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.heading {
+    position: static;
+    bottom: -360px;
+    margin-top: 34px;
+    font-family: 'Dusha fifa world cup 2018', sans-serif;
+    color: #fff;
+    font-size: 70px;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+.heading.gold {
+    bottom: -350px;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    font-family: 'Dusha fifa world cup 2018', sans-serif;
+    color: #f3daa8;
+    font-size: 70px;
+    text-transform: uppercase;
+}
+
+.heading.content {
+    bottom: -350px;
+    display: block;
+    margin-top: 93px;
+    margin-right: auto;
+    margin-left: auto;
+    font-family: 'Dusha fifa world cup 2018', sans-serif;
+    color: #d51e3a;
+    font-size: 46px;
+    line-height: 145%;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.heading.content.subheading {
+    font-size: 32px;
+    text-transform: uppercase;
+}
+
+.heading.content.white {
+    margin-top: 0px;
+    color: #fff;
+    font-size: 26px;
+}
+
+.heading.inner-ttl {
+    position: relative;
+    bottom: -300px;
+    height: 75px;
+    margin-top: 0px;
+    color: #f3daa8;
+    font-size: 90px;
+    text-align: center;
+}
+
+.heading.tab-heading {
+    margin-top: 62px;
+    color: #044a9e;
+    font-size: 36px;
+    text-align: center;
+}
+
+.heading.tab-heading.history-ttl {
+    margin-top: 20px;
+    margin-bottom: 29px;
+    font-size: 26px;
+}
+
+.heading.tab-heading.history-ttl.red {
+    color: #d51e3a;
+    font-size: 30px;
+}
+
+.ttl-wrp {
+    position: relative;
+}
+
+.start-btn {
+    width: 180px;
+    height: 50px;
+    margin-top: 32px;
+    padding-top: 15px;
+    border-radius: 50px;
+    background-color: #d51e3a;
+    box-shadow: 3px 3px 17px 0 #0d246b;
+    font-family: 'Dusha fifa world cup 2018', sans-serif;
+    font-size: 19px;
+    text-align: center;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.start-btn:hover {
+    background-color: rgb(224, 196, 140)
+}
+
+.logout-bn {
+    width: 180px;
+    height: 50px;
+    margin-top: 26px;
+    margin-left: 32px;
+    padding-top: 15px;
+    border: 2px solid #fff;
+    border-radius: 50px;
+    background-color: transparent;
+    font-family: 'Dusha fifa world cup 2018', sans-serif;
+    font-size: 19px;
+    text-align: center;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.logout-bn:hover {
+    background-color: white;
+    color: rgb(34, 91, 129);
+}
+
+.cup-wrp {
+    position: relative;
+    left: 142px;
+    top: 17px;
+    width: 269px;
+    height: 609px;
+    margin-top: 49px;
+    clear: right;
+    background-image: url('../images/Cup_gif.gif');
+    background-position: 50% 50%;
+    background-size: 296px;
+    background-repeat: no-repeat;
+}
+
+.content-wrp {
+    position: relative;
+    display: block;
+    max-width: 1160px;
+    min-height: 100vh;
+    margin-right: auto;
+    margin-left: auto;
+    padding-top: 17px;
+    padding-bottom: 90px;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.text-block {
+    display: block;
+    margin-top: 54px;
+    margin-right: auto;
+    margin-left: auto;
+    font-family: Montserrat, sans-serif;
+    color: #044a9e;
+    font-size: 21px;
+    line-height: 143%;
+    font-weight: 500;
+    text-align: center;
+}
+
+.text-block.numbers {
+    font-size: 75px;
+    font-weight: 900;
+}
+
+.text-block.ftr {
+    width: 400px;
+    margin-top: -2px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.text-block.white {
+    margin-top: 0px;
+    color: #fff;
+    font-weight: 300;
+    text-align: center;
+}
+
+.text-block.white.bravo {
+    margin-top: 304px;
+}
+
+.text-block.white.message {
+    margin-top: 304px;
+}
+
+.text-block.tab {
+    margin-top: 18px;
+    color: #044a9e;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.text-block.tab.remark {
+    margin-top: 62px;
+    margin-bottom: 62px;
+    padding-top: 36px;
+    padding-bottom: 36px;
+    border-top: 3px solid #d51e3a;
+    border-bottom: 3px solid #d51e3a;
+}
+
+.text-block.histprylist {
+    margin-top: 31px;
+    margin-bottom: 31px;
+    font-size: 18px;
+    text-align: center;
+    text-transform: none;
+}
+
+.text-block.histprylist.points-indicator {
+    color: #d51e3a;
+}
+
+.footer {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    height: 100px;
+    margin-top: 0px;
+    margin-right: auto;
+    margin-left: auto;
+    clear: both;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border-style: solid none none;
+    border-width: 10px 3px 3px;
+    border-color: #f3daa8;
+    background-color: #044a9e;
+}
+
+.footer-btn {
+    display: block;
+    width: 180px;
+    height: 50px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-top: 15px;
+    border-radius: 50px;
+    background-color: #d51e3a;
+    box-shadow: 3px 3px 17px 0 #0d246b;
+    font-family: 'Dusha fifa world cup 2018', sans-serif;
+    font-size: 19px;
+    text-align: center;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.foot-wrp {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    width: 600px;
+    height: 75px;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.inner_page_header {
+    height: 450px;
+    background-color: #1c6bb4;
+    background-image: url('../images/Bg_Inner.png');
+    background-position: 50% 0px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.body {
+    background-color: transparent;
+}
+
+.results {
+    background-color: #1c6bb4;
+}
+
+.game-wrp {
+    margin: 107px 46px 46px;
+    font-family: 'Dusha fifa world cup 2018', sans-serif;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.team {
+    display: block;
+    width: 100%;
+    height: 75px;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: 100px;
+    background-color: #fff;
+    box-shadow: 1px 1px 14px 0 #044a9e;
+}
+
+.team.team-profile {
+    background-color: #044a9e;
+    box-shadow: none;
+}
+
+.score {
+    display: block;
+    width: 70%;
+    height: 75px;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: 8px;
+    background-color: #f3daa8;
+    box-shadow: 1px 1px 14px 0 #044a9e;
+}
+
+.score.scoreprofile {
+    background-color: #f3daa8;
+    box-shadow: none;
+}
+
+.column {
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
+.column-2 {
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
+.column-3 {
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
+.match-number {
+    margin: 38px;
+    color: #fff;
+    font-size: 36px;
+}
+
+.match-number.matchnumberprofile {
+    color: #044a9e;
+}
+
+.match-date {
+    margin: 38px;
+    font-family: Montserrat, sans-serif;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 200;
+}
+
+.team-ttl {
+    padding-top: 29px;
+    color: #044a9e;
+    font-size: 36px;
+}
+
+.team-ttl.ttlprofile {
+    color: #fff;
+}
+
+.score-txt {
+    padding-top: 29px;
+    color: #044a9e;
+    font-size: 36px;
+}
+
+.body-2 {
+    background-color: #1c6bb4;
+}
+
+.rarnk-txt {
+    font-family: Montserrat, sans-serif;
+    color: #fff;
+    font-size: 30px;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.rarnk-txt.user {
+    text-transform: none;
+}
+
+.rarnk-txt.points {
+    color: #f3daa8;
+}
+
+.info-table {
+    position: static;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.rankings1 {
+    margin-top: 0px;
+    padding-top: 26px;
+    padding-bottom: 26px;
+    border-bottom: 1px solid #2675be;
+}
+
+.info-wirp {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    margin-top: 114px;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.info-wirp.third-txt {
+    margin-top: 100px;
+}
+
+.info-wirp.second-txt {
+    margin-top: 131px;
+}
+
+.info-wirp.napadatel-txt {
+    margin-top: 35px;
+}
+
+.info-wirp.bojinka-txt {
+    margin-top: 15px;
+}
+
+.image {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.rankings2 {
+    margin-top: 0px;
+    padding-top: 26px;
+    padding-bottom: 26px;
+    border-bottom: 1px solid #2975bb;
+}
+
+.rankings2-copy {
+    margin-top: 0px;
+    padding-top: 26px;
+    padding-bottom: 26px;
+    border-bottom: 1px solid #2975bb;
+}
+
+.rankings3 {
+    margin-top: 0px;
+    padding-top: 26px;
+    padding-bottom: 26px;
+    border-bottom: 1px solid #2975bb;
+}
+
+.rankings4 {
+    margin-top: 0px;
+    padding-top: 26px;
+    padding-bottom: 26px;
+    border-bottom: 1px solid #2975bb;
+}
+
+.rankings5 {
+    margin-top: 0px;
+    padding-top: 26px;
+    padding-bottom: 26px;
+    border-bottom: 1px solid #2975bb;
+}
+
+.body-3 {
+    background-color: #fff;
+}
+
+.game-single {
+    margin: 107px 46px 46px;
+    font-family: 'Dusha fifa world cup 2018', sans-serif;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.game-single.inprofile {
+    margin-top: 0px;
+    margin-bottom: 43px;
+    padding-top: 18px;
+    padding-bottom: 78px;
+    border-bottom: 1px solid #5da4e6;
+}
+
+.game-summary {
+    margin-bottom: 17px;
+    padding-bottom: 0px;
+    border-bottom: 8px none #f3daa8;
+}
+
+.result {
+    margin-top: 32px;
+    margin-bottom: 32px;
+    color: #ff7070;
+}
+
+.list-item {
+    color: #fff;
+    font-size: 36px;
+}
+
+.list-item-2 {
+    width: 100%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: #fff;
+    font-size: 36px;
+    text-align: center;
+}
+
+.summary-details {
+    margin-bottom: 6px;
+    border-bottom: 1px none #2a7ecc;
+}
+
+.smetka-wrp {
+    padding-top: 39px;
+    padding-bottom: 0px;
+    border-bottom: 1px solid #4a99e2;
+}
+
+.vs-txt {
+    padding-top: 29px;
+    color: #fff;
+    font-size: 36px;
+}
+
+.input-wrp {
+    padding-bottom: 72px;
+    border-bottom: 4px solid #2e84d3;
+}
+
+.game-prediction-form {
+    margin-right: 14px;
+    margin-left: 14px;
+}
+
+.select-field {
+    display: block;
+    width: 80%;
+    height: 45px;
+    margin-top: 19px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 24px;
+    border-style: none;
+    background-color: transparent;
+    font-family: Montserrat, sans-serif;
+    color: #1c6bb4;
+    font-weight: 700;
+}
+
+.dropdown {
+    display: block;
+    width: 80%;
+    margin-right: auto;
+    margin-left: auto;
+    background-color: #2e84d3;
+    box-shadow: 1px 1px 3px 0 #044a9e;
+    text-align: center;
+}
+
+.dropdown-toggle {
+    width: 100%;
+    padding-right: 36px;
+    padding-left: 36px;
+    border: 4px solid #5da4e6;
+    background-color: transparent;
+}
+
+.dropdown-toggle:hover {
+    border-color: #8fc2f1;
+}
+
+.form-txt {
+    font-family: Montserrat, sans-serif;
+    color: #fff;
+    font-weight: 700;
+    text-align: center;
+}
+
+.column-5 {
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
+.icon-2 {
+    color: #fff;
+}
+
+.dropdown-link {
+    background-color: #5da4e6;
+    font-family: Montserrat, sans-serif;
+    color: #fff;
+    font-weight: 700;
+    text-align: center;
+}
+
+.dropdown-link-2 {
+    background-color: #5da4e6;
+    font-family: Montserrat, sans-serif;
+    color: #fff;
+    font-weight: 700;
+    text-align: center;
+}
+
+.dropdown-link-3 {
+    background-color: #5da4e6;
+    font-family: Montserrat, sans-serif;
+    color: #fff;
+    font-weight: 700;
+    text-align: center;
+}
+
+.dropdown-list {
+    box-shadow: 1px 1px 3px 0 #000;
+}
+
+.dropdown-list.w--open {
+    box-shadow: 1px 1px 3px 0 #044a9e;
+}
+
+.text-input {
+    display: block;
+    width: 80%;
+    height: 70px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-top: 20px;
+    border: 4px solid #5da4e6;
+    background-color: #2e84d3;
+    box-shadow: 1px 1px 3px 0 #044a9e;
+}
+
+.text-input:hover {
+    border-color: #8fc2f1;
+}
+
+.buttons {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.submit-btn {
+    display: block;
+    width: 350px;
+    height: 75px;
+    margin: 89px auto 19px;
+    padding-top: 14px;
+    border-radius: 80px;
+    background-color: #f3daa8;
+    box-shadow: 6px 6px 28px 8px #184d8d;
+    font-family: 'Dusha fifa world cup 2018', sans-serif;
+    color: #044a9e;
+    font-size: 22px;
+    font-weight: 400;
+    text-align: center;
+    text-transform: uppercase;
+    text-decoration: InfoText;
+}
+
+.small-btn {
+    display: inline-block;
+    width: 100px;
+    height: 30px;
+    margin: 1px auto 1px;
+    padding-top: 1px;
+    /*border-radius: 80px;*/
+    background-color: #f3daa8;
+    /*box-shadow: 6px 6px 28px 8px #184d8d;*/
+    font-family: 'Dusha fifa world cup 2018', sans-serif;
+    color: #044a9e;
+    font-size: 15px;
+    font-weight: 400;
+    text-align: center;
+    text-transform: uppercase;
+    text-decoration: InfoText;
+}
+
+.submit-btn-no-glow {
+    display: block;
+    width: 250px;
+    height: 75px;
+    margin: 89px auto 19px;
+    padding-top: 14px;
+    border-radius: 80px;
+    background-color: #f3daa8;
+    font-family: 'Dusha fifa world cup 2018', sans-serif;
+    color: #044a9e;
+    font-size: 22px;
+    font-weight: 400;
+    text-align: center;
+    text-transform: uppercase;
+    text-decoration: InfoText;
+}
+
+.submit-btn:hover {
+    transform: translateX(0px) translateY(0px) translateZ(0px) scaleX(1.1) scaleY(1.1) scaleZ(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skewX(0deg) skewY(0deg);
+
+}
+
+.submit-btn-no-glow:hover {
+    transform: translateX(0px) translateY(0px) translateZ(0px) scaleX(1.1) scaleY(1.1) scaleZ(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skewX(0deg) skewY(0deg);
+
+}
+
+.small-btn:hover {
+    transform: translateX(0px) translateY(0px) translateZ(0px) scaleX(2) scaleY(2) scaleZ(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skewX(0deg) skewY(0deg);
+
+}
+
+.star-big {
+    position: fixed;
+    left: 0px;
+    top: 115px;
+    right: 0px;
+    bottom: 164px;
+}
+
+.star-big.secondstar {
+    left: auto;
+    top: 450px;
+    right: 0px;
+    bottom: 164px;
+}
+
+.stars-small {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    display: block;
+    width: 900px;
+    margin-top: 219px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.parallax-wrp {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+}
+
+.ronaldo {
+    position: fixed;
+    left: -461px;
+    bottom: 0px;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.tabs-menu {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    height: 65px;
+    margin-right: auto;
+    margin-left: auto;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
+.tabs {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.tab-link {
+    width: 150px;
+    margin-right: 2px;
+    padding-right: 0px;
+    padding-left: 0px;
+    border-top: 1px none #000;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    background-color: #fafafa;
+    box-shadow: 0 -6px 0 -1px #f3daa8, inset 0 -7px 6px -7px #eceff1;
+}
+
+.tab-link:hover {
+    background-color: #fff;
+}
+
+.tab-link.w--current {
+    z-index: 5;
+    padding-right: 0px;
+    padding-left: 0px;
+    background-color: #fff;
+    box-shadow: 0 -6px 0 -1px #f3daa8;
+}
+
+.tab-text {
+    display: block;
+    margin-top: 16px;
+    margin-right: auto;
+    margin-left: auto;
+    font-family: 'Dusha fifa world cup 2018', sans-serif;
+    color: #044a9e;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.tab-pane-tab-1 {
+    border-style: none;
+    border-top-width: 1px;
+    border-top-color: #f3daa8;
+}
+
+.tabs-content {
+    min-height: 500px;
+    border-radius: 15px;
+    background-color: #fff;
+    box-shadow: 0 0 20px -3px rgba(4, 74, 158, .35);
+}
+
+.logout-btn {
+    display: block;
+    width: 180px;
+    height: 50px;
+    margin: 56px auto 125px;
+    padding-top: 16px;
+    border-radius: 15px;
+    background-color: #5da4e6;
+    font-family: 'Dusha fifa world cup 2018', sans-serif;
+    font-size: 18px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.logout-btn:hover {
+    background-color: #d51e3a;
+}
+
+.logout-gif {
+    display: block;
+    width: 250px;
+    margin: 40px auto;
+    border-style: none;
+    border-width: 8px 1px 8px 8px;
+    border-color: #f3daa8 #d51e3a;
+    border-radius: 15px;
+}
+
+.tab-pane-tab-5 {
+    border-radius: 15px;
+}
+
+.game-history {
+    margin-top: 50px;
+    margin-bottom: 42px;
+}
+
+.unordered-list {
+    color: #1c6bb4;
+    font-size: 30px;
+    text-align: center;
+    list-style-type: none;
+}
+
+.list-item-4 {
+    height: 30px;
+}
+
+.list-item-5 {
+    height: 30px;
+}
+
+.tab-pane-tab-3 {
+    padding-right: 45px;
+    padding-bottom: 42px;
+    padding-left: 45px;
+}
+
+@media (max-width: 991px) {
+    .nav-link {
+        padding: 23px;
+        text-align: center;
+    }
+
+    .nav-link.w--current {
+        border-bottom: 0px none #000;
+        color: #fff;
+    }
+
+    .hero-wrp {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-justify-content: space-around;
+        -ms-flex-pack: distribute;
+        justify-content: space-around;
+    }
+
+    .heading {
+        margin-top: -13px;
+        line-height: 100%;
+    }
+
+    .heading.gold {
+        display: block;
+        margin-right: auto;
+        margin-left: auto;
+        text-align: center;
+    }
+
+    .heading.content {
+        display: block;
+        margin-right: auto;
+        margin-left: auto;
+        text-align: center;
+    }
+
+    .heading.content.white {
+        font-size: 20px;
+    }
+
+    .heading.inner-ttl {
+        margin-top: -117px;
+    }
+
+    .heading.inner-ttl.bravo {
+        margin-top: 24px;
+    }
+
+    .ttl-wrp {
+        top: 156px;
+        display: block;
+        width: 75%;
+        margin-right: auto;
+        margin-left: auto;
+        text-align: center;
+    }
+
+    .cup-wrp {
+        left: 2px;
+        top: 107px;
+        width: 140px;
+        height: 300px;
+        margin-top: 8px;
+        clear: both;
+        background-size: 140px;
+    }
+
+    .menu-button {
+        margin-top: 20px;
+    }
+
+    .menu-button.w--open {
+        background-color: transparent;
+    }
+
+    .nav-menu {
+        background-color: #7c0f0f;
+        box-shadow: 13px 13px 19px 1px rgba(0, 0, 0, .2);
+    }
+
+    .icon {
+        color: #fff;
+    }
+
+    .content-wrp {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-justify-content: space-around;
+        -ms-flex-pack: distribute;
+        justify-content: space-around;
+    }
+
+    .text-block {
+        padding-right: 35px;
+        padding-left: 35px;
+    }
+
+    .text-block.white {
+        margin-top: -43px;
+        margin-bottom: 85px;
+    }
+
+    .text-block.white.bravo {
+        margin-top: 346px;
+        margin-bottom: 346px;
+    }
+
+    .text-block.white.message {
+        margin-top: 346px;
+        margin-bottom: 346px;
+    }
+
+    .game-wrp {
+        margin-top: 20px;
+    }
+
+    .team {
+        width: 80%;
+        height: 60px;
+    }
+
+    .score {
+        height: 60px;
+        border-radius: 5px;
+    }
+
+    .column {
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+
+    .column-2 {
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+
+    .column-3 {
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+
+    .column-4 {
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+
+    .team-ttl {
+        padding-top: 21px;
+        font-size: 26px;
+    }
+
+    .score-txt {
+        padding-top: 22px;
+        font-size: 30px;
+    }
+
+    .rankings1 {
+        padding-bottom: 34px;
+    }
+
+    .info-wirp {
+        margin-top: 21px;
+    }
+
+    .info-wirp.third-txt {
+        margin-top: 16px;
+    }
+
+    .info-wirp.second-txt {
+        margin-top: 32px;
+    }
+
+    .image {
+        display: block;
+        width: 40%;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .image.first {
+        width: 50%;
+    }
+
+    .image.third {
+        width: 30%;
+    }
+
+    .image.napadatel {
+        width: 30%;
+    }
+
+    .image.half {
+        width: 20%;
+    }
+
+    .image.bek {
+        width: 15%;
+    }
+
+    .image.bojinka {
+        width: 8%;
+    }
+
+    .rankings2 {
+        padding-top: 48px;
+        padding-bottom: 48px;
+    }
+
+    .rankings2-copy {
+        padding-top: 48px;
+        padding-bottom: 48px;
+    }
+
+    .rankings3 {
+        padding-top: 48px;
+        padding-bottom: 48px;
+    }
+
+    .rankings4 {
+        padding-top: 48px;
+        padding-bottom: 48px;
+    }
+
+    .rankings5 {
+        padding-top: 48px;
+        padding-bottom: 48px;
+    }
+
+    .game-single {
+        margin-top: 20px;
+    }
+
+    .vs-txt {
+        padding-top: 22px;
+        font-size: 30px;
+    }
+
+    .dropdown {
+        width: 78%;
+    }
+
+    .dropdown-toggle {
+        width: 100%;
+    }
+
+    .column-5 {
+        margin-bottom: 40px;
+    }
+
+    .column-6 {
+        margin-bottom: 40px;
+    }
+
+    .star-big {
+        left: -299px;
+        top: 194px;
+    }
+
+    .star-big.secondstar {
+        right: -260px;
+    }
+
+    .stars-small {
+        right: 71px;
+    }
+
+    .tab-link.w--current {
+        width: 120px;
+    }
+}
+
+@media (max-width: 767px) {
+    .nav-link {
+        padding-top: 0px;
+        padding-bottom: 4px;
+    }
+
+    .heading {
+        font-size: 55px;
+    }
+
+    .heading.gold {
+        font-size: 55px;
+    }
+
+    .heading.content {
+        padding-right: 50px;
+        padding-left: 50px;
+        font-size: 55px;
+    }
+
+    .heading.content.subheading {
+        padding-right: 48px;
+        padding-left: 48px;
+    }
+
+    .heading.inner-ttl {
+        margin-top: -130px;
+        font-size: 75px;
+    }
+
+    .start-btn {
+        width: 120px;
+    }
+
+    .logout-bn {
+        width: 120px;
+        height: 50px;
+    }
+
+    .content-wrp {
+        padding-top: 1px;
+    }
+
+    .text-block {
+        padding-right: 24px;
+        padding-left: 24px;
+    }
+
+    .text-block.white {
+        margin-top: -48px;
+        margin-bottom: 68px;
+        font-size: 16px;
+    }
+
+    .text-block.white.bravo {
+        margin-top: 330px;
+        margin-bottom: 330px;
+    }
+
+    .text-block.white.message {
+        margin-top: 330px;
+        margin-bottom: 330px;
+    }
+
+    .footer-btn {
+        width: 120px;
+    }
+
+    .foot-wrp {
+        width: 600px;
+    }
+
+    .game-wrp {
+        margin-top: 15px;
+    }
+
+    .team {
+        display: block;
+        height: 40px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .score {
+        height: 40px;
+    }
+
+    .team-ttl {
+        padding-top: 11px;
+        font-size: 20px;
+    }
+
+    .score-txt {
+        padding-top: 11px;
+        font-size: 22px;
+    }
+
+    .info-wirp {
+        margin-top: 34px;
+    }
+
+    .game-single {
+        margin-top: 15px;
+    }
+
+    .vs-txt {
+        padding-top: 11px;
+        font-size: 22px;
+    }
+
+    .star-big {
+        left: -307px;
+    }
+
+    .tab-link {
+        width: 100px;
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+
+    .tab-link.w--current {
+        width: 100px;
+    }
+
+    .tab-text {
+        display: block;
+        margin-right: auto;
+        margin-left: auto;
+        font-size: 12px;
+    }
+
+    .tabs-content {
+        border-radius: 0px;
+    }
+}
+
+@media (max-width: 479px) {
+    .nav-link {
+        padding: 14px 25px;
+    }
+
+    .hero {
+        height: 750px;
+    }
+
+    .hero-wrp {
+        height: 750px;
+    }
+
+    .heading {
+        margin-top: -9px;
+        font-size: 32px;
+    }
+
+    .heading.gold {
+        font-size: 32px;
+    }
+
+    .heading.content {
+        font-size: 32px;
+    }
+
+    .heading.content.white {
+        font-size: 20px;
+    }
+
+    .heading.inner-ttl {
+        margin-top: -208px;
+        font-size: 42px;
+    }
+
+    .heading.inner-ttl.bravo {
+        margin-top: -77px;
+    }
+
+    .heading.tab-heading.history-ttl {
+        margin-bottom: 30px;
+        font-size: 26px;
+    }
+
+    .heading.tab-heading.history-ttl.red {
+        margin-top: 24px;
+        font-size: 26px;
+    }
+
+    .ttl-wrp {
+        top: 106px;
+    }
+
+    .start-btn {
+        display: block;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .logout-bn {
+        display: block;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .cup-wrp {
+        margin-top: -93px;
+    }
+
+    .content-wrp {
+        padding-top: 7px;
+    }
+
+    .text-block.ftr {
+        width: 200px;
+        margin-top: 35px;
+    }
+
+    .text-block.white {
+        margin-top: 17px;
+        font-size: 14px;
+    }
+
+    .text-block.white.bravo {
+        margin-top: 296px;
+        margin-bottom: 296px;
+    }
+
+    .text-block.white.message {
+        margin-top: 296px;
+        margin-bottom: 296px;
+    }
+
+    .text-block.tab.remark {
+        font-size: 14px;
+    }
+
+    .text-block.histprylist {
+        margin-top: 8px;
+        font-size: 14px;
+    }
+
+    .footer {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        height: 200px;
+        -webkit-box-pack: end;
+        -webkit-justify-content: flex-end;
+        -ms-flex-pack: end;
+        justify-content: flex-end;
+    }
+
+    .footer-btn {
+        display: block;
+        margin-top: 27px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .foot-wrp {
+        display: block;
+        width: 200px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .inner_page_header {
+        height: 350px;
+        margin-top: 70px;
+        padding-top: 0px;
+    }
+
+    .game-wrp {
+        margin-top: 20px;
+        margin-right: 0px;
+        margin-left: 0px;
+        padding-right: 7px;
+        padding-left: 7px;
+    }
+
+    .team {
+        display: block;
+        width: 90%;
+        height: 40px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .score {
+        width: 90%;
+        height: 40px;
+        border-radius: 4px;
+        box-shadow: none;
+    }
+
+    .team-ttl {
+        font-size: 16px;
+    }
+
+    .score-txt {
+        font-size: 18px;
+    }
+
+    .rarnk-txt.position {
+        font-size: 20px;
+    }
+
+    .rarnk-txt.user {
+        font-size: 20px;
+    }
+
+    .rarnk-txt.points {
+        font-size: 20px;
+    }
+
+    .game-single {
+        margin-top: 20px;
+        margin-right: 0px;
+        margin-left: 0px;
+        padding-right: 7px;
+        padding-left: 7px;
+    }
+
+    .vs-txt {
+        font-size: 18px;
+    }
+
+    .dropdown {
+        width: 76%;
+    }
+
+    .star-big {
+        left: -195px;
+        top: 19px;
+    }
+
+    .star-big.secondstar {
+        top: 319px;
+        right: -200px;
+    }
+
+    .ronaldo {
+        bottom: 183px;
+    }
+
+    .tabs {
+        margin-top: 34px;
+    }
+
+    .tab-link {
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+
+    .tab-text {
+        font-size: 10px;
+    }
+
+    .tabs-content {
+        padding-right: 9px;
+        padding-left: 9px;
+    }
+}
+
+@font-face {
+    font-family: 'Dusha fifa world cup 2018';
+    src: url('../fonts/Dusha_-_FIFA_World_Cup_2018.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}

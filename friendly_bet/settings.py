@@ -125,3 +125,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     STATIC_DIR,
 ]
+DJANGO_STATIC_FILES = os.path.join(STATIC_DIR, "#django_static_collect")
+STATIC_ROOT = DJANGO_STATIC_FILES
