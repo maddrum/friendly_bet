@@ -96,12 +96,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'main_app',
-    'matches',
     'accounts',
-    'bonus_points',
-    'site_stats',
-    'fusioncharts',
+    'main_app',
+    'events',
+    'matches',
+    'predictions',
+    # 'bonus_points',
 ]
 
 # Internationalization
