@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block body_tag_define %}
+    <body class="body-2">
+{% endblock %}
+
+{% block body_content %}
+    <div class="inner_page_header">
+        <div class="heading inner-ttl">Здравей, {{ user }}!</div>
+    </div>
+    <div class="content-wrp">
+        <div data-duration-in="300" data-duration-out="100" class="tabs w-tabs">
+            <div class="tabs-menu w-tab-menu">
+                <a href="{% url 'accounts:profile' %}" class="tab-link w-inline-block w-tab-link w--current">
+                    <div class="tab-text">Прогнози</div>
+                </a>
+                <a href="{% url 'accounts:profile_history' %}" class="tab-link w-inline-block w-tab-link">
+                    <div class="tab-text">История</div>
+                </a>
+                <a href="{% url 'accounts:profile_bonus' %}" class="tab-link w-inline-block w-tab-link">
+                    <div class="tab-text">Бонуси</div>
+                </a>
+                <a href="{% url 'accounts:profile_settings' %}" class="tab-link w-inline-block w-tab-link">
+                    <div class="tab-text">Настройки</div>
+                </a>
+                <a href="{% url 'accounts:logout_confirm' %}" class="tab-link w-inline-block w-tab-link">
+                    <div class="tab-text">Излез</div>
+                </a>
+            </div>
+            <div class="tabs-content w-tab-content">
+                {% block profile_content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block body_tag_define %}
+    <body>
+{% endblock %}
+{% block banner %}
+    <div class="hero">
+        <div class="hero-wrp">
+            <div class="ttl-wrp">
+                <h1 class="heading gold" style="text-align: left">Прогнозирай</h1>
+                <h1 class="heading" style="text-align: left">и стани шампион</h1>
+                <a href="{% url 'matches:input_prediction' %}" data-w-id="9298a946-0f8a-94b4-9671-33a1521ce903"
+                   class="start-btn w-button">СТАРТ! </a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'accounts:logout' %}" data-w-id="5711b128-b595-dfda-f10b-1cfee2c7a567"
+                       class="logout-bn w-button">LOGOUT</a>
+                {% else %}
+                    <a href="{% url 'accounts:login' %}" data-w-id="5711b128-b595-dfda-f10b-1cfee2c7a567"
+                       class="logout-bn w-button">LOGIN</a>
+                {% endif %}
+            </div>
+            <div class="cup-wrp"></div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block body_content %}
+    <div class="content-wrp">
+        <h1 class="heading content">ЗА КАКВО СТАВА ВЪПРОС<br></h1>
+        <div class="text-block">Нещата не са сложни. Мачът почва след 31 минути, но ти все още можеш да дадеш своята
+            прогноза.<br>Наред с това ще имаш възможност да познаеш и какъв ще е крайния резултат от срещата.<br></div>
+        <h1 class="heading content">Разпределяне на точки:<br></h1>
+        <div class="text-block numbers">1.<br></div>
+        <div class="text-block">За всяка твоя прогноза получаваш по 1 точка, без значение дали си познал каквото и да
+            е...
+            Заради олимпийския принцип, you know;<br></div>
+        <div class="text-block numbers">2.<br></div>
+        <div class="text-block">Aко уцелиш победителя от срещата - получаваш още 3 точки;<br></div>
+        <div class="text-block numbers">3.<br></div>
+        <div class="text-block">3.И накрая, ако удариш и точния резултат, получаваш още 5 точки.<br></div>
+        <h1 class="heading content subheading">В ТОЗИ САЙТ НЯМА НИЩО ХАЗАРТНО.<br> НИКОЙ НЕ ПЕЧЕЛИ ИЛИ ГУБИ КАКВОТО И ДА
+            Е!<br></h1>
+        <h1 class="heading content">тук Играете за чест и слава!<br></h1>
+    </div>
+{% endblock %}

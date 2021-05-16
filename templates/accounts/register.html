@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block body_tag_define %}
+    <body class="body-2" xmlns="http://www.w3.org/1999/html">
+{% endblock %}
+{% block body_content %}
+    <div class="inner_page_header">
+        <div class="heading inner-ttl">Регистрация</div>
+    </div>
+    <div class="content-wrp">
+        <div class="form-txt">
+            <h2>Попълни формата</h2>
+            <h3>Твоите лични данни са си твои и те не представляват интерес.</h3>
+            <h3>Затова не ни трябват твоите имена и мейли.</h3>
+            <h3>Като попълваш тази форма, обаче, гледай да не си забравяш паролата, защото НЯМА механизъм как да
+                възстановиш,
+                освен ако не се свържеш с формата за контакт.</h3>
+            <br><br><br>
+        </div>
+        <div class="form-txt">
+            <form method="POST">
+                {{ form }}
+                {% csrf_token %}
+                <div class="buttons">
+                    <input type="submit" data-w-id="8782863a-1d5d-0d40-92f8-45790f30b309" class="submit-btn w-button"
+                           value="Регистрация">
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}

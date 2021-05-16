@@ -1,0 +1,11 @@
+{% extends 'accounts/profile-base.html' %}
+{% load staticfiles %}
+
+{% block profile_content %}
+    <h1 class="heading tab-heading">Излизаш ли от профила си?</h1>
+    <img src="{% static 'images/Gif_logout.gif' %}" class="logout-gif">
+    <a href="{% url 'accounts:logout' %}" class="logout-btn w-button">Излизам</a>
+{% endblock %}
+
+
+

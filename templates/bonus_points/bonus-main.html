@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block body_tag_define %}
+    <body class="body-2">
+{% endblock %}
+{% block body_content %}
+
+    <div class="inner_page_header">
+        <div class="heading inner-ttl">Бонуси</div>
+    </div>
+    <div class="content-wrp">
+        <div class="tabs-content w-tab-content">
+            <div class="text-block tab remark"> По долу ще намериш всички активни далаверки, както и онези за които вече
+                е късно да
+                се включиш.<br>
+            </div>
+            <h4 class="heading tab-heading history-ttl red">Активни:</h4>
+            <ul class="unordered-list w-list-unstyled">
+                {% for item in bonuses %}
+                    {% if not item.archived %}
+                        <li>
+                            <div class="text-block histprylist bonus-list">
+                                <b>{{ item }}</b> -->
+                                {% if item.participate_link %}
+                                    <a href="../{{ item.input_filed }}/{{ item.id }}" class="buttons small-btn">ВКЛЮЧИ СЕ!</a>
+                                {% else %}
+                                    Вече си в схемата!
+                                {% endif %}
+                                <p><em>Активно до {{ item.active_until }}</em></p>
+                            </div>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            {% if not bonuses %}
+                В момента няма активни бонуси, но проверявай често!
+            {% endif %}
+            <h4 class="heading tab-heading history-ttl red">Отминали:</h4>
+            <ul class="unordered-list w-list-unstyled">
+                {% for item in bonuses %}
+                    {% if item.archived %}
+                        <li>
+                            <div class="text-block histprylist bonus-list">
+                                {{ item }}
+                                <p><em style="color:gray;">Беше активно до: {{ item.active_until }}</em></p>
+                            </div>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

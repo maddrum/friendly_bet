@@ -1,0 +1,25 @@
+{% extends 'accounts/profile-base.html' %}
+
+{% block  profile_content %}
+    <h1 class="heading tab-heading">Настройки</h1>
+    <div class="text-block tab">Смени своите настройки тук.<br></div>
+
+
+    <div class="form-txt">
+        <div class="text-block histprylist bonus-list">
+            <label>Парола:</label><a href="{% url 'accounts:password_change' %}">Натистни тук за смяна на паролата!</a>
+        </div>
+        <div class="text-block histprylist bonus-list">
+            <form method="POST">
+                {% csrf_token %}
+                {{ form }}
+
+                <input type="submit" data-w-id="8782863a-1d5d-0d40-92f8-45790f30b309"
+                       class="submit-btn-no-glow w-button"
+                       value="Корекция">
+
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

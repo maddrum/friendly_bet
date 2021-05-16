@@ -1,0 +1,384 @@
+{% extends 'base.html' %}
+{% block body_tag_define %}
+    <body class="body">
+{% endblock %}
+
+{% block body_content %}
+
+    <div class="inner_page_header">
+        <div class="heading inner-ttl">Програмата</div>
+    </div>
+    <div class="results">
+    <div class="content-wrp">
+        {#        Today Matches#}
+{#        <h1>Мачовете днес:</h1>#}
+{#        {% if not today_matches %}#}
+{#            <h2>Днес няма мачове. Релакс!</h2>#}
+{#        {% endif %}#}
+{#        {% for item in today_matches %}#}
+{#            <div class="game-wrp">#}
+{#                <div class="match-number">#}
+{#                    <a href="../match-detail/{{ item.match_number }}"#}
+{#                       style="color: white">Мач {{ item.match_number }}</a>#}
+{#                </div>#}
+{#                <div class="w-row">#}
+{#                    <div class="column-4 w-col w-col-5 w-col-medium-5 w-col-small-5 w-col-tiny-5">#}
+{#                        <div class="team">#}
+{#                            <div class="team-ttl">{{ item.country_home }}</div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="column-3 w-col w-col-1 w-col-medium-1 w-col-small-1 w-col-tiny-1">#}
+{#                        <div class="score">#}
+{#                            <div class="score-txt">#}
+{#                                {% if item.match_is_over %}#}
+{#                                    {{ item.score_home }}#}
+{#                                {% else %}#}
+{#                                    ___#}
+{#                                {% endif %}#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="column-2 w-col w-col-1 w-col-medium-1 w-col-small-1 w-col-tiny-1">#}
+{#                        <div class="score">#}
+{#                            <div class="score-txt">#}
+{#                                {% if item.match_is_over %}#}
+{#                                    {{ item.score_guest }}#}
+{#                                {% else %}#}
+{#                                    ___#}
+{#                                {% endif %}#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="column w-col w-col-5 w-col-medium-5 w-col-small-5 w-col-tiny-5">#}
+{#                        <div class="team">#}
+{#                            <div class="team-ttl">{{ item.country_guest }}</div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div class="match-date">{{ item.match_date }} {{ item.match_start_time }}</div>#}
+{#            </div>#}
+{#        {% endfor %}#}
+
+        {#    FINAL#}
+        {% if final %}
+            <h1>Финал</h1>
+        {% endif %}
+        {% for item in final %}
+            <div class="game-wrp">
+                <div class="match-number">
+                    <a href="../match-detail/{{ item.match_number }}"
+                       style="color: white">Мач {{ item.match_number }}</a>
+                </div>
+                <div class="w-row">
+                    <div class="column-4 w-col w-col-5 w-col-medium-5 w-col-small-5 w-col-tiny-5">
+                        <div class="team">
+                            <div class="team-ttl">{{ item.country_home }}</div>
+                        </div>
+                    </div>
+                    <div class="column-3 w-col w-col-1 w-col-medium-1 w-col-small-1 w-col-tiny-1">
+                        <div class="score">
+                            <div class="score-txt">
+                                {% if item.match_is_over %}
+                                    {{ item.score_home }}
+                                    {% if item.penalties %}
+                                        ({{ item.score_after_penalties_home }})
+                                    {% endif %}
+                                {% else %}
+                                    ___
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column-2 w-col w-col-1 w-col-medium-1 w-col-small-1 w-col-tiny-1">
+                        <div class="score">
+                            <div class="score-txt">
+                                {% if item.match_is_over %}
+                                    {{ item.score_guest }}
+                                    {% if item.penalties %}
+                                        ({{ item.score_after_penalties_guest }})
+                                    {% endif %}
+                                {% else %}
+                                    ___
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column w-col w-col-5 w-col-medium-5 w-col-small-5 w-col-tiny-5">
+                        <div class="team">
+                            <div class="team-ttl">{{ item.country_guest }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="match-date">{{ item.match_date }} {{ item.match_start_time }}</div>
+            </div>
+        {% endfor %}
+
+
+        {#    LITTLE-FINAL#}
+        {% if little_final %}
+            <h1>Малък Финал</h1>
+        {% endif %}
+        {% for item in little_final %}
+            <div class="game-wrp">
+                <div class="match-number">
+                    <a href="../match-detail/{{ item.match_number }}"
+                       style="color: white">Мач {{ item.match_number }}</a>
+                </div>
+                <div class="w-row">
+                    <div class="column-4 w-col w-col-5 w-col-medium-5 w-col-small-5 w-col-tiny-5">
+                        <div class="team">
+                            <div class="team-ttl">{{ item.country_home }}</div>
+                        </div>
+                    </div>
+                    <div class="column-3 w-col w-col-1 w-col-medium-1 w-col-small-1 w-col-tiny-1">
+                        <div class="score">
+                            <div class="score-txt">
+                                {% if item.match_is_over %}
+                                    {{ item.score_home }}
+                                    {% if item.penalties %}
+                                        ({{ item.score_after_penalties_home }})
+                                    {% endif %}
+                                {% else %}
+                                    ___
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column-2 w-col w-col-1 w-col-medium-1 w-col-small-1 w-col-tiny-1">
+                        <div class="score">
+                            <div class="score-txt">
+                                {% if item.match_is_over %}
+                                    {{ item.score_guest }}
+                                    {% if item.penalties %}
+                                        ({{ item.score_after_penalties_guest }})
+                                    {% endif %}
+                                {% else %}
+                                    ___
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column w-col w-col-5 w-col-medium-5 w-col-small-5 w-col-tiny-5">
+                        <div class="team">
+                            <div class="team-ttl">{{ item.country_guest }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="match-date">{{ item.match_date }} {{ item.match_start_time }}</div>
+            </div>
+        {% endfor %}
+
+
+        {#    SEMI-FINALS#}
+        {% if semifinals %}
+            <h1>Полуфинали</h1>
+        {% endif %}
+        {% for item in semifinals %}
+            <div class="game-wrp">
+                <div class="match-number">
+                    <a href="../match-detail/{{ item.match_number }}"
+                       style="color: white">Мач {{ item.match_number }}</a>
+                </div>
+                <div class="w-row">
+                    <div class="column-4 w-col w-col-5 w-col-medium-5 w-col-small-5 w-col-tiny-5">
+                        <div class="team">
+                            <div class="team-ttl">{{ item.country_home }}</div>
+                        </div>
+                    </div>
+                    <div class="column-3 w-col w-col-1 w-col-medium-1 w-col-small-1 w-col-tiny-1">
+                        <div class="score">
+                            <div class="score-txt">
+                                {% if item.match_is_over %}
+                                    {{ item.score_home }}
+                                    {% if item.penalties %}
+                                        ({{ item.score_after_penalties_home }})
+                                    {% endif %}
+                                {% else %}
+                                    ___
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column-2 w-col w-col-1 w-col-medium-1 w-col-small-1 w-col-tiny-1">
+                        <div class="score">
+                            <div class="score-txt">
+                                {% if item.match_is_over %}
+                                    {{ item.score_guest }}
+                                    {% if item.penalties %}
+                                        ({{ item.score_after_penalties_guest }})
+                                    {% endif %}
+                                {% else %}
+                                    ___
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column w-col w-col-5 w-col-medium-5 w-col-small-5 w-col-tiny-5">
+                        <div class="team">
+                            <div class="team-ttl">{{ item.country_guest }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="match-date">{{ item.match_date }} {{ item.match_start_time }}</div>
+            </div>
+        {% endfor %}
+
+
+        {% if quarterfinals %}
+            <h1>Четвъртфинали</h1>
+        {% endif %}
+        {% for item in quarterfinals %}
+            <div class="game-wrp">
+                <div class="match-number">
+                    <a href="../match-detail/{{ item.match_number }}"
+                       style="color: white">Мач {{ item.match_number }}</a>
+                </div>
+                <div class="w-row">
+                    <div class="column-4 w-col w-col-5 w-col-medium-5 w-col-small-5 w-col-tiny-5">
+                        <div class="team">
+                            <div class="team-ttl">{{ item.country_home }}</div>
+                        </div>
+                    </div>
+                    <div class="column-3 w-col w-col-1 w-col-medium-1 w-col-small-1 w-col-tiny-1">
+                        <div class="score">
+                            <div class="score-txt">
+                                {% if item.match_is_over %}
+                                    {{ item.score_home }}
+                                    {% if item.penalties %}
+                                        ({{ item.score_after_penalties_home }})
+                                    {% endif %}
+                                {% else %}
+                                    ___
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column-2 w-col w-col-1 w-col-medium-1 w-col-small-1 w-col-tiny-1">
+                        <div class="score">
+                            <div class="score-txt">
+                                {% if item.match_is_over %}
+                                    {{ item.score_guest }}
+                                    {% if item.penalties %}
+                                        ({{ item.score_after_penalties_guest }})
+                                    {% endif %}
+                                {% else %}
+                                    ___
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column w-col w-col-5 w-col-medium-5 w-col-small-5 w-col-tiny-5">
+                        <div class="team">
+                            <div class="team-ttl">{{ item.country_guest }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="match-date">{{ item.match_date }} {{ item.match_start_time }}</div>
+            </div>
+        {% endfor %}
+
+        {#        EIGHT-FINALS#}
+        {% if quarterfinals %}
+            <h1>Осминафинали</h1>
+        {% endif %}
+        {% for item in eight_finals %}
+            <div class="game-wrp">
+                <div class="match-number">
+                    <a href="../match-detail/{{ item.match_number }}"
+                       style="color: white">Мач {{ item.match_number }}</a>
+                </div>
+                <div class="w-row">
+                    <div class="column-4 w-col w-col-5 w-col-medium-5 w-col-small-5 w-col-tiny-5">
+                        <div class="team">
+                            <div class="team-ttl">{{ item.country_home }}</div>
+                        </div>
+                    </div>
+                    <div class="column-3 w-col w-col-1 w-col-medium-1 w-col-small-1 w-col-tiny-1">
+                        <div class="score">
+                            <div class="score-txt">
+                                {% if item.match_is_over %}
+                                    {{ item.score_home }}
+                                    {% if item.penalties %}
+                                        ({{ item.score_after_penalties_home }})
+                                    {% endif %}
+                                {% else %}
+                                    ___
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column-2 w-col w-col-1 w-col-medium-1 w-col-small-1 w-col-tiny-1">
+                        <div class="score">
+                            <div class="score-txt">
+                                {% if item.match_is_over %}
+                                    {{ item.score_guest }}
+                                    {% if item.penalties %}
+                                        ({{ item.score_after_penalties_guest }})
+                                    {% endif %}
+                                {% else %}
+                                    ___
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column w-col w-col-5 w-col-medium-5 w-col-small-5 w-col-tiny-5">
+                        <div class="team">
+                            <div class="team-ttl">{{ item.country_guest }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="match-date">{{ item.match_date }} {{ item.match_start_time }}</div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {#        Group Phase matches#}
+    <h1>Групова фаза</h1>
+    {% for item in group_phase %}
+        <div class="game-wrp">
+            <div class="match-number">
+                <a href="../match-detail/{{ item.match_number }}"
+                   style="color: white">Мач {{ item.match_number }}</a>
+            </div>
+            <div class="w-row">
+                <div class="column-4 w-col w-col-5 w-col-medium-5 w-col-small-5 w-col-tiny-5">
+                    <div class="team">
+                        <div class="team-ttl">{{ item.country_home }}</div>
+                    </div>
+                </div>
+                <div class="column-3 w-col w-col-1 w-col-medium-1 w-col-small-1 w-col-tiny-1">
+                    <div class="score">
+                        <div class="score-txt">
+                            {% if item.match_is_over %}
+                                {{ item.score_home }}
+                            {% else %}
+                                ___
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="column-2 w-col w-col-1 w-col-medium-1 w-col-small-1 w-col-tiny-1">
+                    <div class="score">
+                        <div class="score-txt">
+                            {% if item.match_is_over %}
+                                {{ item.score_guest }}
+                            {% else %}
+                                ___
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="column w-col w-col-5 w-col-medium-5 w-col-small-5 w-col-tiny-5">
+                    <div class="team">
+                        <div class="team-ttl">{{ item.country_guest }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="match-date">{{ item.match_date }} {{ item.match_start_time }}</div>
+        </div>
+    {% endfor %}
+
+{% endblock %}
+
+
+
