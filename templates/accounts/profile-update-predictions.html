@@ -3,9 +3,9 @@
 
 {% block  profile_content %}
 
-        <h1 class="heading tab-heading">Твоите прогнози за днес</h1>
-        <div class="text-block tab">Тук са всички прогнози, които все още могат да се коригират<br>(или с други думи има
-            повече от 30 мин до този мач)<br></div>
+    <h1 class="heading tab-heading">Твоите прогнози за днес</h1>
+    <div class="text-block tab">Тук са всички прогнози, които все още могат да се коригират<br>(или с други думи има
+        повече от 30 мин до този мач)<br></div>
 
     {% for item in predictions %}
         <div class="game-single inprofile">
@@ -49,8 +49,7 @@
                     {% else %}
                         | равен |
                     {% endif %}
-                    <h1 class="heading tab-heading history-ttl"><a href="../profile-match-update/{{ item.id }}"
-                                                                   class="submit-btn-no-glow">Корекция</a></h1>
+                    <h1 class="heading tab-heading history-ttl"><a href="#" class="submit-btn-no-glow">Корекция</a></h1>
                 </div>
             </div>
         </div>
