@@ -1,16 +1,33 @@
 from django.db import models
 from events import settings as event_settings
+from django.utils.text import slugify
+from unidecode import unidecode
 
 
 class Event(models.Model):
-    event_name = models.CharField(max_length=200)
+    event_name = models.CharField(max_length=60)
+    slug_name = models.SlugField(max_length=180, unique=True)
     event_start_date = models.DateField()
     event_end_date = models.DateField()
+    top_event = models.BooleanField(default=False)
     created_on = models.DateTimeField(auto_now_add=True)
     edited_on = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.event_name
+
+    def slugify_name(self):
+        unidecode_name = unidecode(self.event_name)
+        self.slug_name = slugify(unidecode_name)
+
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            self.slugify_name()
+        return super().save(*args, **kwargs)
+
+    def update_slug(self):
+        self.slugify_name()
+        self.save()
 
 
 class EventGroups(models.Model):

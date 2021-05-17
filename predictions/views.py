@@ -1,18 +1,22 @@
 import datetime
 
-from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.views.generic import UpdateView, ListView
+from extra_views import ModelFormSetView
 
-from predictions.forms import UpdatePredictionForm
-from bonus_points.models import UserBonusSummary
-from matches.models import UserPredictions
+from events.models import Event
+from matches.models import Matches
+from predictions.forms import PredictionForm
+# from bonus_points.models import UserBonusSummary
+from predictions.models import UserPredictions
+from predictions.models import UserScores
+from django.db.models import Sum
 
 
 class RankList(ListView):
     template_name = 'main_app/ranklist.html'
-    model = UserScore
+    model = UserScores
     context_object_name = 'ranklist'
 
     def get_queryset(self):
@@ -21,35 +25,70 @@ class RankList(ListView):
         return queryset
 
 
-class RankilstUserPoints(ListView):
+# class RankilstUserPoints(ListView):
+#     model = UserPredictions
+#     template_name = 'main_app/ranklist-detail.html'
+#     context_object_name = 'ranklist'
+#
+#     def get_queryset(self):
+#         user_id = int(self.kwargs['pk'])
+#         self.username = get_user_model().objects.get(id=user_id)
+#         queryset = UserPredictions.objects.filter(user_id=user_id, match__match_is_over=True).order_by(
+#             '-match__match_start_time_utc')
+#         return queryset
+#
+#     def get_context_data(self, *, object_list=None, **kwargs):
+#         context = super().get_context_data()
+#         bonuses_added_check = UserScore.objects.get(user_id=self.username).bonus_points_added
+#         if bonuses_added_check:
+#             bonuses = UserBonusSummary.objects.get(user=self.username)
+#         else:
+#             bonuses = False
+#         context['bonuses'] = bonuses
+#         context['username'] = self.username
+#         return context
+
+
+class EventCreatePredictionView(LoginRequiredMixin, ModelFormSetView):
+    template_name = 'predictions/input-prediction.html'
+    fields = ('match_state', 'goals_home', 'goals_guest')
     model = UserPredictions
-    template_name = 'main_app/ranklist-detail.html'
-    context_object_name = 'ranklist'
+    event = None
+    matches = None
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.event = self.get_event()
+
+    def get_event(self):
+        return Event.objects.all().first()
+
+    def get_matches(self):
+        now_time = datetime.datetime.now() + datetime.timedelta(minutes=15)
+
+        event_start = [datetime.datetime.combine(self.event.event_start_date, datetime.time(0, 0)),
+                       datetime.datetime.combine(self.event.event_start_date, datetime.time(23, 59))]
+
+        if today < event_start:
+            self.matches = Matches.objects.filter(phase__event=self.event, match_start_time__in=event_start)
+        else:
+            self.matches = Matches.objects.filter(phase__event=self.event, match_start_time__gte=now_time)
 
     def get_queryset(self):
-        user_id = int(self.kwargs['pk'])
-        self.username = get_user_model().objects.get(id=user_id)
-        queryset = UserPredictions.objects.filter(user_id=user_id, match__match_is_over=True).order_by(
-            '-match__match_start_time_utc')
-        return queryset
+        return UserPredictions.objects.none()
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data()
-        bonuses_added_check = UserScore.objects.get(user_id=self.username).bonus_points_added
-        if bonuses_added_check:
-            bonuses = UserBonusSummary.objects.get(user=self.username)
-        else:
-            bonuses = False
-        context['bonuses'] = bonuses
-        context['username'] = self.username
-        return context
+    def get_factory_kwargs(self):
+        kwargs = super().get_factory_kwargs()
+        self.get_matches()
+        kwargs['extra'] = 0
+        return kwargs
 
 
 class UserUpdatePredictionView(LoginRequiredMixin, UpdateView):
     model = UserPredictions
     template_name = 'accounts/profile-update-match.html'
     context_object_name = 'update_match'
-    form_class = UpdatePredictionForm
+    form_class = PredictionForm
 
     def get_queryset(self):
         username = self.request.user

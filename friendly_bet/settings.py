@@ -96,6 +96,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'extra_views',
     'accounts',
     'main_app',
     'events',
