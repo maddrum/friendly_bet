@@ -67,9 +67,9 @@ class EventCreatePredictionView(LoginRequiredMixin, ModelFormSetView):
         now_time = datetime.datetime.now() + datetime.timedelta(minutes=15)
 
         event_start = [datetime.datetime.combine(self.event.event_start_date, datetime.time(0, 0)),
-                       datetime.datetime.combine(self.event.event_start_date, datetime.time(23, 59))]
+                       datetime.datetime.combine(self.event.event_start_date, datetime.time(23, 59, 59))]
 
-        if today < event_start:
+        if datetime.datetime.now() < event_start[0]:
             self.matches = Matches.objects.filter(phase__event=self.event, match_start_time__in=event_start)
         else:
             self.matches = Matches.objects.filter(phase__event=self.event, match_start_time__gte=now_time)
