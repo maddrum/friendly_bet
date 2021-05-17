@@ -6,7 +6,7 @@ from unidecode import unidecode
 
 class Event(models.Model):
     event_name = models.CharField(max_length=60)
-    slug_name = models.SlugField(max_length=180, unique=True)
+    slug_name = models.SlugField(max_length=180, unique=True, blank=True)
     event_start_date = models.DateField()
     event_end_date = models.DateField()
     top_event = models.BooleanField(default=False)

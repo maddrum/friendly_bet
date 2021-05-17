@@ -1,17 +1,14 @@
 {% extends 'base.html' %}
 
-{% block body_tag_define %}
-    <body class="body-2">
-{% endblock %}
+{% block body_classes %}body-2{% endblock %}
 
 {% block body_content %}
-    {{ form }}
     <div class="inner_page_header">
         <div class="heading inner-ttl">{{ date }}<br><br></div>
     </div>
     <div class="content-wrp">
         <div class="text-block white">Мачовете по-долу са тези, за които все още може да дадеш твоята прогноза.<br>Ако
-            дадена среща не се показва, то значи предстои тя започне след по-малко от 30 мин и вече е късно да дадеш
+            дадена среща не се показва, то значи предстои тя започне след по-малко от 15 мин и вече е късно да дадеш
             прогноза за нея.<br>‍
         </div>
         <div class="text-block white" style="text-align: justify;font-size: small"><br>
@@ -53,68 +50,29 @@
                 участие, не се удвоява!</em></p>
         </div>
 
-
-
-
-        {% if form %}
-            <form method="post" action="{% url 'matches:prediction_processor' %}">
-                {% csrf_token %}
-                {% for item in form %}
-                    <div class="input-wrp">
-                        <div class="game-single">
-                            <div class="match-number">Мач {{ item.match_number }}</div>
-                            <div class="w-row">
-                                <div class="column-4 w-col w-col-5 w-col-small-5 w-col-tiny-5">
-                                    <div class="team">
-                                        <div class="team-ttl">{{ item.country_home }}</div>
-                                    </div>
-                                </div>
-                                <div class="column-3 w-col w-col-2 w-col-small-2 w-col-tiny-2">
-                                    <div class="vs-txt">vs</div>
-                                </div>
-                                <div class="column-2 w-col w-col-5 w-col-small-5 w-col-tiny-5">
-                                    <div class="team">
-                                        <div class="team-ttl">{{ item.country_guest }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="match-date">{{ item.match_date }} {{ item.match_start_time }}</div>
-
-                            <select name="{{ item.match_number }}_match_state" required
-                                    style="font-size: 17px;width: 250px">
-                                <option value="home">Победа за {{ item.country_home }}</option>
-                                <option value="guest">Победа за {{ item.country_guest }}</option>
-                                {#                                <option value="tie">Равен</option>#}
-                                <option value="penalties_home">Победа за {{ item.country_home }} след дузпи</option>
-                                <option value="penalties_guest">Победа за {{ item.country_guest }} след дузпи
-                                </option>
-                            </select>
-
-                            <input type="text" name="{{ item.match_number }}_goals_home"
-                                   placeholder="голове за {{ item.country_home }}" required
-                                   style="font-size: 17px;width: 200px;">
-
-                            <input type="text" name="{{ item.match_number }}_goals_guest"
-                                   placeholder="голове за {{ item.country_guest }}" required
-                                   style="font-size: 17px;width: 200px">
-
-                        </div>
-                    </div>
+        {% if formset %}
+            <form method="post">
+                {% for form in formset %}
+                    {% csrf_token %}
+                    {{ formset.management_form }}
+                    {{ form.match_state }}
+                    {{ form.instance }}
+                    {% for status in form.instance.match_state %}
+                        {{ status }}
+                    {% endfor %}
                 {% endfor %}
                 <div class="buttons">
-
                     <input type="submit" data-w-id="8782863a-1d5d-0d40-92f8-45790f30b309"
-                           class="submit-btn w-button" value="дай прогноза">
+                            class="submit-btn w-button" value="дай прогноза">
                 </div>
             </form>
-
         {% else %}
             <div class="w-row">
                 <div class="text-block white">
                     <br>
-                    <em>Не можеш да даваш вече прогнози за днешния ден, или днес няма мачаове.
-                        <p>Върни се утре, за да дадеш своите прогнози, а до тогава не оставяй бирата да се
-                            стопля!</p>
+                    <em>
+                        Не можеш да даваш вече прогнози за днешния ден, или днес няма мачаове.<br>
+                        Върни се утре, за да дадеш своите прогнози, а до тогава не оставяй бирата да се стопля!
                     </em>
                 </div>
             </div>
@@ -122,3 +80,46 @@
     </div>
 
 {% endblock %}
+
+{% for item in form %}
+    <div class="input-wrp">
+        <div class="game-single">
+            <div class="match-number">Мач {{ item.match_number }}</div>
+            <div class="w-row">
+                <div class="column-4 w-col w-col-5 w-col-small-5 w-col-tiny-5">
+                    <div class="team">
+                        <div class="team-ttl">{{ item.country_home }}</div>
+                    </div>
+                </div>
+                <div class="column-3 w-col w-col-2 w-col-small-2 w-col-tiny-2">
+                    <div class="vs-txt">vs</div>
+                </div>
+                <div class="column-2 w-col w-col-5 w-col-small-5 w-col-tiny-5">
+                    <div class="team">
+                        <div class="team-ttl">{{ item.country_guest }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="match-date">{{ item.match_date }} {{ item.match_start_time }}</div>
+
+            <select name="{{ item.match_number }}_match_state" required
+                    style="font-size: 17px;width: 250px">
+                <option value="home">Победа за {{ item.country_home }}</option>
+                <option value="guest">Победа за {{ item.country_guest }}</option>
+                {#                                <option value="tie">Равен</option>#}
+                <option value="penalties_home">Победа за {{ item.country_home }} след дузпи</option>
+                <option value="penalties_guest">Победа за {{ item.country_guest }} след дузпи
+                </option>
+            </select>
+
+            <input type="text" name="{{ item.match_number }}_goals_home"
+                    placeholder="голове за {{ item.country_home }}" required
+                    style="font-size: 17px;width: 200px;">
+
+            <input type="text" name="{{ item.match_number }}_goals_guest"
+                    placeholder="голове за {{ item.country_guest }}" required
+                    style="font-size: 17px;width: 200px">
+
+        </div>
+    </div>
+{% endfor %}

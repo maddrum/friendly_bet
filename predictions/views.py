@@ -5,13 +5,12 @@ from django.shortcuts import render
 from django.views.generic import UpdateView, ListView
 from extra_views import ModelFormSetView
 
-from events.models import Event
+from events.models import Event, EventMatchStates
 from matches.models import Matches
 from predictions.forms import PredictionForm
 # from bonus_points.models import UserBonusSummary
 from predictions.models import UserPredictions
 from predictions.models import UserScores
-from django.db.models import Sum
 
 
 class RankList(ListView):
@@ -53,35 +52,60 @@ class EventCreatePredictionView(LoginRequiredMixin, ModelFormSetView):
     template_name = 'predictions/input-prediction.html'
     fields = ('match_state', 'goals_home', 'goals_guest')
     model = UserPredictions
+    form_class = PredictionForm
     event = None
     matches = None
+    match_states = None
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.event = self.get_event()
+        self.get_matches()
+        self.get_event_match_states()
 
     def get_event(self):
         return Event.objects.all().first()
 
     def get_matches(self):
+        if self.matches is not None:
+            return
         now_time = datetime.datetime.now() + datetime.timedelta(minutes=15)
 
-        event_start = [datetime.datetime.combine(self.event.event_start_date, datetime.time(0, 0)),
-                       datetime.datetime.combine(self.event.event_start_date, datetime.time(23, 59, 59))]
+        # todo debug remove
+        now_time = datetime.datetime(2021, 6, 12, 15, 46)
+        now_time = now_time + datetime.timedelta(minutes=15)
 
-        if datetime.datetime.now() < event_start[0]:
-            self.matches = Matches.objects.filter(phase__event=self.event, match_start_time__in=event_start)
+        event_start = datetime.datetime.combine(self.event.event_start_date, datetime.time(23, 59, 59))
+
+        if now_time < event_start:
+            self.matches = Matches.objects.filter(phase__event=self.event, match_start_time__lte=event_start)
         else:
-            self.matches = Matches.objects.filter(phase__event=self.event, match_start_time__gte=now_time)
+            final_time = datetime.datetime.combine(now_time.date(), datetime.time(23, 59, 59))
+            self.matches = Matches.objects.filter(phase__event=self.event, match_start_time__gte=now_time,
+                                                  match_start_time__lte=final_time)
+        self.matches = self.matches.order_by('match_number')
 
     def get_queryset(self):
-        return UserPredictions.objects.none()
+        return self.matches
 
     def get_factory_kwargs(self):
         kwargs = super().get_factory_kwargs()
-        self.get_matches()
         kwargs['extra'] = 0
         return kwargs
+
+    def get_event_match_states(self):
+        if self.match_states is not None:
+            return
+        self.match_states = EventMatchStates.objects.filter(event=self.event)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        formset = context['formset']
+        for form in formset:
+            form.fields['match_state'].queryset = self.match_states
+        context['formset'] = formset
+
+        return context
 
 
 class UserUpdatePredictionView(LoginRequiredMixin, UpdateView):
