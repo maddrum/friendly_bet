@@ -20,7 +20,7 @@ DEBUG = True
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
-ALLOWED_HOSTS = ['worldcup.pythonanywhere.com', '127.0.0.1', '192.168.0.102']
+ALLOWED_HOSTS = ['www.friendly-bet.club', '127.0.0.1', '192.168.0.102']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -125,3 +125,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     STATIC_DIR,
 ]
+DJANGO_STATIC_FILES = os.path.join(STATIC_DIR, "#django_static_collect")
+STATIC_ROOT = DJANGO_STATIC_FILES

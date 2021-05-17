@@ -219,26 +219,28 @@ class MatchDetailView(ListView):
         return context
 
 
-class Schedule(ListView):
+class ScheduleView(ListView):
     template_name = 'main_app/schedule.html'
     model = Matches
     context_object_name = 'schedule'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data()
-        date = datetime.datetime.now().date()
-        today_matches = Matches.objects.filter(match_date=date)
-        group_phase = Matches.objects.filter(phase='group_phase')
-        eight_finals = Matches.objects.filter(phase='eighth-finals')
-        quarterfinals = Matches.objects.filter(phase='quarterfinals')
-        semifinals = Matches.objects.filter(phase='semifinals')
-        little_final = Matches.objects.filter(phase='little_final')
-        final = Matches.objects.filter(phase='final')
-        context['today_matches'] = today_matches
-        context['group_phase'] = group_phase
-        context['eight_finals'] = eight_finals
-        context['quarterfinals'] = quarterfinals
-        context['semifinals'] = semifinals
-        context['little_final'] = little_final
-        context['final'] = final
+        date = datetime.datetime.now()
+        all_matches = Matches.objects.all().order_by('phase', 'match_start_time').prefetch_related('match_result')
+        # today_matches = Matches.objects.filter(match_date=date)
+        # group_phase = Matches.objects.filter(phase='group_phase')
+        # eight_finals = Matches.objects.filter(phase='eighth-finals')
+        # quarterfinals = Matches.objects.filter(phase='quarterfinals')
+        # semifinals = Matches.objects.filter(phase='semifinals')
+        # little_final = Matches.objects.filter(phase='little_final')
+        # final = Matches.objects.filter(phase='final')
+        # context['today_matches'] = today_matches
+        # context['group_phase'] = group_phase
+        # context['eight_finals'] = eight_finals
+        # context['quarterfinals'] = quarterfinals
+        # context['semifinals'] = semifinals
+        # context['little_final'] = little_final
+        # context['final'] = final
+        context['matches'] = all_matches
         return context

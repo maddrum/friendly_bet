@@ -4,8 +4,8 @@ from events.models import Event, EventPhases, EventGroups, EventMatchStates, Tea
 
 
 class Matches(models.Model):
-    country_home = models.ForeignKey(Teams, on_delete=models.CASCADE, related_name='country_home')
-    country_guest = models.ForeignKey(Teams, on_delete=models.CASCADE, related_name='country_guest')
+    home = models.ForeignKey(Teams, on_delete=models.CASCADE, related_name='country_home')
+    guest = models.ForeignKey(Teams, on_delete=models.CASCADE, related_name='country_guest')
     phase = models.ForeignKey(EventPhases, on_delete=models.PROTECT, related_name='match_phase')
     match_number = models.IntegerField()
     match_start_time = models.DateTimeField()
@@ -13,11 +13,12 @@ class Matches(models.Model):
     edited_on = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return_str = 'мач ' + str(self.match_number) + ' | ' + str(self.country_home) + ' - ' + str(self.country_guest)
+        return_str = f'мач {self.match_number} | {self.home.name} - {self.guest.name} @ {self.match_start_time}'
         return return_str
 
     class Meta:
-        unique_together = ('country_home', 'country_guest', 'phase',)
+        unique_together = ('home', 'guest', 'phase',)
+        ordering = ['match_number', ]
 
 
 class MatchResult(models.Model):
