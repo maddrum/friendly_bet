@@ -20,7 +20,7 @@ DEBUG = True
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
-ALLOWED_HOSTS = ['worldcup.pythonanywhere.com', '127.0.0.1', '192.168.0.102']
+ALLOWED_HOSTS = ['www.friendly-bet.club', '127.0.0.1', '192.168.0.102']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
