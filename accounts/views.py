@@ -43,10 +43,6 @@ class UserPredictionsListView(LoginRequiredMixin, ListView):
         return queryset
 
 
-class SettingsSuccess(LoginRequiredMixin, TemplateView):
-    template_name = 'accounts/profile-settings-success.html'
-
-
 class ProfilePredictionStats(LoginRequiredMixin, ListView):
     model = UserPredictions
     template_name = 'accounts/profile-history-and-points.html'
