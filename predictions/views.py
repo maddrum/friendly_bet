@@ -102,7 +102,10 @@ class EventCreatePredictionView(LoginRequiredMixin, ModelFormSetView):
         context = super().get_context_data(*args, **kwargs)
         formset = context['formset']
         context['matches'] = list(self.matches)
+        index = 0
         for form in formset:
+            match = context['matches'][index]
+            all_phases = list(match.phase.phase_match_states.all())
             form.fields['match_state'].queryset = self.match_states
         context['formset'] = formset
 
