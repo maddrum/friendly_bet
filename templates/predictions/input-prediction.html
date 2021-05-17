@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load custom_tags %}
 
 {% block body_classes %}body-2{% endblock %}
 
@@ -52,14 +53,46 @@
 
         {% if formset %}
             <form method="post">
+                {% csrf_token %}
+                {{ formset.management_form }}
                 {% for form in formset %}
-                    {% csrf_token %}
-                    {{ formset.management_form }}
-                    {{ form.match_state }}
-                    {{ form.instance }}
-                    {% for status in form.instance.match_state %}
-                        {{ status }}
-                    {% endfor %}
+                    <div class="input-wrp">
+                        <div class="game-single">
+                            {% with matches|get_list_index_value:forloop.counter0 as match_info %}
+                                <div class="match-number">Мач {{ match_info.match_number }}</div>
+                                <div class="w-row">
+                                    <div class="column-4 w-col w-col-5 w-col-small-5 w-col-tiny-5">
+                                        <div class="team">
+                                            <div class="team-ttl">{{ match_info.home.name }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="column-3 w-col w-col-2 w-col-small-2 w-col-tiny-2">
+                                        <div class="vs-txt">vs</div>
+                                    </div>
+                                    <div class="column-2 w-col w-col-5 w-col-small-5 w-col-tiny-5">
+                                        <div class="team">
+                                            <div class="team-ttl">{{ match_info.guest.name }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="match-date">{{ match_info.match_start_time }}</div>
+                            {% endwith %}
+
+                            {{ form.match_state }}
+
+                            {{ form.goals_home }}
+                            {{ form.goals_guest }}
+
+
+                        </div>
+                    </div>
+
+
+
+
+
+
+
                 {% endfor %}
                 <div class="buttons">
                     <input type="submit" data-w-id="8782863a-1d5d-0d40-92f8-45790f30b309"
@@ -82,44 +115,5 @@
 {% endblock %}
 
 {% for item in form %}
-    <div class="input-wrp">
-        <div class="game-single">
-            <div class="match-number">Мач {{ item.match_number }}</div>
-            <div class="w-row">
-                <div class="column-4 w-col w-col-5 w-col-small-5 w-col-tiny-5">
-                    <div class="team">
-                        <div class="team-ttl">{{ item.country_home }}</div>
-                    </div>
-                </div>
-                <div class="column-3 w-col w-col-2 w-col-small-2 w-col-tiny-2">
-                    <div class="vs-txt">vs</div>
-                </div>
-                <div class="column-2 w-col w-col-5 w-col-small-5 w-col-tiny-5">
-                    <div class="team">
-                        <div class="team-ttl">{{ item.country_guest }}</div>
-                    </div>
-                </div>
-            </div>
-            <div class="match-date">{{ item.match_date }} {{ item.match_start_time }}</div>
 
-            <select name="{{ item.match_number }}_match_state" required
-                    style="font-size: 17px;width: 250px">
-                <option value="home">Победа за {{ item.country_home }}</option>
-                <option value="guest">Победа за {{ item.country_guest }}</option>
-                {#                                <option value="tie">Равен</option>#}
-                <option value="penalties_home">Победа за {{ item.country_home }} след дузпи</option>
-                <option value="penalties_guest">Победа за {{ item.country_guest }} след дузпи
-                </option>
-            </select>
-
-            <input type="text" name="{{ item.match_number }}_goals_home"
-                    placeholder="голове за {{ item.country_home }}" required
-                    style="font-size: 17px;width: 200px;">
-
-            <input type="text" name="{{ item.match_number }}_goals_guest"
-                    placeholder="голове за {{ item.country_guest }}" required
-                    style="font-size: 17px;width: 200px">
-
-        </div>
-    </div>
 {% endfor %}

@@ -1,8 +1,11 @@
-# from django import template
+from django import template
+
 # from bonus_points.models import BonusDescription, BonusUserPrediction
 # import datetime
 #
-# register = template.Library()
+register = template.Library()
+
+
 #
 #
 # @register.simple_tag
@@ -23,3 +26,7 @@
 #         else:
 #             return True
 #     return False
+
+@register.filter
+def get_list_index_value(input_list, index):
+    return input_list[int(index)]

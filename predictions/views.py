@@ -86,11 +86,11 @@ class EventCreatePredictionView(LoginRequiredMixin, ModelFormSetView):
         self.matches = self.matches.order_by('match_number')
 
     def get_queryset(self):
-        return self.matches
+        return UserPredictions.objects.none()
 
     def get_factory_kwargs(self):
         kwargs = super().get_factory_kwargs()
-        kwargs['extra'] = 0
+        kwargs['extra'] = self.matches.count()
         return kwargs
 
     def get_event_match_states(self):
@@ -101,6 +101,7 @@ class EventCreatePredictionView(LoginRequiredMixin, ModelFormSetView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         formset = context['formset']
+        context['matches'] = list(self.matches)
         for form in formset:
             form.fields['match_state'].queryset = self.match_states
         context['formset'] = formset
