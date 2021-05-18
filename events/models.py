@@ -52,7 +52,7 @@ class EventMatchStates(models.Model):
     edited_on = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'{self.get_match_state_display()}'
+        return f'{self.event} -> {self.get_match_state_display()}'
 
     class Meta:
         unique_together = ['event', 'match_state']

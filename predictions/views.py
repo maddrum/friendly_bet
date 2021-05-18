@@ -5,9 +5,10 @@ from django.shortcuts import render
 from django.views.generic import UpdateView, ListView
 from extra_views import ModelFormSetView
 
-from events.models import Event, EventMatchStates
+from events.models import Event
 from matches.models import Matches
 from predictions.forms import PredictionForm
+from predictions.formsets import PredictionFormSet
 # from bonus_points.models import UserBonusSummary
 from predictions.models import UserPredictions
 from predictions.models import UserScores
@@ -53,6 +54,8 @@ class EventCreatePredictionView(LoginRequiredMixin, ModelFormSetView):
     fields = ('match_state', 'goals_home', 'goals_guest')
     model = UserPredictions
     form_class = PredictionForm
+    formset_class = PredictionFormSet
+
     event = None
     matches = None
     match_states = None
@@ -61,7 +64,6 @@ class EventCreatePredictionView(LoginRequiredMixin, ModelFormSetView):
         super().__init__(*args, **kwargs)
         self.event = self.get_event()
         self.get_matches()
-        self.get_event_match_states()
 
     def get_event(self):
         return Event.objects.all().first()
@@ -93,20 +95,15 @@ class EventCreatePredictionView(LoginRequiredMixin, ModelFormSetView):
         kwargs['extra'] = self.matches.count()
         return kwargs
 
-    def get_event_match_states(self):
-        if self.match_states is not None:
-            return
-        self.match_states = EventMatchStates.objects.filter(event=self.event)
+    def get_formset_kwargs(self):
+        kwargs = super().get_formset_kwargs()
+        kwargs['matches'] = self.matches
+        return kwargs
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         formset = context['formset']
         context['matches'] = list(self.matches)
-        index = 0
-        for form in formset:
-            match = context['matches'][index]
-            all_phases = list(match.phase.phase_match_states.all())
-            form.fields['match_state'].queryset = self.match_states
         context['formset'] = formset
 
         return context
