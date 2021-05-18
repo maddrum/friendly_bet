@@ -14,6 +14,8 @@ from predictions.formsets import PredictionFormSet
 # from bonus_points.models import UserBonusSummary
 from predictions.models import UserPredictions
 from predictions.models import UserScores
+from django.urls.exceptions import Http404
+from accounts.models import LastUserMatchInputStart
 
 
 class RankList(ListView):
@@ -60,13 +62,19 @@ class EventCreatePredictionView(LoginRequiredMixin, ModelFormSetView):
     success_url = reverse_lazy('profile')
     event = None
     matches = None
+    all_today_matches = None
     match_states = None
     user_gave_prediction = False
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return super().dispatch(request, *args, **kwargs)
         self.event = self.get_event()
         self.get_matches()
+        if self.request.method == 'POST' and not self.matches.exists():
+            print(f'[INFO] Possible cheater: {self.request.user}')
+            raise Http404()
+        return super().dispatch(request, *args, **kwargs)
 
     def get_event(self):
         return Event.objects.all().first()
@@ -75,21 +83,22 @@ class EventCreatePredictionView(LoginRequiredMixin, ModelFormSetView):
         return datetime.datetime.combine(self.event.event_start_date, datetime.time(23, 59, 59))
 
     def get_matches(self):
-        if self.matches is not None:
-            return
         now_time = datetime.datetime.now() + datetime.timedelta(minutes=15)
 
         # todo debug remove
-        now_time = datetime.datetime(2021, 6, 16, 12, 46)
+        now_time = datetime.datetime(2021, 6, 16, 18, 46)
         now_time = now_time + datetime.timedelta(minutes=15)
 
         event_start = self.get_event_start_wrap()
         if now_time < event_start:
             self.matches = Matches.objects.filter(phase__event=self.event, match_start_time__lte=event_start)
+            self.all_today_matches = self.matches
         else:
+            start_time = datetime.datetime.combine(now_time.date(), datetime.time(0, 0, 1))
             final_time = datetime.datetime.combine(now_time.date(), datetime.time(23, 59, 59))
-            self.matches = Matches.objects.filter(phase__event=self.event, match_start_time__gte=now_time,
-                                                  match_start_time__lte=final_time)
+            self.all_today_matches = Matches.objects.filter(phase__event=self.event, match_start_time__gte=start_time,
+                                                            match_start_time__lte=final_time)
+            self.matches = self.all_today_matches.filter(match_start_time__gte=now_time)
         self.matches = self.matches.order_by('match_number')
 
     def check_for_user_predictions(self):
@@ -128,11 +137,14 @@ class EventCreatePredictionView(LoginRequiredMixin, ModelFormSetView):
         return kwargs
 
     def get_context_data(self, *args, **kwargs):
+
         context = super().get_context_data(*args, **kwargs)
         context['matches'] = list(self.matches)
         return context
 
     def formset_valid(self, formset):
+        if UserPredictions.objects.filter(user=self.request.user, match__in=self.all_today_matches).exists():
+            raise Http404('predictions are available for one of the matches')
         objects = formset.save(commit=False)
         index = 0
         for object in objects:

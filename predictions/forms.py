@@ -10,7 +10,7 @@ class PredictionForm(forms.ModelForm):
         model = UserPredictions
         fields = ('match_state', 'goals_home', 'goals_guest')
 
-    def __init__(self, phase, home_team, guest_team, *args, **kwargs):
+    def __init__(self, phase=None, home_team=None, guest_team=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['goals_home'].widget.attrs = {
             'style': "font-size: 17px;width: 200px"
@@ -26,7 +26,10 @@ class PredictionForm(forms.ModelForm):
             MATCH_STATE_PENALTIES_GUEST: f'ПОБЕДА за {guest_team} след дузпи',
             MATCH_STATE_TIE: 'Тики-така, скучен РАВЕН'
         }
-        self.fields['match_state'].queryset = phase.phase_match_states.all()
+        try:
+            self.fields['match_state'].queryset = phase.phase_match_states.all()
+        except AttributeError:
+            pass
 
         result_names = []
         for choice in self.fields['match_state'].choices:

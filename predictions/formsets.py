@@ -8,7 +8,10 @@ class PredictionFormSet(BaseModelFormSet):
 
     def get_form_kwargs(self, index):
         kwargs = super().get_form_kwargs(index)
-        kwargs['home_team'] = self.matches[index].home.name
-        kwargs['guest_team'] = self.matches[index].guest.name
-        kwargs['phase']=self.matches[index].phase
+        try:
+            kwargs['home_team'] = self.matches[index].home.name
+            kwargs['guest_team'] = self.matches[index].guest.name
+            kwargs['phase'] = self.matches[index].phase
+        except IndexError:
+            pass
         return kwargs
