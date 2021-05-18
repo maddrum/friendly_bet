@@ -1,7 +1,9 @@
 import datetime
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views.generic import UpdateView, ListView
 from extra_views import ModelFormSetView
 
@@ -55,10 +57,11 @@ class EventCreatePredictionView(LoginRequiredMixin, ModelFormSetView):
     model = UserPredictions
     form_class = PredictionForm
     formset_class = PredictionFormSet
-
+    success_url = reverse_lazy('profile')
     event = None
     matches = None
     match_states = None
+    user_gave_prediction = False
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -67,6 +70,9 @@ class EventCreatePredictionView(LoginRequiredMixin, ModelFormSetView):
 
     def get_event(self):
         return Event.objects.all().first()
+
+    def get_event_start_wrap(self):
+        return datetime.datetime.combine(self.event.event_start_date, datetime.time(23, 59, 59))
 
     def get_matches(self):
         if self.matches is not None:
@@ -77,8 +83,7 @@ class EventCreatePredictionView(LoginRequiredMixin, ModelFormSetView):
         now_time = datetime.datetime(2021, 6, 16, 12, 46)
         now_time = now_time + datetime.timedelta(minutes=15)
 
-        event_start = datetime.datetime.combine(self.event.event_start_date, datetime.time(23, 59, 59))
-
+        event_start = self.get_event_start_wrap()
         if now_time < event_start:
             self.matches = Matches.objects.filter(phase__event=self.event, match_start_time__lte=event_start)
         else:
@@ -87,12 +92,34 @@ class EventCreatePredictionView(LoginRequiredMixin, ModelFormSetView):
                                                   match_start_time__lte=final_time)
         self.matches = self.matches.order_by('match_number')
 
+    def check_for_user_predictions(self):
+        now_time = datetime.datetime.now() + datetime.timedelta(minutes=15)
+
+        # todo debug remove
+        now_time = datetime.datetime(2021, 6, 16, 12, 46)
+        now_time = now_time + datetime.timedelta(minutes=15)
+
+        event_start = self.get_event_start_wrap()
+        if now_time < event_start:
+            interval_start = datetime.datetime.combine(self.event.event_start_date, datetime.time(0, 0, 1))
+            interval_end = datetime.datetime.combine(self.event.event_start_date, datetime.time(23, 59, 59))
+        else:
+            interval_start = datetime.datetime.combine(now_time.date(), datetime.time(0, 0, 1))
+            interval_end = datetime.datetime.combine(now_time.date(), datetime.time(23, 59, 59))
+
+        check = UserPredictions.objects.filter(user=self.request.user, match__match_start_time__gte=interval_start,
+                                               match__match_start_time__lte=interval_end).exists()
+        return check
+
     def get_queryset(self):
         return UserPredictions.objects.none()
 
     def get_factory_kwargs(self):
         kwargs = super().get_factory_kwargs()
-        kwargs['extra'] = self.matches.count()
+        if self.check_for_user_predictions():
+            kwargs['extra'] = 0
+        else:
+            kwargs['extra'] = self.matches.count()
         return kwargs
 
     def get_formset_kwargs(self):
@@ -102,11 +129,19 @@ class EventCreatePredictionView(LoginRequiredMixin, ModelFormSetView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        formset = context['formset']
         context['matches'] = list(self.matches)
-        context['formset'] = formset
-
         return context
+
+    def formset_valid(self, formset):
+        objects = formset.save(commit=False)
+        index = 0
+        for object in objects:
+            match = self.matches[index]
+            object.match = match
+            object.user = self.request.user
+            object.save()
+            index += 1
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class UserUpdatePredictionView(LoginRequiredMixin, UpdateView):
