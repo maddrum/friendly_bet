@@ -74,7 +74,7 @@ class EventCreatePredictionView(LoginRequiredMixin, ModelFormSetView):
         now_time = datetime.datetime.now() + datetime.timedelta(minutes=15)
 
         # todo debug remove
-        now_time = datetime.datetime(2021, 6, 12, 15, 46)
+        now_time = datetime.datetime(2021, 6, 16, 12, 46)
         now_time = now_time + datetime.timedelta(minutes=15)
 
         event_start = datetime.datetime.combine(self.event.event_start_date, datetime.time(23, 59, 59))
