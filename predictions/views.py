@@ -16,6 +16,7 @@ from predictions.models import UserPredictions
 from predictions.models import UserScores
 from django.urls.exceptions import Http404
 from accounts.models import LastUserMatchInputStart
+from django.utils import timezone
 
 
 class RankList(ListView):
@@ -71,6 +72,7 @@ class EventCreatePredictionView(LoginRequiredMixin, ModelFormSetView):
             return super().dispatch(request, *args, **kwargs)
         self.event = self.get_event()
         self.get_matches()
+        self.check_for_user_predictions()
         if self.request.method == 'POST' and not self.matches.exists():
             print(f'[INFO] Possible cheater: {self.request.user}')
             raise Http404()
@@ -87,7 +89,6 @@ class EventCreatePredictionView(LoginRequiredMixin, ModelFormSetView):
 
         # todo debug remove
         now_time = datetime.datetime(2021, 6, 16, 18, 46)
-        now_time = now_time + datetime.timedelta(minutes=15)
 
         event_start = self.get_event_start_wrap()
         if now_time < event_start:
@@ -102,30 +103,25 @@ class EventCreatePredictionView(LoginRequiredMixin, ModelFormSetView):
         self.matches = self.matches.order_by('match_number')
 
     def check_for_user_predictions(self):
-        now_time = datetime.datetime.now() + datetime.timedelta(minutes=15)
+        check = UserPredictions.objects.filter(user=self.request.user, match__in=self.all_today_matches).exists()
+        self.user_gave_prediction = check
 
-        # todo debug remove
-        now_time = datetime.datetime(2021, 6, 16, 12, 46)
-        now_time = now_time + datetime.timedelta(minutes=15)
+    def get_first_match_start_time(self):
+        qs = self.matches.order_by('match_start_time')
+        return qs.first().match_start_time
 
-        event_start = self.get_event_start_wrap()
-        if now_time < event_start:
-            interval_start = datetime.datetime.combine(self.event.event_start_date, datetime.time(0, 0, 1))
-            interval_end = datetime.datetime.combine(self.event.event_start_date, datetime.time(23, 59, 59))
-        else:
-            interval_start = datetime.datetime.combine(now_time.date(), datetime.time(0, 0, 1))
-            interval_end = datetime.datetime.combine(now_time.date(), datetime.time(23, 59, 59))
-
-        check = UserPredictions.objects.filter(user=self.request.user, match__match_start_time__gte=interval_start,
-                                               match__match_start_time__lte=interval_end).exists()
-        return check
+    def update_form_input_object(self):
+        form_check_obj, created = LastUserMatchInputStart.objects.get_or_create(user=self.request.user)
+        first_match_start = self.get_first_match_start_time()
+        form_check_obj.valid_to = first_match_start
+        form_check_obj.save()
 
     def get_queryset(self):
         return UserPredictions.objects.none()
 
     def get_factory_kwargs(self):
         kwargs = super().get_factory_kwargs()
-        if self.check_for_user_predictions():
+        if self.user_gave_prediction:
             kwargs['extra'] = 0
         else:
             kwargs['extra'] = self.matches.count()
@@ -137,14 +133,18 @@ class EventCreatePredictionView(LoginRequiredMixin, ModelFormSetView):
         return kwargs
 
     def get_context_data(self, *args, **kwargs):
-
         context = super().get_context_data(*args, **kwargs)
+        self.update_form_input_object()
+        time_delta = self.get_first_match_start_time() - datetime.timedelta(minutes=1)
         context['matches'] = list(self.matches)
+        context['time_delta'] = time_delta
         return context
 
     def formset_valid(self, formset):
-        if UserPredictions.objects.filter(user=self.request.user, match__in=self.all_today_matches).exists():
+        if self.user_gave_prediction:
             raise Http404('predictions are available for one of the matches')
+        # todo check if time is up
+
         objects = formset.save(commit=False)
         index = 0
         for object in objects:
@@ -156,64 +156,13 @@ class EventCreatePredictionView(LoginRequiredMixin, ModelFormSetView):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class UserUpdatePredictionView(LoginRequiredMixin, UpdateView):
-    model = UserPredictions
-    template_name = 'accounts/profile-update-match.html'
-    context_object_name = 'update_match'
-    form_class = PredictionForm
+class UserUpdatePredictionView(EventCreatePredictionView):
 
     def get_queryset(self):
-        username = self.request.user
-        queryset = super().get_queryset()
-        queryset = queryset.filter(user_id__username=username)
-        return queryset
+        qs = UserPredictions.objects.filter(pk=self.kwargs['pk'])
+        return qs
 
-    def form_valid(self, form):
-        show_back_button = True
-        checker = False
-        post_data = dict(self.request.POST)
-        post_data = {key: value for key, value in post_data.items() if key != "csrfmiddlewaretoken"}
-        error_text = ''
-        tie_statuses = ['tie', 'penalties_home', 'penalties_guest']
-        for key in post_data:
-            if key == 'prediction_goals_home' or key == 'prediction_goals_guest':
-                try:
-                    int(post_data[key][0])
-                except ValueError:
-                    content_dict = {
-                        'error_text': 'Моля, въведете цели положителни числа в полетата за гол! Като бройка голове - един, два, три... Опитай пак!',
-                    }
-                    return render(self.request, 'matches/prediction-error.html', content_dict)
-            goals_home = int(post_data['prediction_goals_home'][0])
-            goals_guest = int(post_data['prediction_goals_guest'][0])
-            if key == 'prediction_match_state':
-                if post_data[key][0] == 'home' and goals_home <= goals_guest:
-                    checker = True
-                    error_text = 'Головете не съотвестват на въведения изход от двубоя. Въведена е победа за домакин, ' \
-                                 'но головете на домакина по-малко от тези на госта!'
-                elif post_data[key][0] == 'guest' and goals_guest <= goals_home:
-                    checker = True
-                    error_text = 'Головете не съотвестват на въведения изход от двубоя. Въведена е победа за гост, ' \
-                                 'но головете на госта по-малко от тези на домакина!'
-                elif post_data[key][0] in tie_statuses and goals_home != goals_guest:
-                    checker = True
-                    error_text = 'Головете на домакина и на госта не са равни!'
-
-        current_time = datetime.datetime.utcnow() + datetime.timedelta(minutes=15)
-        match_start_time = self.object.match.match_start_time_utc
-        # check for time before applying corrections
-        if current_time > match_start_time:
-            print(f'NOTE: {self.request.user} tried to change {self.object} at UTC: {current_time}')
-            checker = True
-            error_text = 'Изтекло време за корекция на прогнозата.'
-        if checker:
-            content_dict = {
-                'error_text': error_text,
-                'show_back_button': show_back_button,
-            }
-            return render(self.request, 'matches/prediction-error.html', content_dict)
-        else:
-            self.object = form.save(commit=False)
-            self.object.last_edit = datetime.datetime.utcnow()
-            self.object.save()
-            return super().form_valid(form)
+    def get_factory_kwargs(self):
+        kwargs = super().get_factory_kwargs()
+        kwargs['extra'] = 0
+        return kwargs
