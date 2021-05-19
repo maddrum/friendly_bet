@@ -56,13 +56,13 @@ class PredictionForm(forms.ModelForm):
                 cleaned_data['match_state'].match_state == MATCH_STATE_PENALTIES_HOME:
             if cleaned_data['goals_home'] <= cleaned_data['goals_guest']:
                 raise ValidationError(
-                    f'ГРЕДА! Дал си, че ще е победа за {self.home_team} ама головете му '
+                    f'ГРЕДА! Дал си, че ще е победа за {self.home_team} ама головете им '
                     f'са по-малко или в краен случай равни на головете на {self.guest_team}.')
 
         elif cleaned_data['match_state'].match_state == MATCH_STATE_GUEST or \
                 cleaned_data['match_state'].match_state == MATCH_STATE_PENALTIES_GUEST:
             if cleaned_data['goals_home'] >= cleaned_data['goals_guest']:
                 raise ValidationError(
-                    f'ГРЕДА! Дал си, че ще е победа за {self.guest_team} ама головете му '
+                    f'ГРЕДА! Дал си, че ще е победа за {self.guest_team} ама головете им '
                     f'са по-малко или в краен случай равни на головете на {self.home_team}.')
         return cleaned_data
