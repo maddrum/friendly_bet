@@ -1,0 +1,54 @@
+{% extends 'site_stats/stats-base.html' %}
+
+
+
+{% block  profile_content %}
+
+    <h1 class="heading tab-heading">Обща статистика</h1>
+    <h1 class="heading tab-heading history-ttl red">Валидна към
+
+        {{ date }}
+
+    </h1>
+    <ul class="unordered-list w-list-unstyled">
+        <li>
+            <div class="text-block histprylist bonus-list">
+                Дадохте общo {{ total_predicioons }} прогнози
+            </div>
+        </li>
+        <li>
+            <div class="text-block histprylist bonus-list">
+                Общо спечелени точки: {{ total_points_gained }}
+            </div>
+        </li>
+        <li>
+            <div class="text-block histprylist bonus-list">
+                Общо познати изходи от мачове: {{ total_match_states_guessed }}
+            </div>
+        </li>
+        <li>
+            <div class="text-block histprylist bonus-list">
+                Общо познати точни резултати: {{ total_match_results_guessed }}
+            </div>
+        </li>
+        <li>
+            <div class="text-block histprylist bonus-list">
+                Най-много изходи от двубой е познал:
+                <a href="/main/rankilst-detail/{{ user_most_match_states_id }}">{{ user_most_match_states }}</a>
+            </div>
+        </li>
+        <li>
+            <div class="text-block histprylist bonus-list">
+                Най-много точни резултати е познал:
+                <a href="/main/rankilst-detail/{{ user_most_results_id }}">{{ user_most_results }}</a>
+            </div>
+        </li>
+
+
+    </ul>
+
+
+
+
+{% endblock %}
+

@@ -1,0 +1,19 @@
+{% extends 'site_stats/stats-base.html' %}
+{% block  profile_content %}
+    <h1 class="heading tab-heading">Избери потребител</h1>
+    {% for item in all_users %}
+        <div class="rankings5 w-row" style="height: 40px">
+            <div class="info-wirp bojinka-txt w-col w-col-12 w-col-stack" style="margin-top:-10px;">
+                <div class="info-table w-row">
+                    <div class="w-col w-col-12">
+                        <div class="rarnk-txt user">
+                            <a href="{% url 'site_stats:graphs_per_user' pk=item.id %}"
+                               style="font-size: 20px">{{ item.username }}</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

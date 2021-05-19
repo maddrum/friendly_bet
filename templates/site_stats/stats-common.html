@@ -1,0 +1,5 @@
+{% extends 'site_stats/stats-base.html' %}
+{% block  profile_content %}
+    <h1 class="heading tab-heading">{{ graph_name }}</h1>
+    <div id="chart-1" align="center">{{ output|safe }}</div>
+{% endblock %}

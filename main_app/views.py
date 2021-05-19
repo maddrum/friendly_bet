@@ -8,10 +8,6 @@ class Index(TemplateView):
     template_name = 'main_app/index.html'
 
 
-class InstructionsView(TemplateView):
-    template_name = 'main_app/match_instructions.html'
-
-
 class SiteContactView(CreateView):
     model = SiteContact
     success_url = '../contact-success'

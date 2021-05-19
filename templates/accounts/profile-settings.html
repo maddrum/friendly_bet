@@ -3,9 +3,11 @@
 {% block  profile_content %}
     <h1 class="heading tab-heading">Настройки</h1>
     <div class="text-block tab">Смени своите настройки тук.<br></div>
+
+
     <div class="form-txt">
         <div class="text-block histprylist bonus-list">
-            <label>Парола:</label><a href="{% url 'password_change' %}">Натистни тук за смяна на паролата!</a>
+            <label>Парола:</label><a href="{% url 'accounts:password_change' %}">Натистни тук за смяна на паролата!</a>
         </div>
         <div class="text-block histprylist bonus-list">
             <form method="POST">

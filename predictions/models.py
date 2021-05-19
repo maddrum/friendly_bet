@@ -17,7 +17,7 @@ class UserPredictions(models.Model):
     edited_on = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return str(self.user) + " " + str(self.match)
+        return str(self.user_id) + " " + str(self.match)
 
     def get_absolute_url(self):
         return reverse_lazy('accounts:profile')

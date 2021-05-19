@@ -1,27 +1,18 @@
 import datetime
 
+from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect
-from django.urls import reverse_lazy
-from django.urls.exceptions import Http404
-from django.utils import timezone
-from django.views.generic import ListView, TemplateView
-from extra_views import ModelFormSetView
+from django.shortcuts import render
+from django.views.generic import UpdateView, ListView
 
-from accounts.models import LastUserMatchInputStart
-from events.models import Event
-from matches.models import Matches
-from predictions.forms import PredictionForm
-from predictions.formsets import PredictionFormSet
-# from bonus_points.models import UserBonusSummary
-from predictions.models import UserPredictions
-from predictions.models import UserScores
-from predictions.views_mixins import GetEventMatchesMixin
+from predictions.forms import UpdatePredictionForm
+from bonus_points.models import UserBonusSummary
+from matches.models import UserPredictions
 
 
 class RankList(ListView):
     template_name = 'main_app/ranklist.html'
-    model = UserScores
+    model = UserScore
     context_object_name = 'ranklist'
 
     def get_queryset(self):
@@ -30,122 +21,88 @@ class RankList(ListView):
         return queryset
 
 
-# class RankilstUserPoints(ListView):
-#     model = UserPredictions
-#     template_name = 'main_app/ranklist-detail.html'
-#     context_object_name = 'ranklist'
-#
-#     def get_queryset(self):
-#         user_id = int(self.kwargs['pk'])
-#         self.username = get_user_model().objects.get(id=user_id)
-#         queryset = UserPredictions.objects.filter(user_id=user_id, match__match_is_over=True).order_by(
-#             '-match__match_start_time_utc')
-#         return queryset
-#
-#     def get_context_data(self, *, object_list=None, **kwargs):
-#         context = super().get_context_data()
-#         bonuses_added_check = UserScore.objects.get(user_id=self.username).bonus_points_added
-#         if bonuses_added_check:
-#             bonuses = UserBonusSummary.objects.get(user=self.username)
-#         else:
-#             bonuses = False
-#         context['bonuses'] = bonuses
-#         context['username'] = self.username
-#         return context
-
-
-class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelFormSetView):
-    template_name = 'predictions/input-prediction.html'
-    fields = ('match_state', 'goals_home', 'goals_guest')
+class RankilstUserPoints(ListView):
     model = UserPredictions
-    form_class = PredictionForm
-    formset_class = PredictionFormSet
-    success_url = reverse_lazy('predictions_success')
-    user_gave_prediction = False
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return super().dispatch(request, *args, **kwargs)
-        self.check_for_user_predictions()
-        self.do_initial_checks()
-        return super().dispatch(request, *args, **kwargs)
-
-    def do_initial_checks(self):
-        if self.request.method == 'POST':
-            if self.user_gave_prediction:
-                raise Http404()
-            try:
-                user_last_input_start = LastUserMatchInputStart.objects.get(user=self.request.user)
-            except LastUserMatchInputStart.DoesNotExist:
-                raise Http404()
-            if self._get_now_plus_time(plus_minutes=0) > user_last_input_start.valid_to:
-                raise Http404()
-
-        if not self.matches.exists():
-            raise Http404()
-
-    def check_for_user_predictions(self):
-        check = UserPredictions.objects.filter(user=self.request.user, match__in=self.all_today_matches).exists()
-        self.user_gave_prediction = check
-
-    def update_form_input_object(self):
-        form_check_obj, created = LastUserMatchInputStart.objects.get_or_create(user=self.request.user)
-        form_check_obj.valid_to = self._get_first_match_start_time()
-        form_check_obj.save()
+    template_name = 'main_app/ranklist-detail.html'
+    context_object_name = 'ranklist'
 
     def get_queryset(self):
-        return UserPredictions.objects.none()
+        user_id = int(self.kwargs['pk'])
+        self.username = get_user_model().objects.get(id=user_id)
+        queryset = UserPredictions.objects.filter(user_id=user_id, match__match_is_over=True).order_by(
+            '-match__match_start_time_utc')
+        return queryset
 
-    def get_factory_kwargs(self):
-        kwargs = super().get_factory_kwargs()
-        if self.user_gave_prediction:
-            kwargs['extra'] = 0
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data()
+        bonuses_added_check = UserScore.objects.get(user_id=self.username).bonus_points_added
+        if bonuses_added_check:
+            bonuses = UserBonusSummary.objects.get(user=self.username)
         else:
-            kwargs['extra'] = self.matches.count()
-        return kwargs
-
-    def get_formset_kwargs(self):
-        kwargs = super().get_formset_kwargs()
-        kwargs['matches'] = self.matches
-        return kwargs
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        self.update_form_input_object()
-        time_delta = self._get_first_match_start_time() - datetime.timedelta(minutes=2)
-        context['matches'] = list(self.matches)
-        context['time_delta'] = time_delta
+            bonuses = False
+        context['bonuses'] = bonuses
+        context['username'] = self.username
         return context
 
-    def formset_valid(self, formset):
-        index = 0
-        for form in formset:
-            match = self.matches[index]
-            form.instance.match = match
-            form.instance.user = self.request.user
-            form.save()
-            index += 1
-        return HttpResponseRedirect(self.get_success_url())
 
-
-class UserUpdatePredictionView(EventCreatePredictionView):
-
-    def check_for_user_predictions(self):
-        self.user_gave_prediction = False
+class UserUpdatePredictionView(LoginRequiredMixin, UpdateView):
+    model = UserPredictions
+    template_name = 'accounts/profile-update-match.html'
+    context_object_name = 'update_match'
+    form_class = UpdatePredictionForm
 
     def get_queryset(self):
-        qs = UserPredictions.objects.filter(pk=self.kwargs['pk'])
-        if not qs.exists():
-            raise Http404()
-        if qs.first().user != self.request.user:
-            raise Http404()
-        return qs
+        username = self.request.user
+        queryset = super().get_queryset()
+        queryset = queryset.filter(user_id__username=username)
+        return queryset
 
-    def get_factory_kwargs(self):
-        kwargs = super().get_factory_kwargs()
-        kwargs['extra'] = 0
-        return kwargs
+    def form_valid(self, form):
+        show_back_button = True
+        checker = False
+        post_data = dict(self.request.POST)
+        post_data = {key: value for key, value in post_data.items() if key != "csrfmiddlewaretoken"}
+        error_text = ''
+        tie_statuses = ['tie', 'penalties_home', 'penalties_guest']
+        for key in post_data:
+            if key == 'prediction_goals_home' or key == 'prediction_goals_guest':
+                try:
+                    int(post_data[key][0])
+                except ValueError:
+                    content_dict = {
+                        'error_text': 'Моля, въведете цели положителни числа в полетата за гол! Като бройка голове - един, два, три... Опитай пак!',
+                    }
+                    return render(self.request, 'matches/prediction-error.html', content_dict)
+            goals_home = int(post_data['prediction_goals_home'][0])
+            goals_guest = int(post_data['prediction_goals_guest'][0])
+            if key == 'prediction_match_state':
+                if post_data[key][0] == 'home' and goals_home <= goals_guest:
+                    checker = True
+                    error_text = 'Головете не съотвестват на въведения изход от двубоя. Въведена е победа за домакин, ' \
+                                 'но головете на домакина по-малко от тези на госта!'
+                elif post_data[key][0] == 'guest' and goals_guest <= goals_home:
+                    checker = True
+                    error_text = 'Головете не съотвестват на въведения изход от двубоя. Въведена е победа за гост, ' \
+                                 'но головете на госта по-малко от тези на домакина!'
+                elif post_data[key][0] in tie_statuses and goals_home != goals_guest:
+                    checker = True
+                    error_text = 'Головете на домакина и на госта не са равни!'
 
-
-class PredictionSuccess(TemplateView):
-    template_name = 'predictions/prediction-success.html'
+        current_time = datetime.datetime.utcnow() + datetime.timedelta(minutes=15)
+        match_start_time = self.object.match.match_start_time_utc
+        # check for time before applying corrections
+        if current_time > match_start_time:
+            print(f'NOTE: {self.request.user} tried to change {self.object} at UTC: {current_time}')
+            checker = True
+            error_text = 'Изтекло време за корекция на прогнозата.'
+        if checker:
+            content_dict = {
+                'error_text': error_text,
+                'show_back_button': show_back_button,
+            }
+            return render(self.request, 'matches/prediction-error.html', content_dict)
+        else:
+            self.object = form.save(commit=False)
+            self.object.last_edit = datetime.datetime.utcnow()
+            self.object.save()
+            return super().form_valid(form)

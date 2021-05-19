@@ -19,11 +19,9 @@ MATCH_STATE_HOME = 'home'
 MATCH_STATE_GUEST = 'guest'
 MATCH_STATE_PENALTIES_HOME = 'penalties_home'
 MATCH_STATE_PENALTIES_GUEST = 'penalties_guest'
-MATCH_STATE_TIE = 'tie'
 
 MATCH_STATES_BASE = [(MATCH_STATE_HOME, 'Победа домакин'),
-                     (MATCH_STATE_GUEST, 'Победа гост'),
-                     (MATCH_STATE_TIE, 'Равен')]
+                     (MATCH_STATE_GUEST, 'Победа гост')]
 MATCH_STATES_KNOCKOUTS = [(MATCH_STATE_PENALTIES_HOME, 'Победа за домакин след дузпи'),
                           (MATCH_STATE_PENALTIES_GUEST, 'Победа за гост след дузпи')]
 

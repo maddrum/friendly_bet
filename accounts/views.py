@@ -5,7 +5,6 @@ from django.views.generic import CreateView, ListView, TemplateView, UpdateView
 
 from accounts import forms
 from predictions.models import UserPredictions
-from predictions.views_mixins import GetEventMatchesMixin
 
 
 class UserRegisterView(CreateView):
@@ -34,17 +33,18 @@ class UserSettingsUpdateView(LoginRequiredMixin, UpdateView):
         return queryset
 
 
-class UserPredictionsListView(LoginRequiredMixin, GetEventMatchesMixin, ListView):
+class UserPredictionsListView(LoginRequiredMixin, ListView):
     model = UserPredictions
     template_name = 'accounts/profile-update-predictions.html'
     context_object_name = 'predictions'
 
-
-
     def get_queryset(self):
-        current_matches = list(self.matches)
-        queryset = UserPredictions.objects.filter(user=self.request.user, match__in=current_matches)
+        queryset = UserPredictions.objects.filter(user=self.request.user)
         return queryset
+
+
+class SettingsSuccess(LoginRequiredMixin, TemplateView):
+    template_name = 'accounts/profile-settings-success.html'
 
 
 class ProfilePredictionStats(LoginRequiredMixin, ListView):
