@@ -39,6 +39,7 @@ class UserPredictionsListView(LoginRequiredMixin, ListView):
     context_object_name = 'predictions'
 
     def get_queryset(self):
+
         queryset = UserPredictions.objects.filter(user=self.request.user)
         return queryset
 
