@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
-{% block body_tag_define %}
-    <body class="body-2">
-{% endblock %}
+{% block body_classes %}body-2{% endblock %}
 {% block body_content %}
     <div class="inner_page_header">
         <div class="heading inner-ttl">Регистрация</div>
@@ -9,7 +7,7 @@
     <div class="content-wrp">
         <div class="form-txt">
             <h2>Регистрацията е успешна!</h2>
-            <h3>За да се логнеш - натисни <a href="{% url 'accounts:login' %}">тук</a></h3>
+            <h3>За да се логнеш - натисни <a href="{% url 'login' %}">тук</a></h3>
         </div>
     </div>
 

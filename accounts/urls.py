@@ -1,5 +1,5 @@
-from django.urls import path
-from django.contrib.auth.views import LoginView, LogoutView
+from django.urls import path, reverse_lazy
+from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView
 
 from accounts import views
 
@@ -13,10 +13,9 @@ urlpatterns = [
     # url(r'profile-match-update/(?P<pk>\d+)', views.UserUpdatePredictionView.as_view(), name='update_prediction'),
     path('profile-history-and-points/', views.ProfilePredictionStats.as_view(), name='profile_history'),
     path('profile-settings/', views.UserSettingsUpdateView.as_view(), name='profile_settings'),
-    # url(r'settings-success/$', views.SettingsSuccess.as_view(), name='settings_success'),
-    # url(r'profile-password-change/$',
-    #     PasswordChangeView.as_view(template_name='accounts/password-change.html', success_url='../login'),
-    #     name='password_change'),
+    path('password-change/', PasswordChangeView.as_view(
+        template_name='accounts/password-change.html', success_url=reverse_lazy('login')),
+         name='password_change'),
     # url(r'bonuses/$', views.ProfileBonusView.as_view(), name="profile_bonus"),
     path('logout-confirm/', views.ProfileLogoutConfirm.as_view(), name='logout_confirm'),
 ]

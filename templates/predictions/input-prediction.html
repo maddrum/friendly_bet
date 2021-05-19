@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load custom_tags static %}
+{% block header_link_load %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/modal.css' %}"/>
+{% endblock %}
+
+{% block body_classes %}body-2{% endblock %}
+
+{% block body_content %}
+
+    <div class="inner_page_header">
+        <div class="heading inner-ttl">{% now "j-M-Y" %}
+            <br><br><br>
+            <a href="{% url 'instructions' %}" data-w-id="8782863a-1d5d-0d40-92f8-45790f30b309" class="nav-link"
+                    rel="modal:open">
+                Инструкции
+            </a>
+        </div>
+    </div>
+
+    <div class="content-wrp">
+        {% if formset and formset|length != 0 %}
+            <p id="time-counter" class="text-input" style="text-align:center;font-size:1.5rem;"></p>
+            <form method="post">
+                {% csrf_token %}
+                {{ formset.management_form }}
+                {% for form in formset %}
+                    {{ form.id }}
+                    <div class="input-wrp">
+                        <div class="game-single">
+                            {% with matches|get_list_index_value:forloop.counter0 as match_info %}
+                                <div class="match-number">Мач {{ match_info.match_number }}</div>
+                                <div class="w-row">
+                                    <div class="column-4 w-col w-col-5 w-col-small-5 w-col-tiny-5">
+                                        <div class="team">
+                                            <div class="team-ttl">{{ match_info.home.name }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="column-3 w-col w-col-2 w-col-small-2 w-col-tiny-2">
+                                        <div class="vs-txt">vs</div>
+                                    </div>
+                                    <div class="column-2 w-col w-col-5 w-col-small-5 w-col-tiny-5">
+                                        <div class="team">
+                                            <div class="team-ttl">{{ match_info.guest.name }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="match-date">{{ match_info.match_start_time }}</div>
+                            {% endwith %}
+                            {{ form.match_state }}
+                            {{ form.goals_home }}
+                            {{ form.goals_guest }}
+                            {% if form.errors %}
+                                <div class="text-block white">
+                                    {{ form.non_field_errors.as_text }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                {% endfor %}
+                <div class="buttons">
+                    <input type="submit" data-w-id="8782863a-1d5d-0d40-92f8-45790f30b309"
+                            class="submit-btn w-button" value="дай прогноза">
+                </div>
+            </form>
+            <script>
+                // Set the date we're counting down to
+                var countDownDate = new Date("{{ time_delta|date:'c' }}").getTime();
+
+                // Update the count down every 1 second
+                var x = setInterval(function () {
+
+                    // Get today's date and time
+                    var now = new Date().getTime();
+
+                    // Find the distance between now and the count down date
+                    var distance = countDownDate - now;
+
+                    // Time calculations for days, hours, minutes and seconds
+                    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    // Display the result in the element with id="demo"
+                    document.getElementById("time-counter").innerHTML = "Имаш още " + days + "д " + hours + "ч "
+                        + minutes + "м " + seconds + "с ";
+
+                    // If the count down is finished, write some text
+                    if (distance < 0) {
+                        clearInterval(x);
+                        document.getElementById("demo").innerHTML = "Свърши се тя! Моля, презареди тази страница.";
+                    }
+                }, 1000);
+            </script>
+        {% else %}
+            <div class="w-row">
+                <div class="text-block white">
+                    <br>
+                    <em>
+                        Не можеш да даваш вече прогнози за днешния ден, или днес няма мачаове.<br>
+                        Върни се утре, за да дадеш своите прогнози, а до тогава не оставяй бирата да се стопля!
+                    </em>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}

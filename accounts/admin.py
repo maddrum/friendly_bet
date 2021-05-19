@@ -1,6 +1,9 @@
 from django.contrib import admin
+from accounts.models import LastUserMatchInputStart
 
 
+class ReadOnlyFields(admin.ModelAdmin):
+    readonly_fields = ('started_on',)
 
-# Register your models here.
 
+admin.site.register(LastUserMatchInputStart, ReadOnlyFields)
