@@ -27,6 +27,7 @@
                 {% csrf_token %}
                 {{ formset.management_form }}
                 {% for form in formset %}
+                    {{ form.id }}
                     <div class="input-wrp">
                         <div class="game-single">
                             {% with matches|get_list_index_value:forloop.counter0 as match_info %}
@@ -85,7 +86,7 @@
                     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
                     // Display the result in the element with id="demo"
-                    document.getElementById("time-counter").innerHTML = "Прогнозирай до " + days + "д " + hours + "ч "
+                    document.getElementById("time-counter").innerHTML = "Имаш още " + days + "д " + hours + "ч "
                         + minutes + "м " + seconds + "с ";
 
                     // If the count down is finished, write some text

@@ -35,11 +35,25 @@
                 <div class="w-col w-col-12">
                     {{ item.match_state.get_match_state_display }}
                     <h1 class="heading tab-heading history-ttl">
-                        <a href="#" class="submit-btn-no-glow">Корекция</a>
+                        <a href="{% url 'update_prediction' pk=item.pk %}" class="submit-btn-no-glow">
+                            Корекция
+                        </a>
                     </h1>
                 </div>
             </div>
         </div>
     {% endfor %}
+    {% if predictions|length == 0 %}
+        <div class="w-row">
+            <div class="w-col w-col-12">
+                <h1 class="heading tab-heading history-ttl">
+                    Свърши то! Каквото прогнозира за днес - прогнозира!
+                </h1>
+                <h1 class="heading tab-heading history-ttl">
+                    Сега седи гледай мача!
+                </h1>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}
 

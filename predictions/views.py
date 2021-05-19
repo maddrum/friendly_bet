@@ -67,10 +67,10 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
         if not request.user.is_authenticated:
             return super().dispatch(request, *args, **kwargs)
         self.check_for_user_predictions()
-        self.check_time_state()
+        self.do_initial_checks()
         return super().dispatch(request, *args, **kwargs)
 
-    def check_time_state(self):
+    def do_initial_checks(self):
         if self.request.method == 'POST':
             if self.user_gave_prediction:
                 raise Http404()
@@ -78,8 +78,11 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
                 user_last_input_start = LastUserMatchInputStart.objects.get(user=self.request.user)
             except LastUserMatchInputStart.DoesNotExist:
                 raise Http404()
-            if timezone.now() > user_last_input_start.valid_to:
+            if self._get_now_plus_time(plus_minutes=0) > user_last_input_start.valid_to:
                 raise Http404()
+
+        if not self.matches.exists():
+            raise Http404()
 
     def check_for_user_predictions(self):
         check = UserPredictions.objects.filter(user=self.request.user, match__in=self.all_today_matches).exists()
@@ -127,11 +130,15 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
 
 class UserUpdatePredictionView(EventCreatePredictionView):
 
-    def user_gave_prediction(self):
+    def check_for_user_predictions(self):
         self.user_gave_prediction = False
 
     def get_queryset(self):
         qs = UserPredictions.objects.filter(pk=self.kwargs['pk'])
+        if not qs.exists():
+            raise Http404()
+        if qs.first().user != self.request.user:
+            raise Http404()
         return qs
 
     def get_factory_kwargs(self):
