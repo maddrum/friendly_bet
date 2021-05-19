@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.urls.exceptions import Http404
+from django.utils import timezone
 from django.views.generic import ListView, TemplateView
 from extra_views import ModelFormSetView
 
@@ -71,10 +72,19 @@ class EventCreatePredictionView(LoginRequiredMixin, ModelFormSetView):
         self.event = self.get_event()
         self.get_matches()
         self.check_for_user_predictions()
-        if self.request.method == 'POST' and not self.matches.exists():
-            print(f'[INFO] Possible cheater: {self.request.user}')
-            raise Http404()
+        self.check_time_state()
         return super().dispatch(request, *args, **kwargs)
+
+    def check_time_state(self):
+        if self.request.method == 'POST':
+            if self.user_gave_prediction:
+                raise Http404()
+            try:
+                user_last_input_start = LastUserMatchInputStart.objects.get(user=self.request.user)
+            except LastUserMatchInputStart.DoesNotExist:
+                raise Http404()
+            if timezone.now() > user_last_input_start.valid_to:
+                raise Http404()
 
     def get_event(self):
         return Event.objects.all().first()
@@ -139,10 +149,6 @@ class EventCreatePredictionView(LoginRequiredMixin, ModelFormSetView):
         return context
 
     def formset_valid(self, formset):
-        if self.user_gave_prediction:
-            raise Http404('predictions are available for one of the matches')
-        # todo check if time is up
-
         index = 0
         for form in formset:
             match = self.matches[index]
@@ -154,6 +160,9 @@ class EventCreatePredictionView(LoginRequiredMixin, ModelFormSetView):
 
 
 class UserUpdatePredictionView(EventCreatePredictionView):
+
+    def user_gave_prediction(self):
+        self.user_gave_prediction = False
 
     def get_queryset(self):
         qs = UserPredictions.objects.filter(pk=self.kwargs['pk'])

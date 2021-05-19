@@ -1,7 +1,0 @@
-{% extends 'site_stats/stats-base.html' %}
-{% block  profile_content %}
-    <h1 class="heading tab-heading">{{ graph_name_predictions }}</h1>
-    <div id="chart-predictions" align="center">{{ output_predictions|safe }}</div>
-    <h1 class="heading tab-heading">{{ graph_name_points }}</h1>
-    <div id="chart-points" align="center">{{ output_points|safe }}</div>
-{% endblock %}
