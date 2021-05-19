@@ -1,3 +1,4 @@
+from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView
 
 from main_app.forms import ContactForm
@@ -14,7 +15,7 @@ class InstructionsView(TemplateView):
 
 class SiteContactView(CreateView):
     model = SiteContact
-    success_url = '../contact-success'
+    success_url = reverse_lazy('contacts_success')
     template_name = 'main_app/contacts.html'
     form_class = ContactForm
 

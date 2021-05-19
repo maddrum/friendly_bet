@@ -1,5 +1,6 @@
 import datetime
 
+from django.utils import timezone
 from django.views.generic import ListView
 
 from matches.models import Matches
@@ -42,27 +43,26 @@ class MatchDetailView(ListView):
 
 
 class ScheduleView(ListView):
-    template_name = 'main_app/schedule.html'
+    template_name = 'matches/schedule.html'
     model = Matches
     context_object_name = 'schedule'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data()
-        date = datetime.datetime.now()
+        current_date = datetime.datetime.now().date()
+        # current_date = datetime.date(2021, 6, 16)
+
+        date_bounds = [datetime.datetime.combine(current_date, datetime.time(0, 0, 1)),
+                       datetime.datetime.combine(current_date, datetime.time(23, 59, 59))]
         all_matches = Matches.objects.all().order_by('phase', 'match_start_time').prefetch_related('match_result')
-        # today_matches = Matches.objects.filter(match_date=date)
-        # group_phase = Matches.objects.filter(phase='group_phase')
-        # eight_finals = Matches.objects.filter(phase='eighth-finals')
-        # quarterfinals = Matches.objects.filter(phase='quarterfinals')
-        # semifinals = Matches.objects.filter(phase='semifinals')
-        # little_final = Matches.objects.filter(phase='little_final')
-        # final = Matches.objects.filter(phase='final')
-        # context['today_matches'] = today_matches
-        # context['group_phase'] = group_phase
-        # context['eight_finals'] = eight_finals
-        # context['quarterfinals'] = quarterfinals
-        # context['semifinals'] = semifinals
-        # context['little_final'] = little_final
-        # context['final'] = final
-        context['matches'] = all_matches
+        today_matches = all_matches.filter(match_start_time__gte=date_bounds[0], match_start_time__lte=date_bounds[1])
+        match_order = {}
+        for match in all_matches:
+            if match.phase in match_order:
+                match_order[match.phase].append(match)
+            else:
+                match_order[match.phase] = [match]
+
+        context['today_matches'] = today_matches
+        context['matches'] = match_order
         return context

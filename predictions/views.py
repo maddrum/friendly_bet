@@ -20,7 +20,7 @@ from predictions.views_mixins import GetEventMatchesMixin
 
 
 class RankList(ListView):
-    template_name = 'main_app/ranklist.html'
+    template_name = 'predictions/ranklist.html'
     model = UserScores
     context_object_name = 'ranklist'
 

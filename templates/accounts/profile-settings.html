@@ -11,10 +11,14 @@
             <form method="POST">
                 {% csrf_token %}
                 {{ form }}
+                <div class="text-block tab">Каквото въведеш тук, това ще се показва в ранклистата.
+                    <br>
+                    Ако те мързи, ще се изпишем твоето потребителско име.
+                </div>
 
                 <input type="submit" data-w-id="8782863a-1d5d-0d40-92f8-45790f30b309"
-                       class="submit-btn-no-glow w-button"
-                       value="Корекция">
+                        class="submit-btn-no-glow w-button"
+                        value="Корекция">
 
             </form>
         </div>
