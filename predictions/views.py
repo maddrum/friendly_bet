@@ -2,11 +2,12 @@ import datetime
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import UpdateView, ListView
+from django.urls.exceptions import Http404
+from django.views.generic import ListView, TemplateView
 from extra_views import ModelFormSetView
 
+from accounts.models import LastUserMatchInputStart
 from events.models import Event
 from matches.models import Matches
 from predictions.forms import PredictionForm
@@ -14,9 +15,6 @@ from predictions.formsets import PredictionFormSet
 # from bonus_points.models import UserBonusSummary
 from predictions.models import UserPredictions
 from predictions.models import UserScores
-from django.urls.exceptions import Http404
-from accounts.models import LastUserMatchInputStart
-from django.utils import timezone
 
 
 class RankList(ListView):
@@ -60,7 +58,7 @@ class EventCreatePredictionView(LoginRequiredMixin, ModelFormSetView):
     model = UserPredictions
     form_class = PredictionForm
     formset_class = PredictionFormSet
-    success_url = reverse_lazy('profile')
+    success_url = reverse_lazy('predictions_success')
     event = None
     matches = None
     all_today_matches = None
@@ -145,13 +143,12 @@ class EventCreatePredictionView(LoginRequiredMixin, ModelFormSetView):
             raise Http404('predictions are available for one of the matches')
         # todo check if time is up
 
-        objects = formset.save(commit=False)
         index = 0
-        for object in objects:
+        for form in formset:
             match = self.matches[index]
-            object.match = match
-            object.user = self.request.user
-            object.save()
+            form.instance.match = match
+            form.instance.user = self.request.user
+            form.save()
             index += 1
         return HttpResponseRedirect(self.get_success_url())
 
@@ -166,3 +163,7 @@ class UserUpdatePredictionView(EventCreatePredictionView):
         kwargs = super().get_factory_kwargs()
         kwargs['extra'] = 0
         return kwargs
+
+
+class PredictionSuccess(TemplateView):
+    template_name = 'predictions/prediction-success.html'

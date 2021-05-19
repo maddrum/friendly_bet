@@ -51,8 +51,14 @@
                             {{ form.match_state }}
                             {{ form.goals_home }}
                             {{ form.goals_guest }}
+                            {% if form.errors %}
+                                <div class="text-block white">
+                                    {{ form.non_field_errors.as_text }}
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
+
                 {% endfor %}
                 <div class="buttons">
                     <input type="submit" data-w-id="8782863a-1d5d-0d40-92f8-45790f30b309"

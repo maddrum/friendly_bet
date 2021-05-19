@@ -25,8 +25,8 @@ class PredictionForm(forms.ModelForm):
         MATCH_STATE_OPTIONS = {
             MATCH_STATE_HOME: f'ПОБЕДА за {self.home_team}',
             MATCH_STATE_GUEST: f'ПОБЕДА за {self.guest_team}',
-            MATCH_STATE_PENALTIES_HOME: f'ПОБЕДА за {self.home_team} след дузпи',
-            MATCH_STATE_PENALTIES_GUEST: f'ПОБЕДА за {self.guest_team} след дузпи',
+            MATCH_STATE_PENALTIES_HOME: f'ПОБЕДА за {self.home_team} след ДУЗПИ',
+            MATCH_STATE_PENALTIES_GUEST: f'ПОБЕДА за {self.guest_team} след ДУЗПИ',
             MATCH_STATE_TIE: 'Тики-така, скучен РАВЕН'
         }
         try:
@@ -47,20 +47,20 @@ class PredictionForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        if cleaned_data['match_state'] == MATCH_STATE_TIE:
+        if cleaned_data['match_state'].match_state == MATCH_STATE_TIE:
             if cleaned_data['goals_home'] != cleaned_data['goals_guest']:
                 raise ValidationError(
                     'ГРЕДА! Дал си, че ще е равен ама головете на едните на са колкото головете на другите')
 
-        elif cleaned_data['match_state'] == MATCH_STATE_HOME or \
-                cleaned_data['match_state'] == MATCH_STATE_PENALTIES_HOME:
+        elif cleaned_data['match_state'].match_state == MATCH_STATE_HOME or \
+                cleaned_data['match_state'].match_state == MATCH_STATE_PENALTIES_HOME:
             if cleaned_data['goals_home'] <= cleaned_data['goals_guest']:
                 raise ValidationError(
                     f'ГРЕДА! Дал си, че ще е победа за {self.home_team} ама головете му '
-                    f'са по-малко или в краен случай равни на головете на {self.away_team}.')
+                    f'са по-малко или в краен случай равни на головете на {self.guest_team}.')
 
-        elif cleaned_data['match_state'] == MATCH_STATE_GUEST or \
-                cleaned_data['match_state'] == MATCH_STATE_PENALTIES_GUEST:
+        elif cleaned_data['match_state'].match_state == MATCH_STATE_GUEST or \
+                cleaned_data['match_state'].match_state == MATCH_STATE_PENALTIES_GUEST:
             if cleaned_data['goals_home'] >= cleaned_data['goals_guest']:
                 raise ValidationError(
                     f'ГРЕДА! Дал си, че ще е победа за {self.guest_team} ама головете му '
