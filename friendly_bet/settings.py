@@ -10,7 +10,7 @@ with open(KEY_FILE) as f:
 
 # Developing settings - activate this set for developing
 
-DEBUG = False
+DEBUG = True
 
 # Deployment settings - activate this in production
 
