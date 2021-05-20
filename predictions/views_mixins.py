@@ -39,7 +39,7 @@ class GetEventMatchesMixin:
         now_time = timezone.now()
 
         # todo debug remove
-        now_time = datetime.datetime(2021, 6, 16, 12, 44)
+        # now_time = datetime.datetime(2021, 6, 16, 12, 44)
 
         return now_time + datetime.timedelta(minutes=plus_minutes)
 
