@@ -62,6 +62,7 @@ class EventPhases(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='event_phases')
     phase = models.CharField(max_length=20, choices=event_settings.PHASE_SELECTOR)
     phase_match_states = models.ManyToManyField(EventMatchStates)
+    multiplier = models.IntegerField(default=1)
     created_on = models.DateTimeField(auto_now_add=True)
     edited_on = models.DateTimeField(auto_now=True)
 

@@ -47,6 +47,10 @@ class PredictionForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
+        if cleaned_data['goals_home'] < 0 or cleaned_data['goals_guest'] < 0:
+            raise ValidationError(
+                'Както би казал Домусата: Или си олигофрен, или не знам. '
+                'Къде го видя тоя мач с ОТРИЦАТЕЛНИ голове бе, обясни ми, къде го видя!')
         if cleaned_data['match_state'].match_state == MATCH_STATE_TIE:
             if cleaned_data['goals_home'] != cleaned_data['goals_guest']:
                 raise ValidationError(

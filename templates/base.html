@@ -24,8 +24,6 @@
     }(window, document);</script>
 
     <link rel="shortcut icon" type="image/jpg" href="{% static 'favicon-32x32.png' %}"/>
-
-
     <meta property="og:type" content="website"/>
     <meta property="og:title" content="Като за европейско!"/>
     <meta property="og:description" content="Прогнозирай и стани шампион!"/>
@@ -83,6 +81,9 @@
     <div class="footer">
         <div class="foot-wrp">
             <div class="text-block ftr">
+                <div class="text-center">
+                    <a href="{% url 'instructions' %}" class="footer-link white" target="_blank">Правилата</a>
+                </div>
                 design:брат му | backend: maddrum | За контакти: <br>
             </div>
             <a href="{% url 'contact' %}" data-w-id="81ebefb1-c4c9-0842-eeae-60febe184d79"
