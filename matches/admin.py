@@ -1,5 +1,6 @@
 from django.contrib import admin
-from matches.models import Matches
+
+from matches.models import Matches, MatchResult
 
 
 class ReadOnlyFields(admin.ModelAdmin):
@@ -7,6 +8,4 @@ class ReadOnlyFields(admin.ModelAdmin):
 
 
 admin.site.register(Matches, ReadOnlyFields)
-# admin.site.register(UserPredictions)
-# admin.site.register(UserScore)
-# admin.site.register(Event)
+admin.site.register(MatchResult, ReadOnlyFields)

@@ -1,28 +1,19 @@
 {% extends 'base.html' %}
 {% load custom_tags static %}
-{% block header_link_load %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-    <link rel="stylesheet" href="{% static 'css/modal.css' %}"/>
-{% endblock %}
 
 {% block body_classes %}body-2{% endblock %}
 
 {% block body_content %}
 
     <div class="inner_page_header">
-        <div class="heading inner-ttl">{% now "j-M-Y" %}
-            <br><br><br>
-            <a href="{% url 'instructions' %}" data-w-id="8782863a-1d5d-0d40-92f8-45790f30b309" class="nav-link"
-                    rel="modal:open">
-                Инструкции
-            </a>
+        <div class="heading inner-ttl">
+            {% now "j-M-Y" %}
         </div>
     </div>
 
     <div class="content-wrp">
         {% if formset and formset|length != 0 %}
-            <p id="time-counter" class="text-input" style="text-align:center;font-size:1.5rem;"></p>
+            <p id="time-counter" class="text-input input-counter white"></p>
             <form method="post">
                 {% csrf_token %}
                 {{ formset.management_form }}
@@ -47,7 +38,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="match-date">{{ match_info.match_start_time }}</div>
+                                <div class="match-date">
+                                    {{ match_info.match_start_time }}<br>
+                                    Множител за точки: {{ match_info.phase.multiplier }}
+                                </div>
+
                             {% endwith %}
                             {{ form.match_state }}
                             {{ form.goals_home }}
@@ -108,5 +103,6 @@
             </div>
         {% endif %}
     </div>
-
+    <img src="{% static 'images/Ronaldio.png' %}" data-w-id="52e67e0c-e3e2-e8a1-7dbb-2cf3731cb346"
+            class="ronaldo">
 {% endblock %}
