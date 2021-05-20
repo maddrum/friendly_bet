@@ -24,7 +24,7 @@ class ThankYouView(TemplateView):
 
 class UserSettingsUpdateView(LoginRequiredMixin, UpdateView):
     model = User
-    fields = ('email', 'first_name', 'last_name',)
+    fields = ('first_name', 'last_name',)
     template_name = 'accounts/profile-settings.html'
     success_url = reverse_lazy('profile')
 
@@ -38,8 +38,6 @@ class UserPredictionsListView(LoginRequiredMixin, GetEventMatchesMixin, ListView
     model = UserPredictions
     template_name = 'accounts/profile-update-predictions.html'
     context_object_name = 'predictions'
-
-
 
     def get_queryset(self):
         current_matches = list(self.matches)

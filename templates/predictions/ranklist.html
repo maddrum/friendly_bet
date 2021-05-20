@@ -1,22 +1,20 @@
 {% extends 'base.html' %}
 {% load static %}.
-{% block body_tag_define %}
-    <body class="body-2">
-{% endblock %}
+{% block body_classes %}body-2{% endblock %}
 
 {% block body_content %}
     <div class="inner_page_header">
-        <div class="heading inner-ttl">Окончателна Ранглиста</div>
+        <div class="heading inner-ttl">Ранглиста</div>
     </div>
     <div class="content-wrp">
         {% for item in ranklist %}
             {% if forloop.counter == 1 %}
                 <div class="rankings1 w-row">
-                    <div class="badge w-col w-col-3 w-col-stack"><img
-                            src="{% static 'images/Rank1.png' %}" width="431"
-                            srcset="{% static 'images/Rank1-p-500.png' %} 500w, {% static 'images/Rank1.png' %} 862w"
-                            sizes="(max-width: 479px) 48vw, (max-width: 991px) 49vw, 23vw"
-                            class="image first"></div>
+                    <div class="badge w-col w-col-3 w-col-stack">
+                        <img src="{% static 'images/Rank1.png' %}" width="431"
+                                srcset="{% static 'images/Rank1-p-500.png' %} 500w, {% static 'images/Rank1.png' %} 862w"
+                                sizes="(max-width: 479px) 48vw, (max-width: 991px) 49vw, 23vw"
+                                class="image first"></div>
                     <div class="info-wirp w-col w-col-9 w-col-stack">
                         <div class="info-table w-row">
                             <div class="w-col w-col-4">
@@ -25,7 +23,7 @@
                             <div class="w-col w-col-4">
                                 <div class="rarnk-txt user">
                                     <a href="../rankilst-detail/{{ item.user_id.id }}"
-                                       style="color: white">{{ item.user_id }}</a>
+                                            style="color: white">{{ item.user_id }}</a>
                                 </div>
                             </div>
                             <div class="w-col w-col-4">
@@ -50,7 +48,7 @@
                                 <div class="rarnk-txt user">
 
                                     <a href="../rankilst-detail/{{ item.user_id.id }}"
-                                       style="color: white">{{ item.user_id }}</a>
+                                            style="color: white">{{ item.user_id }}</a>
 
                                 </div>
                             </div>
@@ -63,7 +61,7 @@
             {% elif forloop.counter > 3 and forloop.counter < 7 %}
                 <div class="rankings2 w-row">
                     <div class="badge w-col w-col-3 w-col-stack"><img src="{% static 'images/Rank4.png' %}" width="130"
-                                                                      class="image napadatel"></div>
+                            class="image napadatel"></div>
                     <div class="info-wirp napadatel-txt w-col w-col-9 w-col-stack">
                         <div class="info-table w-row">
                             <div class="w-col w-col-4">
@@ -73,7 +71,7 @@
                                 <div class="rarnk-txt user">
 
                                     <a href="../rankilst-detail/{{ item.user_id.id }}"
-                                       style="color: white">{{ item.user_id }}</a>
+                                            style="color: white">{{ item.user_id }}</a>
 
                                 </div>
                             </div>
@@ -88,7 +86,7 @@
 
                 <div class="rankings3 w-row">
                     <div class="badge w-col w-col-3 w-col-stack"><img src="{% static 'images/Rank5.png' %}" width="100"
-                                                                      class="image half"></div>
+                            class="image half"></div>
                     <div class="info-wirp napadatel-txt w-col w-col-9 w-col-stack">
                         <div class="info-table w-row">
                             <div class="w-col w-col-4">
@@ -98,7 +96,7 @@
                                 <div class="rarnk-txt user">
 
                                     <a href="../rankilst-detail/{{ item.user_id.id }}"
-                                       style="color: white">{{ item.user_id }}</a>
+                                            style="color: white">{{ item.user_id }}</a>
 
                                 </div>
                             </div>
@@ -113,7 +111,7 @@
 
                 <div class="rankings4 w-row">
                     <div class="badge w-col w-col-3 w-col-stack"><img src="{% static 'images/Rank6.png' %}" width="90"
-                                                                      class="image bek"></div>
+                            class="image bek"></div>
                     <div class="info-wirp napadatel-txt w-col w-col-9 w-col-stack">
                         <div class="info-table w-row">
                             <div class="w-col w-col-4">
@@ -123,7 +121,7 @@
                                 <div class="rarnk-txt user">
 
                                     <a href="../rankilst-detail/{{ item.user_id.id }}"
-                                       style="color: white">{{ item.user_id }}</a>
+                                            style="color: white">{{ item.user_id }}</a>
 
                                 </div>
                             </div>
@@ -138,7 +136,7 @@
 
                 <div class="rankings5 w-row">
                     <div class="badge w-col w-col-3 w-col-stack"><img src="{% static 'images/Rank7.png' %}" width="50"
-                                                                      class="image bojinka"></div>
+                            class="image bojinka"></div>
                     <div class="info-wirp bojinka-txt w-col w-col-9 w-col-stack">
                         <div class="info-table w-row">
                             <div class="w-col w-col-4">
@@ -148,7 +146,7 @@
                                 <div class="rarnk-txt user">
 
                                     <a href="../rankilst-detail/{{ item.user_id.id }}"
-                                       style="color: white">{{ item.user_id }}</a>
+                                            style="color: white">{{ item.user_id }}</a>
 
                                 </div>
                             </div>
@@ -158,12 +156,23 @@
                         </div>
                     </div>
                 </div>
-
-
             {% endif %}
-
         {% endfor %}
-
+        {% if not ranklist %}
+            <h2>
+                ТУК НЕ Е ИНФОРМАЦИЯ!!!...
+            </h2>
+            <h2>
+                ГИШЕТО Е ЗАТВОРЕНО!
+            </h2>
+            <h2>
+                ПОРАДИ РЕМОНТ БРЪСНЕМ ОТЗАД!
+            </h2>
+            <br><br>
+            <h4>
+                Все още няма ранкилиста. Елате утре.
+            </h4>
+        {% endif %}
     </div>
 {% endblock %}
 

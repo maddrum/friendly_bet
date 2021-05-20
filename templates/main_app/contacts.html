@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
-{% block body_tag_define %}
-    <body class="body-2">
-{% endblock %}
+{% block body_classes %}body-2{% endblock %}
 {% block body_content %}
     <div class="inner_page_header">
         <div class="heading inner-ttl">контакт</div>
@@ -13,7 +11,7 @@
                 {{ form.as_p }}
                 <div class="buttons">
                     <input type="submit" data-w-id="8782863a-1d5d-0d40-92f8-45790f30b309" class="submit-btn w-button"
-                           value="изпрати">
+                            value="изпрати">
                 </div>
             </form>
         </div>

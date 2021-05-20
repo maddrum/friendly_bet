@@ -23,8 +23,7 @@
         n.className += t + "js", ("ontouchstart" in o || o.DocumentTouch && c instanceof DocumentTouch) && (n.className += t + "touch")
     }(window, document);</script>
 
-    <link href="https://daks2k3a4ib2z.cloudfront.net/img/favicon.ico" rel="shortcut icon" type="image/x-icon">
-    <link href="https://daks2k3a4ib2z.cloudfront.net/img/webclip.png" rel="apple-touch-icon">
+    <link rel="shortcut icon" type="image/jpg" href="{% static 'favicon-32x32.png' %}"/>
 
     <meta property="og:url"
             content="http://worldcup.pythonanywhere.com/"/>
@@ -49,7 +48,7 @@
                     class="nav-link w-nav-link">
                 Програма
             </a>
-            <a href="#" data-w-id="ae7752c4-2d27-e763-7bb8-8c9c52735f91"
+            <a href="{% url 'ranklist' %}" data-w-id="ae7752c4-2d27-e763-7bb8-8c9c52735f91"
                     class="nav-link w-nav-link">
                 Ранглиста
             </a>
