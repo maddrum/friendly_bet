@@ -1,100 +1,86 @@
-# from django.shortcuts import render
-# from django.views.generic import ListView, FormView
-# from django.contrib.auth.mixins import LoginRequiredMixin
-# from bonus_points.models import BonusDescription, BonusUserPrediction
-# from bonus_points.forms import SelectAllCountriesForm, InputTextForm, InputNumberForm, InputSomeChoicesForm
-# import datetime
-#
-#
-#
-#
-# class BonusMainListView(LoginRequiredMixin, ListView):
-#     template_name = 'bonus_points/bonus-main.html'
-#     context_object_name = 'bonuses'
-#
-#     def get_queryset(self):
-#         queryset = BonusDescription.objects.filter(bonus_active=True)
-#         return queryset
-#
-#     def get_context_data(self, *, object_list=None, **kwargs):
-#         username = self.request.user
-#         context = super().get_context_data()
-#         queryset = BonusUserPrediction.objects.filter(user=username)
-#         current_sofia_time = datetime.datetime.now()
-#         for item in context['bonuses']:
-#             if item.active_until < current_sofia_time:
-#                 item.archived = True
-#             for user_item in queryset:
-#                 if item == user_item.user_bonus_name:
-#                     item.participate_link = False
-#
-#         return context
-#
-#
-# class BonusPlayMainView(LoginRequiredMixin, FormView):
-#     # get PK from address, check if bonus is active and check if user have not participated
-#     # writes user prediction to database, or raise error
-#     # This class must NOT be used alone.
-#     # It must be inherited with corresponding form_class/according to current data input/
-#
-#     template_name = 'bonus_points/bonus-input-form.html'
-#     success_url = "../bonus-main/"
-#
-#     def form_valid(self, form):
-#         # input data
-#         pk = self.kwargs['pk']
-#         user = self.request.user
-#         prediction = form.data['user_prediction']
-#         # data check
-#         error_check = False
-#         error_text = ''
-#         user_count = 0
-#         time_now = datetime.datetime.utcnow()
-#         bonus_count = BonusDescription.objects.filter(id=pk, active_until__gt=time_now).count()
-#         if bonus_count != 0:
-#             bonus_object = BonusDescription.objects.get(id=pk, active_until__gt=time_now)
-#             user_count = BonusUserPrediction.objects.filter(user=user, user_bonus_name=bonus_object).count()
-#         else:
-#             error_text = 'Този бонус вече не е активен!'
-#             error_check = True
-#
-#         if user_count != 0 and bonus_count != 0:
-#             error_text = 'Вече си в схемата!'
-#             error_check = True
-#
-#         if error_check:
-#             content_dict = {
-#                 'error_text': error_text,
-#                 'show_back_button': False,
-#             }
-#             return render(self.request, 'matches/prediction-error.html', content_dict)
-#         else:
-#             new_object = BonusUserPrediction(user=user, user_bonus_name=bonus_object, user_prediction=prediction,
-#                                              created_date=datetime.datetime.utcnow())
-#             new_object.save()
-#         return super().form_valid(form)
-#
-#
-# class AllCountryInputView(BonusPlayMainView):
-#     form_class = SelectAllCountriesForm
-#
-#
-# class TextInputView(BonusPlayMainView):
-#     form_class = InputTextForm
-#
-#
-# class NumberInputView(BonusPlayMainView):
-#     form_class = InputNumberForm
-#
-#
-# class SomeChoicesView(BonusPlayMainView):
-#     form_class = InputSomeChoicesForm
-#
-#     def get_form_kwargs(self):
-#         pk = self.kwargs['pk']
-#         query = BonusDescription.objects.get(id=pk)
-#         options = query.available_choices.split(',')
-#         choices = {'choices': options}
-#         kwargs = super().get_form_kwargs()
-#         kwargs['choices'] = choices
-#         return kwargs
+import datetime
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import render
+from django.urls.exceptions import Http404
+from django.views.generic import ListView, FormView
+from django.utils import timezone
+from bonus_points.models import BonusDescription, BonusUserPrediction
+from bonus_points.forms import InputAllTeamsForm, InputChoicesForm, InputNumberForm
+from bonus_points.settings import INPUT_CHOICES_VALUE, INPUT_NUMBER_VALUE, INPUT_TEAMS_VALUE
+from django.urls import reverse_lazy
+
+
+class BonusMainListView(LoginRequiredMixin, ListView):
+    template_name = 'bonus_points/bonus-main.html'
+    context_object_name = 'bonuses'
+
+    def get_queryset(self):
+        queryset = BonusDescription.objects.filter(bonus_active=True)
+        return queryset
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data()
+        queryset = BonusDescription.objects.all()
+        current_time = timezone.now()
+        active = queryset.filter(active_until__gt=current_time)
+        not_active = queryset.filter(active_until__lte=current_time)
+        context['active'] = active
+        context['not_active'] = not_active
+        all_user_predictions = BonusUserPrediction.objects.filter(user=self.request.user)
+        context['all_predictions'] = {prediction.bonus: prediction.user_prediction for prediction in
+                                      all_user_predictions}
+        context['all_user_bonuses'] = [prediction.bonus for prediction in list(all_user_predictions)]
+        return context
+
+
+class BonusParticipateView(LoginRequiredMixin, FormView):
+    template_name = 'bonus_points/bonus-input-form.html'
+    bonus = None
+    success_url = reverse_lazy('bonus_main')
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return super().dispatch(request, *args, **kwargs)
+        self.get_bonus()
+        if request.method == 'POST' and timezone.now() > self.bonus.active_until:
+            raise Http404()
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_bonus(self):
+        try:
+            self.bonus = BonusDescription.objects.get(pk=self.kwargs['pk'])
+        except BonusDescription.DoesNotExist:
+            raise Http404()
+
+    def get_form_class(self):
+        form_class = None
+        if self.bonus.bonus_input == INPUT_TEAMS_VALUE:
+            form_class = InputAllTeamsForm
+        if self.bonus.bonus_input == INPUT_CHOICES_VALUE:
+            form_class = InputChoicesForm
+        if self.bonus.bonus_input == INPUT_NUMBER_VALUE:
+            form_class = InputNumberForm
+        if form_class is None:
+            raise Http404('No form')
+        return form_class
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['bonus_obj'] = self.bonus
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        if self.bonus.bonus_input == INPUT_CHOICES_VALUE:
+            choices = self.bonus.available_choices.split(',')
+            kwargs['choices'] = choices
+        return kwargs
+
+    def form_valid(self, form):
+        user_prediction = form.cleaned_data['user_prediction']
+        if BonusUserPrediction.objects.filter(user=self.request.user, bonus=self.bonus).exists():
+            raise Http404()
+        prediction_obj = BonusUserPrediction(user=self.request.user, bonus=self.bonus, user_prediction=user_prediction)
+        prediction_obj.save()
+        return super().form_valid(form)

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
-{% block body_tag_define %}
-    <body class="body-2">
-{% endblock %}
+{% load custom_tags %}
+
+{% block body_classes %}body-2{% endblock %}
 {% block body_content %}
 
     <div class="inner_page_header">
@@ -10,41 +10,43 @@
     <div class="content-wrp">
         <div class="tabs-content w-tab-content">
             <div class="text-block tab remark"> По долу ще намериш всички активни далаверки, както и онези за които вече
-                е късно да
-                се включиш.<br>
+                е късно да се включиш.<br>
             </div>
             <h4 class="heading tab-heading history-ttl red">Активни:</h4>
             <ul class="unordered-list w-list-unstyled">
-                {% for item in bonuses %}
-                    {% if not item.archived %}
-                        <li>
-                            <div class="text-block histprylist bonus-list">
-                                <b>{{ item }}</b> -->
-                                {% if item.participate_link %}
-                                    <a href="../{{ item.input_filed }}/{{ item.id }}" class="buttons small-btn">ВКЛЮЧИ СЕ!</a>
-                                {% else %}
-                                    Вече си в схемата!
-                                {% endif %}
-                                <p><em>Активно до {{ item.active_until }}</em></p>
-                            </div>
-                        </li>
-                    {% endif %}
+                {% for item in active %}
+                    {% get_values_from_dictionary_tag all_predictions item as prediction %}
+                    <li>
+                        <div class="text-block histprylist bonus-list">
+                            <h3 class="blue">{{ item.name }}</h3>
+                            <p><em>Активно до {{ item.active_until }}</em></p>
+                            {% if not item.auto_points and not item in all_user_bonuses %}
+                                <a href="{% url 'bonus_participate' pk=item.pk %}" class="buttons small-btn">
+                                    ВКЛЮЧИ СЕ!</a>
+                            {% else %}
+                                Вече си в схемата!<br>
+                                Прогнозира: {{ prediction }}
+                            {% endif %}
+                        </div>
+                    </li>
                 {% endfor %}
             </ul>
-            {% if not bonuses %}
+            {% if not active and not not_active %}
                 В момента няма активни бонуси, но проверявай често!
             {% endif %}
             <h4 class="heading tab-heading history-ttl red">Отминали:</h4>
             <ul class="unordered-list w-list-unstyled">
-                {% for item in bonuses %}
-                    {% if item.archived %}
-                        <li>
-                            <div class="text-block histprylist bonus-list">
-                                {{ item }}
-                                <p><em style="color:gray;">Беше активно до: {{ item.active_until }}</em></p>
-                            </div>
-                        </li>
-                    {% endif %}
+                {% for item in not_active %}
+                    {% get_values_from_dictionary_tag all_predictions item as prediction %}
+                    <li>
+                        <div class="text-block histprylist bonus-list">
+                             <h3 class="blue">{{ item.name }}</h3>
+                            <p><em style="color:gray;">Беше активно до: {{ item.active_until }}</em></p>
+                            {% if prediction %}
+                                <p><em style="color:gray;">Прогнозира: {{ prediction }}</em></p>
+                            {% endif %}
+                        </div>
+                    </li>
                 {% endfor %}
             </ul>
         </div>
