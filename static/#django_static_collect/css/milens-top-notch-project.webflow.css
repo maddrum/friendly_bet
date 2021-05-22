@@ -828,13 +828,8 @@ a:hover {
 
 .small-btn {
     display: inline-block;
-    width: 100px;
-    height: 30px;
     margin: 1px auto 1px;
-    padding-top: 1px;
-    /*border-radius: 80px;*/
     background-color: #f3daa8;
-    /*box-shadow: 6px 6px 28px 8px #184d8d;*/
     font-family: 'BaseFont', sans-serif;
     color: #044a9e;
     font-size: 15px;
@@ -842,6 +837,9 @@ a:hover {
     text-align: center;
     text-transform: uppercase;
     text-decoration: InfoText;
+    border-radius: 30px;
+    padding: 10px;
+
 }
 
 .submit-btn-no-glow {
@@ -1746,6 +1744,11 @@ a:hover {
 .white {
     color: #fff !important;
 }
+
+.blue {
+    color: #044a9e !important;
+}
+
 
 .input-counter {
     text-align: center;
