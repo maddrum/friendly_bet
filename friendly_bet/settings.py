@@ -5,8 +5,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # valuable information read
 NO_GIT_FOLDER = os.path.join(BASE_DIR, '#no_git_upload')
 KEY_FILE = os.path.join(NO_GIT_FOLDER, 'key_no_git_upload.txt')
+RECAPTCHA_SECRET_FILE = os.path.join(NO_GIT_FOLDER, 'recaptcha_secret_key.txt')
 with open(KEY_FILE) as f:
     SECRET_KEY = f.read().strip()
+
+with open(RECAPTCHA_SECRET_FILE) as f:
+    RECAPTCHA_SECRET = f.read().strip()
 
 # Developing settings - activate this set for developing
 
@@ -82,6 +86,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'captcha',
     'extra_views',
     'accounts',
     'main_app',
@@ -114,3 +119,6 @@ STATICFILES_DIRS = [
 ]
 DJANGO_STATIC_FILES = os.path.join(STATIC_DIR, "#django_static_collect")
 STATIC_ROOT = DJANGO_STATIC_FILES
+
+RECAPTCHA_PRIVATE_KEY = RECAPTCHA_SECRET
+RECAPTCHA_PUBLIC_KEY = '6LeY--EaAAAAACehv-84uYzCiMOmPqiOWyABaPF4'

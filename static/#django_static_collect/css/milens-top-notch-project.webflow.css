@@ -378,9 +378,9 @@ a:hover {
     padding-top: 15px;
     border-radius: 50px;
     background-color: #d51e3a;
-    box-shadow: 3px 3px 17px 0 #0d246b;
+    box-shadow: 3px 3px 17px 0 rgb(0, 191, 214);
     font-family: 'BaseFont', sans-serif;
-    font-size: 19px;
+    font-size: 15px;
     text-align: center;
     text-transform: uppercase;
     cursor: pointer;
@@ -1731,4 +1731,37 @@ a:hover {
 
 .active:after {
     content: "⋀";
+}
+
+
+.text-center {
+    text-align: center;
+    margin: 0 auto;
+}
+
+.g-recaptcha {
+    display: inline-block;
+}
+
+.white {
+    color: #fff !important;
+}
+
+.input-counter {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 400;
+    font-family: 'BaseFont', sans-serif;
+}
+
+.instructions {
+    text-align: justify;
+    line-height: 1.5;
+    font-size: 1.5rem;
+}
+
+.footer-link {
+    font-weight: bold;
+    font-size: 1.0rem;
+    text-decoration: underline;
 }

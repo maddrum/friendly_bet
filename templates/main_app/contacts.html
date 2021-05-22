@@ -8,7 +8,22 @@
         <div class="form-txt form-txt">
             <form method="post">
                 {% csrf_token %}
-                {{ form.as_p }}
+                <div class="text-center">
+                    {{ form.name.label }}<br>
+                    {{ form.name }}
+                </div>
+                <div class="text-center">
+                    {{ form.email.label }}<br>
+                    {{ form.email }}
+                </div>
+                <div class="text-center">
+                    {{ form.message.label }}<br>
+                    {{ form.message }}
+                </div>
+                <br><br>
+                <div class="text-center">
+                    {{ form.captcha }}
+                </div>
                 <div class="buttons">
                     <input type="submit" data-w-id="8782863a-1d5d-0d40-92f8-45790f30b309" class="submit-btn w-button"
                             value="изпрати">
