@@ -1,26 +1,28 @@
 {% extends 'base.html' %}
-{% block body_tag_define %}
-    <body class="body-2">
-{% endblock %}
+{% block body_classes %}body-2{% endblock %}
 {% block body_content %}
     <div class="inner_page_header">
-        <div class="heading inner-ttl">Влизаш в схемата</div>
-        <div class="content-wrp">
-            <div class="text-block white message">Прогнозите дадени тук, могат да се правят само веднъж и не могат да
-                бъдат
-                редактирани впоследствие.<br>
-                Помисли добре и ако си сигурен, действай!
-                <br>
-            </div>
-            <div class="form-txt">
-                <br>
-                <form method="post">
-                    {% csrf_token %}
-                    {{ form }}
-                    <input type="submit" data-w-id="8782863a-1d5d-0d40-92f8-45790f30b309" class="submit-btn w-button"
-                           value="Изпрати">
-
-                </form>
-            </div>
+        <div class="heading inner-ttl">
+            Влизаш в схемата
         </div>
+    </div>
+    <div class="content-wrp">
+        <h1>
+            {{ bonus_obj.name }}
+        </h1>
+        <div class="form-txt">
+            <br>
+            <form method="post">
+                {% csrf_token %}
+                {{ form }}
+                <br><br>
+                <p class="white text-center" style="font-size: 1rem;">
+                    Тук може да играеш само един път. Система ВАР и киреч няма. <br>
+                    Един път дадена прогнозата остава завинаги!
+                </p>
+                <input type="submit" data-w-id="8782863a-1d5d-0d40-92f8-45790f30b309" class="submit-btn w-button"
+                        value="Изпрати">
+            </form>
+        </div>
+    </div>
 {% endblock %}

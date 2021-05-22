@@ -14,13 +14,13 @@ with open(RECAPTCHA_SECRET_FILE) as f:
 
 # Developing settings - activate this set for developing
 
-# DEBUG = True
+DEBUG = True
 
 # Deployment settings - activate this in production
 
-DEBUG = False
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+# DEBUG = False
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
 
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
@@ -93,7 +93,7 @@ INSTALLED_APPS = [
     'events',
     'matches',
     'predictions',
-    # 'bonus_points',
+    'bonus_points',
 ]
 
 # Internationalization
