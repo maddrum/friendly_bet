@@ -48,6 +48,8 @@
                     class="nav-link w-nav-link">
                 Ранглиста
             </a>
+            <a href="{% url 'bonus_main' %}" data-w-id="ae7752c4-2d27-e763-7bb8-8c9c52735f95"
+                    class="nav-link bb w-nav-link">Бонуси</a>
 
             {% if user.is_authenticated %}
                 <a href="{% url 'profile' %}" data-w-id="ae7752c4-2d27-e763-7bb8-8c9c52735f93"
@@ -56,14 +58,6 @@
                 <a href="{% url 'login' %}" data-w-id="ae7752c4-2d27-e763-7bb8-8c9c52735f93"
                         class="nav-link w-nav-link">LOGIN</a>
             {% endif %}
-            {#            {% active_bonuses_checker user as bonuses_active %}#}
-            {#            {% if bonuses_active %}#}
-            {#                <a href="{% url 'bonus_points:bonus_main' %}" data-w-id="ae7752c4-2d27-e763-7bb8-8c9c52735f95"#}
-            {#                   class="nav-link bb bb-blink w-nav-link">Бонуси</a>#}
-            {#            {% else %}#}
-            {#                <a href="{% url 'bonus_points:bonus_main' %}" data-w-id="ae7752c4-2d27-e763-7bb8-8c9c52735f95"#}
-            {#                   class="nav-link bb w-nav-link">Бонуси</a>#}
-            {#            {% endif %}#}
         </nav>
         <div class="menu-button w-nav-button">
             <div class="icon w-icon-nav-menu"></div>
