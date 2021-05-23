@@ -71,5 +71,8 @@ def calculate_ranklist(instance_id=None):
 
     for item in ranklist:
         obj, created = UserScores.objects.get_or_create(user_id=item, event=ranklist_event[item])
-        obj.points = ranklist[obj.user.id]
+        if instance_id is None:
+            obj.points = ranklist[obj.user.id]
+        else:
+            obj.points += ranklist[obj.user.id]
         obj.save()

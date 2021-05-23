@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}.
+{% load static ranking_tags %}
 {% block body_classes %}body-2{% endblock %}
 
 {% block body_content %}
@@ -8,172 +8,75 @@
     </div>
     <div class="content-wrp">
         {% for item in ranklist %}
-            {% if forloop.counter == 1 %}
-                <div class="rankings1 w-row">
-                    <div class="badge w-col w-col-3 w-col-stack">
-                        <img src="{% static 'images/Rank1.png' %}" width="431"
-                                srcset="{% static 'images/Rank1-p-500.png' %} 500w, {% static 'images/Rank1.png' %} 862w"
-                                sizes="(max-width: 479px) 48vw, (max-width: 991px) 49vw, 23vw"
-                                class="image first"></div>
-                    <div class="info-wirp w-col w-col-9 w-col-stack">
-                        <div class="info-table w-row">
-                            <div class="w-col w-col-4">
-                                <div class="rarnk-txt position">{{ forloop.counter }}</div>
+            <div class="{% get_rank_html_class forloop.counter %} w-row">
+                <div class="badge w-col w-col-3 w-col-stack">
+                    <img src="{% static 'images' %}/{% get_rank_image_name forloop.counter %}"
+                            width="{% get_rank_image_width forloop.counter %}"
+                            class="image {% get_rank_image_class forloop.counter %}">
+                </div>
+                <div class="info-wirp {% get_row_wrapper forloop.counter %} w-col w-col-9 w-col-stack">
+                    <div class="info-table w-row">
+                        <div class="w-col w-col-4">
+                            <div class="rarnk-txt position">{{ forloop.counter }}</div>
+                        </div>
+                        <div class="w-col w-col-4">
+                            <div class="rarnk-txt user">
+                                <a href="{% url 'ranklist_detail' pk=item.user.pk %}" class="white">
+                                    {{ item.user.extra.get_user_names }}
+                                </a>
                             </div>
-                            <div class="w-col w-col-4">
-                                <div class="rarnk-txt user">
-                                    <a href="../rankilst-detail/{{ item.user_id.id }}"
-                                            style="color: white">{{ item.user_id }}</a>
-                                </div>
-                            </div>
-                            <div class="w-col w-col-4">
-                                <div class="rarnk-txt points">{{ item.points }}</div>
-                            </div>
+                        </div>
+                        <div class="w-col w-col-4">
+                            <div class="rarnk-txt points">{{ item.points }}</div>
                         </div>
                     </div>
                 </div>
-
-            {% elif forloop.counter > 1 and forloop.counter < 4 %}
-                <div class="rankings1 w-row">
-                    <div class="badge w-col w-col-3 w-col-stack"><img
-                            src="{% static 'images' %}/Rank{{ forloop.counter }}.png"
-                            width="200"
-                            class="image third"></div>
-                    <div class="info-wirp third-txt w-col w-col-9 w-col-stack">
-                        <div class="info-table w-row">
-                            <div class="w-col w-col-4">
-                                <div class="rarnk-txt position">{{ forloop.counter }}</div>
-                            </div>
-                            <div class="w-col w-col-4">
-                                <div class="rarnk-txt user">
-
-                                    <a href="../rankilst-detail/{{ item.user_id.id }}"
-                                            style="color: white">{{ item.user_id }}</a>
-
-                                </div>
-                            </div>
-                            <div class="w-col w-col-4">
-                                <div class="rarnk-txt points">{{ item.points }}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% elif forloop.counter > 3 and forloop.counter < 7 %}
-                <div class="rankings2 w-row">
-                    <div class="badge w-col w-col-3 w-col-stack"><img src="{% static 'images/Rank4.png' %}" width="130"
-                            class="image napadatel"></div>
-                    <div class="info-wirp napadatel-txt w-col w-col-9 w-col-stack">
-                        <div class="info-table w-row">
-                            <div class="w-col w-col-4">
-                                <div class="rarnk-txt position">{{ forloop.counter }}</div>
-                            </div>
-                            <div class="w-col w-col-4">
-                                <div class="rarnk-txt user">
-
-                                    <a href="../rankilst-detail/{{ item.user_id.id }}"
-                                            style="color: white">{{ item.user_id }}</a>
-
-                                </div>
-                            </div>
-                            <div class="w-col w-col-4">
-                                <div class="rarnk-txt points">{{ item.points }}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            {% elif forloop.counter > 6 and forloop.counter < 10 %}
-
-                <div class="rankings3 w-row">
-                    <div class="badge w-col w-col-3 w-col-stack"><img src="{% static 'images/Rank5.png' %}" width="100"
-                            class="image half"></div>
-                    <div class="info-wirp napadatel-txt w-col w-col-9 w-col-stack">
-                        <div class="info-table w-row">
-                            <div class="w-col w-col-4">
-                                <div class="rarnk-txt position">{{ forloop.counter }}</div>
-                            </div>
-                            <div class="w-col w-col-4">
-                                <div class="rarnk-txt user">
-
-                                    <a href="../rankilst-detail/{{ item.user_id.id }}"
-                                            style="color: white">{{ item.user_id }}</a>
-
-                                </div>
-                            </div>
-                            <div class="w-col w-col-4">
-                                <div class="rarnk-txt points">{{ item.points }}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            {% elif forloop.counter > 9 and forloop.counter < 13 %}
-
-                <div class="rankings4 w-row">
-                    <div class="badge w-col w-col-3 w-col-stack"><img src="{% static 'images/Rank6.png' %}" width="90"
-                            class="image bek"></div>
-                    <div class="info-wirp napadatel-txt w-col w-col-9 w-col-stack">
-                        <div class="info-table w-row">
-                            <div class="w-col w-col-4">
-                                <div class="rarnk-txt position">{{ forloop.counter }}</div>
-                            </div>
-                            <div class="w-col w-col-4">
-                                <div class="rarnk-txt user">
-
-                                    <a href="../rankilst-detail/{{ item.user_id.id }}"
-                                            style="color: white">{{ item.user_id }}</a>
-
-                                </div>
-                            </div>
-                            <div class="w-col w-col-4">
-                                <div class="rarnk-txt points">{{ item.points }}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            {% else %}
-
-                <div class="rankings5 w-row">
-                    <div class="badge w-col w-col-3 w-col-stack"><img src="{% static 'images/Rank7.png' %}" width="50"
-                            class="image bojinka"></div>
-                    <div class="info-wirp bojinka-txt w-col w-col-9 w-col-stack">
-                        <div class="info-table w-row">
-                            <div class="w-col w-col-4">
-                                <div class="rarnk-txt position">{{ forloop.counter }}</div>
-                            </div>
-                            <div class="w-col w-col-4">
-                                <div class="rarnk-txt user">
-
-                                    <a href="../rankilst-detail/{{ item.user_id.id }}"
-                                            style="color: white">{{ item.user_id }}</a>
-
-                                </div>
-                            </div>
-                            <div class="w-col w-col-4">
-                                <div class="rarnk-txt points">{{ item.points }}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endif %}
+            </div>
         {% endfor %}
         {% if not ranklist %}
-            <h2>
-                ТУК НЕ Е ИНФОРМАЦИЯ!!!...
-            </h2>
-            <h2>
-                ГИШЕТО Е ЗАТВОРЕНО!
-            </h2>
-            <h2>
-                ПОРАДИ РЕМОНТ БРЪСНЕМ ОТЗАД!
-            </h2>
-            <br><br>
-            <h4>
-                Все още няма ранкилиста. Елате утре.
-            </h4>
+            <div class="{% get_rank_html_class 1 %} w-row">
+                <div class="badge w-col w-col-3 w-col-stack">
+                    <img src="{% static 'images' %}/{% get_rank_image_name 1 %}"
+                            width="{% get_rank_image_width 1 %}"
+                            class="image {% get_rank_image_class 1 %}">
+                </div>
+                <div class="info-wirp w-col w-col-9 w-col-stack">
+                    <div class="info-table w-row">
+                        <div class="w-col w-col-4">
+                            <div class="rarnk-txt position">1</div>
+                        </div>
+                        <div class="w-col w-col-8">
+                            <div class="rarnk-txt user">
+                                <a href="{% url 'register' %}" class="white">
+                                     🢀&nbsp;&nbsp;&nbsp;ТУК може да си ти!
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         {% endif %}
     </div>
 {% endblock %}
 
 
+
+
+
+
+{% if forloop.counter == 1 %}
+
+
+
+
+{% elif forloop.counter > 1 and forloop.counter < 4 %}
+    <img src="{% static 'images' %}/Rank{{ forloop.counter }}.png" width="200" class="image third">
+{% elif forloop.counter > 3 and forloop.counter < 7 %}
+    <img src="{% static 'images/Rank4.png' %}" width="130" class="image napadatel">
+{% elif forloop.counter > 6 and forloop.counter < 10 %}
+    <img src="{% static 'images/Rank5.png' %}" width="100" class="image half">
+{% elif forloop.counter > 9 and forloop.counter < 13 %}
+    <img src="{% static 'images/Rank6.png' %}" width="90" class="image bek">
+{% else %}
+    <img src="{% static 'images/Rank7.png' %}" width="50" class="image bojinka">
+{% endif %}
