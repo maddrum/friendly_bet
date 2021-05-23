@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
@@ -8,11 +9,10 @@ from django.views.generic import ListView, TemplateView
 from extra_views import ModelFormSetView
 
 from accounts.models import LastUserMatchInputStart
+from bonus_points.models import UserBonusSummary
 from predictions.forms import PredictionForm
 from predictions.formsets import PredictionFormSet
-# from bonus_points.models import UserBonusSummary
-from predictions.models import UserPredictions
-from predictions.models import UserScores
+from predictions.models import UserPredictions, UserScores
 from predictions.views_mixins import GetEventMatchesMixin
 
 
@@ -31,23 +31,24 @@ class RankilstUserPoints(ListView):
     model = UserPredictions
     template_name = 'main_app/ranklist-detail.html'
     context_object_name = 'ranklist'
+    user = None
 
     def get_queryset(self):
-        user_id = int(self.kwargs['pk'])
-        self.username = get_user_model().objects.get(id=user_id)
-        queryset = UserPredictions.objects.filter(user_id=user_id, match__match_is_over=True).order_by(
-            '-match__match_start_time_utc')
+        self.user = get_user_model().objects.get(pk=self.kwargs['pk'])
+        queryset = UserPredictions.objects.filter(
+            user=self.user, match__match_result__match_is_over=True).order_by(
+            '-match__match_start_time').select_related('match').prefetch_related('match__match_result')
         return queryset
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data()
-        bonuses_added_check = UserScore.objects.get(user_id=self.username).bonus_points_added
+        bonuses_added_check = UserScores.objects.get(user=self.user).bonus_points_added
         if bonuses_added_check:
             bonuses = UserBonusSummary.objects.get(user=self.username)
         else:
             bonuses = False
         context['bonuses'] = bonuses
-        context['username'] = self.username
+        context['username'] = self.user
         return context
 
 
