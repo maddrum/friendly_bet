@@ -6,6 +6,7 @@ from django.views.generic import CreateView, ListView, TemplateView, UpdateView
 from accounts import forms
 from predictions.models import UserPredictions
 from predictions.views_mixins import GetEventMatchesMixin
+from accounts.models import UserExtendModel
 
 
 class UserRegisterView(CreateView):
