@@ -11,9 +11,7 @@ class UserExtendModel(models.Model):
 
     def get_user_names(self):
         if self.user.first_name or self.user.last_name:
-            print(self.user)
             return f'{self.user.first_name} {self.user.last_name}'
-        print(f'username {self.user.username}')
         return f'{self.user.username}'
 
 

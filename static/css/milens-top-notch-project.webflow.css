@@ -910,12 +910,14 @@ a:hover {
 
 .ronaldo {
     position: fixed;
-    left: -461px;
-    bottom: 0px;
+    left: -338px;
+    bottom: 30%;
     display: block;
     margin-right: auto;
     margin-left: auto;
+    transform: translateX(-460px);
 }
+
 
 .tabs-menu {
     display: -webkit-box;
@@ -1564,11 +1566,12 @@ a:hover {
         position: relative;
         display: inline-block;
         width: 100%;
-        height: 200px;
+        height: 225px;
         -webkit-box-pack: end;
         -webkit-justify-content: flex-end;
         -ms-flex-pack: end;
         justify-content: flex-end;
+        padding-bottom: 10px;
     }
 
     .footer-btn {
@@ -1662,6 +1665,7 @@ a:hover {
 
     .ronaldo {
         bottom: 183px;
+        max-height: 200px;
     }
 
     .tabs {
@@ -1700,12 +1704,18 @@ a:hover {
     transition: 0.4s;
     display: block;
     margin: 0 auto;
-    width: 100%;
+    width: 50%;
     margin-bottom: 2rem;
     text-align: center;
     font-size: 2rem;
     font-weight: bolder;
     border-radius: 20px;
+}
+
+@media (max-width: 479px) {
+    .accordion {
+        width: 80%;
+    }
 }
 
 
@@ -1767,4 +1777,12 @@ a:hover {
     font-weight: bold;
     font-size: 1.0rem;
     text-decoration: underline;
+}
+
+.color-primary {
+    color: #f3daa8 !important;
+}
+
+.text-left {
+    text-align: left !important;
 }

@@ -48,7 +48,7 @@
                         <div class="w-col w-col-8">
                             <div class="rarnk-txt user">
                                 <a href="{% url 'register' %}" class="white">
-                                     🢀&nbsp;&nbsp;&nbsp;ТУК може да си ти!
+                                     ←&nbsp;&nbsp;&nbsp;ТУК може да си ти!
                                 </a>
                             </div>
                         </div>
@@ -58,25 +58,3 @@
         {% endif %}
     </div>
 {% endblock %}
-
-
-
-
-
-
-{% if forloop.counter == 1 %}
-
-
-
-
-{% elif forloop.counter > 1 and forloop.counter < 4 %}
-    <img src="{% static 'images' %}/Rank{{ forloop.counter }}.png" width="200" class="image third">
-{% elif forloop.counter > 3 and forloop.counter < 7 %}
-    <img src="{% static 'images/Rank4.png' %}" width="130" class="image napadatel">
-{% elif forloop.counter > 6 and forloop.counter < 10 %}
-    <img src="{% static 'images/Rank5.png' %}" width="100" class="image half">
-{% elif forloop.counter > 9 and forloop.counter < 13 %}
-    <img src="{% static 'images/Rank6.png' %}" width="90" class="image bek">
-{% else %}
-    <img src="{% static 'images/Rank7.png' %}" width="50" class="image bojinka">
-{% endif %}

@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models import Q
 from django.utils.text import slugify
 from unidecode import unidecode
 
@@ -74,7 +73,6 @@ class EventPhases(models.Model):
 
     def limit_event_phases_choices(self):
         choices = EventMatchStates.objects.filter(event=self.event).values_list()
-        print(choices)
         return choices
 
 

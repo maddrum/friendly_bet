@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block banner %}
     <div class="hero">
         <div class="hero-wrp">
@@ -22,7 +24,10 @@
 
 {% block body_content %}
     <div class="content-wrp">
-        <h1 class="heading content">ЗА КАКВО СТАВА ВЪПРОС<br></h1>
+        <div class="text-center">
+            <img src="{% static 'images/OtherRonaldio.png' %}">
+        </div>
+        <h1 class=" heading content">ЗА КАКВО СТАВА ВЪПРОС<br></h1>
         <div class="text-block">Нещата не са сложни. Мачът почва след 16 минути, но ти все още можеш да дадеш своята
             прогноза.<br>Наред с това ще имаш възможност да познаеш и какъв ще е крайния резултат от срещата.<br></div>
         <h1 class="heading content">Разпределяне на точки:<br></h1>
@@ -37,5 +42,16 @@
         <h1 class="heading content subheading">В ТОЗИ САЙТ НЯМА НИЩО ХАЗАРТНО.<br> НИКОЙ НЕ ПЕЧЕЛИ ИЛИ ГУБИ КАКВОТО И ДА
             Е!<br></h1>
         <h1 class="heading content">тук Играете за чест и слава!<br></h1>
+        <div class="instructions white">
+            <h1 class="heading content">ДРУГИТЕ ЗА НАС</h1>
+            <div class="text-block">Какво сподели Гатузо за прогнозите си на предишното издание</div>
+            <br>
+            <div class="text-center">
+                <iframe width="375" height="315" src="https://www.youtube.com/embed/QJHUbtR0yI8"
+                        title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>
+            </div>
+        </div>
     </div>
 {% endblock %}

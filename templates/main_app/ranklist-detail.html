@@ -1,119 +1,104 @@
 {% extends 'base.html' %}
-{% block body_tag_define %}
-    <body class="body-2">
-{% endblock %}
+{% load ranking_tags %}
+{% block body_classes %}body-2{% endblock %}
+
 {% block body_content %}
     <div class="inner_page_header">
-        <div class="heading inner-ttl">Прогнози на {{ username }}</div>
+        <div class="heading inner-ttl">Прогнози на {{ username.extra.get_user_names }}</div>
     </div>
     <div class="content-wrp">
         {% for item in ranklist %}
             <div class="game-single inprofile">
-                <div class="match-number matchnumberprofile" style="color: #f3daa8">
-                    мач {{ item.match.match_number }}</div>
+                <div class="match-number matchnumberprofile color-primary">
+                    мач {{ item.match.match_number }}
+                </div>
                 <div class="w-row">
                     <div class="column-4 w-col w-col-6 w-col-medium-6 w-col-small-6 w-col-tiny-6">
                         <div class="team team-profile">
-                            <div class="team-ttl ttlprofile">{{ item.match.country_home }}</div>
+                            <div class="team-ttl ttlprofile">{{ item.match.home.name }}</div>
                         </div>
                     </div>
                     <div class="column w-col w-col-6 w-col-medium-6 w-col-small-6 w-col-tiny-6">
                         <div class="team team-profile">
-                            <div class="team-ttl ttlprofile">{{ item.match.country_guest }}</div>
+                            <div class="team-ttl ttlprofile">{{ item.match.guest.name }}</div>
                         </div>
                     </div>
                 </div>
                 <div class="game-history w-row">
                     <div class="w-col w-col-6">
-                        <h1 class="heading tab-heading history-ttl" style="color: #f3daa8">Прогнозирал</h1>
+                        <h1 class="heading tab-heading history-ttl color-primary">
+                            Прогнозирал
+                        </h1>
                         <ul class="unordered-list w-list-unstyled">
                             <li class="bonus-wrp">
-                                <div class="text-block histprylist" style="color: white">
-                                    {% if item.prediction_match_state == 'home' %}
-                                        Победа за {{ item.match.country_home }}
-                                    {% elif item.prediction_match_state == 'guest' %}
-                                        Победа за {{ item.match.country_guest }}
-                                    {% elif item.prediction_match_state == 'penalties_home' %}
-                                        Победа за {{ item.match.country_home }} след дузпи
-                                    {% elif item.prediction_match_state == 'penalties_guest' %}
-                                        Победа за {{ item.match.country_guest }} след дузпи
-                                    {% else %}
-                                        Равен
-                                    {% endif %}
-                                    <br>
+                                <div class="text-block histprylist white">
+                                    {{ item.match_state.get_match_state_display }}
                                 </div>
                             </li>
                             <li class="list-item-4">
-                                <div class="text-block histprylist" style="color: white">Голове
-                                    за {{ item.match.country_home }}: {{ item.prediction_goals_home }}<br></div>
+                                <div class="text-block histprylist white">
+                                    Голове за {{ item.match.home.name }}: {{ item.goals_home }}<br>
+                                </div>
                             </li>
                             <li class="list-item-5">
-                                <div class="text-block histprylist" style="color: white">Голове
-                                    за {{ item.match.country_guest }}: {{ item.prediction_goals_guest }}<br></div>
+                                <div class="text-block histprylist white">
+                                    Голове за {{ item.match.guest.name }}: {{ item.goals_guest }}
+                                    <br>
+                                </div>
                             </li>
                         </ul>
                     </div>
                     <div class="w-col w-col-6">
-                        <h1 class="heading tab-heading history-ttl" style="color: #f3daa8">Действително</h1>
-                        {% if item.match.match_is_over %}
-                            <ul class="unordered-list w-list-unstyled">
-                                <li class="bonus-wrp">
-                                    <div class="text-block histprylist" style="color: white">
-                                        {% if item.match.match_state == 'home' %}
-                                            Победа за {{ item.match.country_home }}
-                                        {% elif item.match.match_state == 'guest' %}
-                                            Победа за {{ item.match.country_guest }}
-                                        {% elif item.match.match_state == 'penalties_home' %}
-                                            Победа за {{ item.match.country_home }} след дузпи
-                                        {% elif item.match.match_state == 'penalties_guest' %}
-                                            Победа за {{ item.match.country_guest }} след дузпи
-                                        {% else %}
-                                            Равен
-                                        {% endif %}
-                                        <br>
-                                    </div>
-                                </li>
-                                <li class="list-item-4">
-                                    <div class="text-block histprylist" style="color: white">Голове
-                                        за {{ item.match.country_home }}
-                                        : {{ item.match.score_home }}<br></div>
-                                </li>
-                                <li class="list-item-5">
-                                    <div class="text-block histprylist" style="color: white">Голове
-                                        за {{ item.match.country_guest }}
-                                        : {{ item.match.score_guest }}</div>
-                                </li>
-                            </ul>
-                        {% else %}
-                            Този мач все още не е завършил!
-                        {% endif %}
+                        <h1 class="heading tab-heading history-ttl color-primary">
+                            Действително
+                        </h1>
+                        <ul class="unordered-list w-list-unstyled">
+                            <li class="bonus-wrp">
+                                <div class="text-block histprylist white">
+                                    {{ item.match.match_result.match_state.get_match_state_display }}
+                                </div>
+                            </li>
+                            <li class="list-item-4">
+                                <div class="text-block histprylist white">
+                                    Голове за {{ item.match.home.name }}: {{ item.match.match_result.score_home }}<br>
+                                </div>
+                            </li>
+                            <li class="list-item-5">
+                                <div class="text-block histprylist white">
+                                    Голове за {{ item.match.guest.name }}: {{ item.match.match_result.score_guest }}
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-                {% if item.match.match_is_over %}
-                    <h1 class="heading tab-heading history-ttl red" style="color: #f3daa8">Получени точки за
-                        срещата:</h1>
-                    <div class="text-block histprylist" style="color: white"> {{ item.prediction_note|linebreaks }}<br>
-                    </div>
-                    <div class="text-block histprylist points-indicator" style="color: #f3daa8">Общо точки за този
-                        мач: {{ item.points_gained }} т.<br>
-                    </div>
-                {% else %}
-                    <div class="text-block histprylist"><em>Тази среща все още не е завършила. Виж пак след
-                        края на мача!</em><br></div>
-                {% endif %}
+
+                <h1 class="heading tab-heading history-ttl color-primary">
+                    Получени точки за срещата:
+                </h1>
+                <div class="text-block histprylist white">
+                    {{ item.prediction_points.note|linebreaks }}
+                </div>
+                <h2 class="text-block histprylist points-indicator color-primary">
+                    Общо точки за този мач: {{ item.prediction_points.points_gained }} т.
+                </h2>
             </div>
         {% endfor %}
+        {% if not ranklist %}
+            <div class="text-block histprylist white">
+                Все още няма завършили мачове, които този играч е прогнозирал. Когато такива се появят, веднага ще ги
+                покажем!
+            </div>
+        {% endif %}
 
         {% if bonuses %}
-            <h1 class="heading tab-heading history-ttl red" style="color: #f3daa8">Получени бонус точки:</h1>
-            <div class="text-block histprylist" style="color: white"> {{ bonuses.total_summary|linebreaks }}<br>
+            <h1 class="heading tab-heading history-ttl red color-primary">Получени бонус точки:</h1>
+            <div class="text-block histprylist вхите"> {{ bonuses.total_summary|linebreaks }}<br>
             </div>
-            <div class="text-block histprylist points-indicator" style="color: #f3daa8">Общо бонус
-                точки: {{ bonuses.total_bonus_points }} т.<br>
+            <div class="text-block histprylist points-indicator color-primary">
+                Общо бонус точки: {{ bonuses.total_bonus_points }} т.<br>
             </div>
-            <div class="text-block histprylist points-indicator" style="color: #f3daa8">Всички бонус точки са прибавени
-                към
-                крайния резултат!<br>
+            <div class="text-block histprylist points-indicator color-primary">
+                Всички бонус точки са прибавени към крайния резултат!<br>
             </div>
         {% endif %}
     </div>
