@@ -1,44 +1,39 @@
 import datetime
 
-from django.utils import timezone
+from django.urls.exceptions import Http404
 from django.views.generic import ListView
 
+from matches.models import MatchResult
 from matches.models import Matches
 from predictions.models import UserPredictions
 
 
 class MatchDetailView(ListView):
     model = UserPredictions
-    template_name = 'main_app/match-detail.html'
-    context_object_name = 'match'
+    template_name = 'matches/match-detail.html'
+    context_object_name = 'predictions'
+    match = None
 
     def get_queryset(self):
-        pk = self.kwargs['pk']
-        queryset = UserPredictions.objects.filter(match__match_number=pk, match__match_is_over=True).order_by('user_id')
-        queryset_match = Matches.objects.filter(match_number=pk)
-        for item in queryset_match:
-            self.home_team = item.country_home
-            self.guest_team = item.country_guest
-            self.match_number = item.match_number
-            self.match_date = item.match_date
-            self.match_time = item.match_start_time
-            if item.match_is_over:
-                self.score_home = item.score_home
-                self.score_guest = item.score_guest
-            else:
-                self.score_home = '___'
-                self.score_guest = '___'
+        try:
+            self.match = Matches.objects.get(pk=self.kwargs['pk'])
+        except Matches.DoesNotExist:
+            raise Http404()
+        try:
+            match_result = MatchResult.objects.get(match=self.match)
+        except MatchResult.DoesNotExist:
+            raise Http404()
+        if not match_result.match_is_over:
+            raise Http404()
+        queryset = UserPredictions.objects.filter(match__pk=self.kwargs['pk'],
+                                                  match__match_result__match_is_over=True).order_by(
+            'user__pk').prefetch_related('match').select_related('match__match_result')
         return queryset
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data()
-        context['home_team'] = self.home_team
-        context['guest_team'] = self.guest_team
-        context['match_number'] = self.match_number
-        context['match_date'] = self.match_date
-        context['match_time'] = self.match_time
-        context['score_home'] = self.score_home
-        context['score_guest'] = self.score_guest
+        context['match'] = self.match
+
         return context
 
 

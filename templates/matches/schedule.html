@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load matches_tags %}
+
 {% block body_classes %}body-2{% endblock %}
 
 {% block body_content %}
@@ -12,7 +14,7 @@
                 {% for item in today_matches %}
                     <div class="game-wrp">
                         <div class="match-number">
-                            <a href="#" style="color: white">Мач {{ item.match_number }}</a>
+                            Мач {{ item.match_number }}
                         </div>
                         <div class="w-row">
                             <div class="column-4 w-col w-col-5 w-col-medium-5 w-col-small-5 w-col-tiny-5">
@@ -23,22 +25,14 @@
                             <div class="column-3 w-col w-col-1 w-col-medium-1 w-col-small-1 w-col-tiny-1">
                                 <div class="score">
                                     <div class="score-txt">
-                                        {% if item.match_result %}
-                                            {{ item.match_result.score_home }}
-                                        {% else %}
-                                            ___
-                                        {% endif %}
+                                        ___
                                     </div>
                                 </div>
                             </div>
                             <div class="column-2 w-col w-col-1 w-col-medium-1 w-col-small-1 w-col-tiny-1">
                                 <div class="score">
                                     <div class="score-txt">
-                                        {% if item.match_result %}
-                                            {{ item.match_result.score_guest }}
-                                        {% else %}
-                                            ___
-                                        {% endif %}
+                                        ___
                                     </div>
                                 </div>
                             </div>
@@ -59,7 +53,13 @@
                     {% for item in matches %}
                         <div class="game-wrp">
                             <div class="match-number">
-                                <a href="#" style="color: white">Мач {{ item.match_number }}</a>
+                                {% if item.match_result %}
+                                    <a href="{% url 'match_detail' pk=item.pk %}" class="white">
+                                        Мач {{ item.match_number }}
+                                    </a>
+                                {% else %}
+                                    Мач {{ item.match_number }}
+                                {% endif %}
                             </div>
                             <div class="w-row">
                                 <div class="column-4 w-col w-col-5 w-col-medium-5 w-col-small-5 w-col-tiny-5">
@@ -70,8 +70,8 @@
                                 <div class="column-3 w-col w-col-1 w-col-medium-1 w-col-small-1 w-col-tiny-1">
                                     <div class="score">
                                         <div class="score-txt">
-                                            {% if item.match_result %}
-                                                {{ item.match_result.score_home }}
+                                            {% if item.match_result.match_is_over %}
+                                                {% get_match_home_result item.match_result %}
                                             {% else %}
                                                 ___
                                             {% endif %}
@@ -81,8 +81,8 @@
                                 <div class="column-2 w-col w-col-1 w-col-medium-1 w-col-small-1 w-col-tiny-1">
                                     <div class="score">
                                         <div class="score-txt">
-                                            {% if item.match_result %}
-                                                {{ item.match_result.score_guest }}
+                                            {% if item.match_result.match_is_over %}
+                                                {% get_match_guest_result item.match_result %}
                                             {% else %}
                                                 ___
                                             {% endif %}
@@ -95,6 +95,9 @@
                                     </div>
                                 </div>
                             </div>
+                            {% if item.match_result.match_is_over and item.match_result.penalties %}
+                                <div class="match-date">след дузпи</div>
+                            {% endif %}
                             <div class="match-date">{{ item.match_date }} {{ item.match_start_time }}</div>
                         </div>
                     {% endfor %}
