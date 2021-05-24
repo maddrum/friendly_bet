@@ -103,6 +103,9 @@
             </div>
         {% endif %}
     </div>
-    <img src="{% static 'images/Ronaldio.png' %}" data-w-id="52e67e0c-e3e2-e8a1-7dbb-2cf3731cb346"
-            class="ronaldo">
+    {% if show_animation %}
+        <img src="{% static 'images/Ronaldio.png' %}" data-w-id="52e67e0c-e3e2-e8a1-7dbb-2cf3731cb346"
+                class="ronaldo">
+    {% endif %}
+
 {% endblock %}

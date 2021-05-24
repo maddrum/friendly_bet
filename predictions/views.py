@@ -107,12 +107,23 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
         kwargs['matches'] = self.matches
         return kwargs
 
+    def check_show_animation(self):
+        check_animation = self.request.session.get('check_animation', None)
+        if check_animation is None:
+            self.request.session['check_animation'] = 0
+            return True
+        if check_animation > 4:
+            self.request.session['check_animation'] = 0
+        self.request.session['check_animation'] += 1
+        return check_animation == 4
+
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         self.update_form_input_object()
         time_delta = self._get_first_match_start_time() - datetime.timedelta(minutes=2)
         context['matches'] = list(self.matches)
         context['time_delta'] = time_delta
+        context['show_animation'] = self.check_show_animation()
         return context
 
     def formset_valid(self, formset):
