@@ -916,6 +916,7 @@ a:hover {
     margin-right: auto;
     margin-left: auto;
     transform: translateX(-460px);
+    max-height: 300px;
 }
 
 
