@@ -1462,6 +1462,10 @@ a:hover {
 }
 
 @media (max-width: 479px) {
+    input {
+        max-width: 80%;
+    }
+
     .nav-link {
         padding: 14px 25px;
     }
@@ -1526,12 +1530,17 @@ a:hover {
         margin-left: auto;
     }
 
+    .submit-btn {
+        max-width: 80%;
+    }
+
     .cup-wrp {
         margin-top: -93px;
     }
 
     .content-wrp {
         padding-top: 7px;
+        width: 80%;
     }
 
     .text-block.ftr {
@@ -1590,7 +1599,6 @@ a:hover {
     }
 
     .inner_page_header {
-        height: 350px;
         margin-top: 70px;
         padding-top: 0px;
     }
