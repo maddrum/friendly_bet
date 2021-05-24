@@ -6,6 +6,7 @@ cffi==1.14.5
 colorama==0.4.4
 decorator==5.0.9
 Django==3.2.3
+django-debug-toolbar==3.2.1
 django-extra-views==0.13.0
 django-recaptcha==2.0.6
 ipython==7.23.1

@@ -49,7 +49,8 @@ class ScheduleView(ListView):
 
         date_bounds = [datetime.datetime.combine(current_date, datetime.time(0, 0, 1)),
                        datetime.datetime.combine(current_date, datetime.time(23, 59, 59))]
-        all_matches = Matches.objects.all().order_by('phase', 'match_start_time').prefetch_related('match_result')
+        all_matches = Matches.objects.all().order_by('phase', 'match_start_time').prefetch_related(
+            'phase').select_related('match_result')
         today_matches = all_matches.filter(match_start_time__gte=date_bounds[0], match_start_time__lte=date_bounds[1])
         match_order = {}
         for match in all_matches:
