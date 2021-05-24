@@ -25,7 +25,11 @@
 {% block body_content %}
     <div class="content-wrp">
         <div class="text-center">
-            <img src="{% static 'images/OtherRonaldio.png' %}">
+            <video width="300" height="300" autoplay loop>
+                <source src="{% static 'videos/ronaldo.mp4' %}" type="video/mp4">
+                <source src="{% static 'videos/ronaldo.mp4' %}" type="video/ogg">
+                Your browser does not support the video tag.
+            </video>
         </div>
         <h1 class=" heading content">ЗА КАКВО СТАВА ВЪПРОС<br></h1>
         <div class="text-block">Нещата не са сложни. Мачът почва след 16 минути, но ти все още можеш да дадеш своята
