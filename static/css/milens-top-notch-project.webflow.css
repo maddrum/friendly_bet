@@ -1323,6 +1323,16 @@ a:hover {
     .tab-link.w--current {
         width: 120px;
     }
+
+    .hero {
+        height: 800px;
+    }
+
+    .hero-wrp {
+        height: 800px;
+    }
+
+
 }
 
 @media (max-width: 767px) {
@@ -1459,6 +1469,15 @@ a:hover {
     .tabs-content {
         border-radius: 0px;
     }
+
+    .hero {
+        height: 800px;
+    }
+
+    .hero-wrp {
+        height: 800px;
+    }
+
 }
 
 @media (max-width: 479px) {
@@ -1471,11 +1490,11 @@ a:hover {
     }
 
     .hero {
-        height: 750px;
+        height: 800px;
     }
 
     .hero-wrp {
-        height: 750px;
+        height: 800px;
     }
 
     .heading {
