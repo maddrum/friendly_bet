@@ -1,5 +1,6 @@
 from django.contrib import admin
-from bonus_points.models import BonusDescription, BonusUserPrediction, BonusUserScore, UserBonusSummary
+from bonus_points.models import BonusDescription, BonusUserPrediction, BonusUserScore, UserBonusSummary, \
+    AutoBonusUserScore
 
 
 class ReadOnlyFields(admin.ModelAdmin):
@@ -10,3 +11,4 @@ admin.site.register(BonusDescription, ReadOnlyFields)
 admin.site.register(BonusUserPrediction, ReadOnlyFields)
 admin.site.register(BonusUserScore, ReadOnlyFields)
 admin.site.register(UserBonusSummary, ReadOnlyFields)
+admin.site.register(AutoBonusUserScore, ReadOnlyFields)

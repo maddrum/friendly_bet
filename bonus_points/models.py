@@ -18,6 +18,7 @@ class BonusDescription(models.Model):
     auto_bonus = models.BooleanField(default=False,
                                      help_text='If this is checked, all users will be included to '
                                                'participate in this bonus by default.')
+    auto_bonus_calculator_function_name = models.CharField(max_length=100, null=True, blank=True)
     bonus_active = models.BooleanField(default=False)
 
     created_on = models.DateTimeField(auto_now_add=True)
@@ -49,7 +50,20 @@ class BonusUserScore(models.Model):
     edited_on = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'{self.user} - {self.prediction} - {self.points_gained}'
+        return f'{self.prediction} - {self.points_gained}'
+
+
+class AutoBonusUserScore(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='auto_bonus_user')
+    bonus = models.ForeignKey(BonusDescription, on_delete=models.CASCADE, related_name='auto_bonus_obj')
+    points_gained = models.IntegerField(default=0)
+    summary_text = models.CharField(max_length=500)
+
+    created_on = models.DateTimeField(auto_now_add=True)
+    edited_on = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.user} - {self.points_gained}'
 
 
 class UserBonusSummary(models.Model):
