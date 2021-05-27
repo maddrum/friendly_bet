@@ -18,6 +18,9 @@ class UserPredictions(models.Model):
     def __str__(self):
         return str(self.user) + " " + str(self.match)
 
+    class Meta:
+        unique_together = ('user', 'match')
+
 
 class PredictionPoints(models.Model):
     prediction = models.OneToOneField(UserPredictions, on_delete=models.CASCADE, related_name='prediction_points')

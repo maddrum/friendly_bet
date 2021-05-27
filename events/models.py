@@ -11,6 +11,7 @@ class Event(models.Model):
     event_start_date = models.DateField()
     event_end_date = models.DateField()
     top_event = models.BooleanField(default=False)
+    event_total_matches = models.IntegerField(default=0)
     created_on = models.DateTimeField(auto_now_add=True)
     edited_on = models.DateTimeField(auto_now=True)
 
