@@ -47,9 +47,13 @@
                         </div>
                         <div class="w-col w-col-8">
                             <div class="rarnk-txt user">
-                                <a href="{% url 'register' %}" class="white">
-                                     ←&nbsp;&nbsp;&nbsp;ТУК може да си ти!
-                                </a>
+                                {% if user.is_authenticated %}
+                                    ←&nbsp;&nbsp;&nbsp;ТУК може да си ти!
+                                {% else %}
+                                    <a href="{% url 'register' %}" class="white">
+                                        ←&nbsp;&nbsp;&nbsp;ТУК може да си ти!
+                                    </a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
