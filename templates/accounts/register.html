@@ -17,10 +17,22 @@
             <form method="POST">
                 {% csrf_token %}
                 <label>Потребителско име</label>
+                {% if form.username.errors %}
+                    <h2>ЗАСАДА!</h2>
+                    {{ form.username.errors }}
+                {% endif %}
                 {{ form.username }}
                 <label>Парола</label>
+                {% if form.password1.errors %}
+                    <h2>ЖЪЛТ КАРТОН!</h2>
+                    {{ form.password1.errors }}
+                {% endif %}
                 {{ form.password1 }}
                 <label>Я дай пак паролата</label>
+                {% if form.password2.errors %}
+                    <h2>ГРЕДА!</h2>
+                    {{ form.password2.errors }}
+                {% endif %}
                 {{ form.password2 }}
                 <br><br><br>
                 <div class="text-center">
