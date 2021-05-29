@@ -111,16 +111,16 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
 
     def show_animation(self):
         animation_picture_names = ['Elon.png', 'gandalf.png', 'Milko.png', 'Fiki.png', 'Suarez.png']
+        picture = random.choice(animation_picture_names)
+        picture = settings.STATIC_URL + 'images/' + 'side_pictures/' + picture
         check_animation = self.request.session.get('check_animation', None)
         if check_animation is None:
             self.request.session['check_animation'] = 0
-            return True
+            return True, picture
         if check_animation > 4:
             self.request.session['check_animation'] = 0
         self.request.session['check_animation'] += 1
         show_animation = check_animation == 2
-        picture = random.choice(animation_picture_names)
-        picture = settings.STATIC_URL + 'images/' + 'side_pictures/' + picture
         return show_animation, picture
 
     def get_context_data(self, *args, **kwargs):
