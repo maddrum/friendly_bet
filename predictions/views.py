@@ -14,6 +14,8 @@ from predictions.forms import PredictionForm
 from predictions.formsets import PredictionFormSet
 from predictions.models import UserPredictions, UserScores
 from predictions.views_mixins import GetEventMatchesMixin
+import random
+from django.conf import settings
 
 
 class RankList(ListView):
@@ -107,15 +109,19 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
         kwargs['matches'] = self.matches
         return kwargs
 
-    def check_show_animation(self):
+    def show_animation(self):
+        animation_picture_names = ['Elon.png', 'gandalf.png', 'Milko.png', 'Fiki.png', 'Suarez.png']
+        picture = random.choice(animation_picture_names)
+        picture = settings.STATIC_URL + 'images/' + 'side_pictures/' + picture
         check_animation = self.request.session.get('check_animation', None)
         if check_animation is None:
             self.request.session['check_animation'] = 0
-            return True
+            return True, picture
         if check_animation > 4:
             self.request.session['check_animation'] = 0
         self.request.session['check_animation'] += 1
-        return check_animation == 4
+        show_animation = check_animation == 2
+        return show_animation, picture
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -123,7 +129,7 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
         time_delta = self._get_first_match_start_time() - datetime.timedelta(minutes=2)
         context['matches'] = list(self.matches)
         context['time_delta'] = time_delta
-        context['show_animation'] = self.check_show_animation()
+        context['show_animation'], context['animation_picture'] = self.show_animation()
         return context
 
     def formset_valid(self, formset):
