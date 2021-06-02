@@ -9,13 +9,6 @@
                 <h1 class="heading" style="text-align: left">и стани шампион</h1>
                 <a href="{% url 'create_predictions' %}" data-w-id="9298a946-0f8a-94b4-9671-33a1521ce903"
                         class="start-btn w-button">СТАРТ! </a>
-                {% if user.is_authenticated %}
-                    <a href="{% url 'logout' %}" data-w-id="5711b128-b595-dfda-f10b-1cfee2c7a567"
-                            class="logout-bn w-button">LOGOUT</a>
-                {% else %}
-                    <a href="{% url 'login' %}" data-w-id="5711b128-b595-dfda-f10b-1cfee2c7a567"
-                            class="logout-bn w-button">LOGIN</a>
-                {% endif %}
             </div>
             <div class="cup-wrp"></div>
         </div>
