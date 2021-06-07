@@ -36,7 +36,9 @@
             {% if not active and not not_active %}
                 В момента няма активни бонуси, но проверявай често!
             {% endif %}
-            <h4 class="heading tab-heading history-ttl red">Отминали:</h4>
+            {% if not_active %}
+                <h4 class="heading tab-heading history-ttl red">Отминали:</h4>
+            {% endif %}
             <ul class="unordered-list w-list-unstyled">
                 {% for item in not_active %}
                     {% get_values_from_dictionary_tag all_predictions item as prediction %}
