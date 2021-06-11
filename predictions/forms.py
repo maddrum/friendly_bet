@@ -16,10 +16,15 @@ class PredictionForm(forms.ModelForm):
         self.home_team = home_team
         self.guest_team = guest_team
         self.fields['goals_home'].widget.attrs = {
-            'style': "font-size: 17px;width: 200px"
+            'style': "font-size: 17px;width: 200px",
+            'required': 'required',
         }
         self.fields['goals_guest'].widget.attrs = {
-            'style': "font-size: 17px;width: 200px"
+            'style': "font-size: 17px;width: 200px",
+            'required': 'required',
+        }
+        self.fields['match_state'].widget.attrs = {
+            'required': 'required',
         }
 
         MATCH_STATE_OPTIONS = {
@@ -47,6 +52,10 @@ class PredictionForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
+        if 'goals_home' not in cleaned_data \
+                or 'goals_guest' not in cleaned_data \
+                or 'match_state' not in cleaned_data:
+            raise ValidationError('Нещо не е наред с попълнените данни...')
         if cleaned_data['goals_home'] < 0 or cleaned_data['goals_guest'] < 0:
             raise ValidationError(
                 'Както би казал Домусата: Или си олигофрен, или не знам. '
