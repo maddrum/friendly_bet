@@ -35,11 +35,6 @@
         {% endfor %}
         {% if not ranklist %}
             <div class="{% get_rank_html_class 1 %} w-row">
-                <div class="badge w-col w-col-3 w-col-stack">
-                    <img src="{% static 'images' %}/{% get_rank_image_name 1 %}"
-                            width="{% get_rank_image_width 1 %}"
-                            class="image {% get_rank_image_class 1 %}">
-                </div>
                 <div class="info-wirp w-col w-col-9 w-col-stack">
                     <div class="info-table w-row">
                         <div class="w-col w-col-4">
