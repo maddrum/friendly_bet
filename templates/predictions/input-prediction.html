@@ -12,7 +12,7 @@
     </div>
 
     <div class="content-wrp">
-        {% if formset and formset|length != 0 %}
+        {% if match_check %}
             <p id="time-counter" class="text-input input-counter white"></p>
             <form method="post">
                 {% csrf_token %}
