@@ -1,5 +1,7 @@
 import datetime
+import random
 
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
@@ -10,12 +12,11 @@ from extra_views import ModelFormSetView
 
 from accounts.models import LastUserMatchInputStart
 from bonus_points.models import UserBonusSummary
+from matches.models import Matches
 from predictions.forms import PredictionForm
 from predictions.formsets import PredictionFormSet
 from predictions.models import UserPredictions, UserScores
 from predictions.views_mixins import GetEventMatchesMixin
-import random
-from django.conf import settings
 
 
 class RankList(ListView):
@@ -81,9 +82,6 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
             if self._get_now_plus_time(plus_minutes=0) > user_last_input_start.valid_to:
                 raise Http404()
 
-        if not self.matches.exists():
-            raise Http404()
-
     def check_for_user_predictions(self):
         check = UserPredictions.objects.filter(user=self.request.user, match__in=self.all_today_matches).exists()
         self.user_gave_prediction = check
@@ -126,7 +124,15 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         self.update_form_input_object()
-        time_delta = self._get_first_match_start_time() - datetime.timedelta(minutes=2)
+        match_check = self.matches.exists()
+        if match_check:
+            time_delta = self._get_first_match_start_time() - datetime.timedelta(minutes=2)
+        else:
+            time_delta = False
+        if self.user_gave_prediction:
+            context['match_check'] = False
+        else:
+            context['match_check'] = match_check
         context['matches'] = list(self.matches)
         context['time_delta'] = time_delta
         context['show_animation'], context['animation_picture'] = self.show_animation()
@@ -150,9 +156,12 @@ class UserUpdatePredictionView(EventCreatePredictionView):
 
     def get_queryset(self):
         qs = UserPredictions.objects.filter(pk=self.kwargs['pk'])
+        obj = qs.first()
+        match = obj.match
+        self.matches = self.matches.filter(pk=match.pk)
         if not qs.exists():
             raise Http404()
-        if qs.first().user != self.request.user:
+        if obj.user != self.request.user:
             raise Http404()
         return qs
 
