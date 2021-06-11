@@ -1,4 +1,5 @@
 from django.urls import path
+
 from predictions import views
 
 urlpatterns = [
@@ -7,5 +8,4 @@ urlpatterns = [
     path('update-predicticon/<int:pk>', views.UserUpdatePredictionView.as_view(), name='update_prediction'),
     path('ranklist/', views.RankList.as_view(), name='ranklist'),
     path('rankilst-detail/<int:pk>', views.RankilstUserPoints.as_view(), name='ranklist_detail'),
-
 ]

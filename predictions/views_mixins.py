@@ -33,7 +33,8 @@ class GetEventMatchesMixin:
             self.event = Event.objects.all().first()
 
     def _get_event_start_wrap(self):
-        return datetime.datetime.combine(self.event.event_start_date, datetime.time(23, 59, 59))
+        first_match = Matches.objects.filter(phase__event=self.event).order_by('match_number').first()
+        return first_match.match_start_time
 
     def _get_now_plus_time(self, plus_minutes=15):
         now_time = timezone.now()
@@ -41,6 +42,8 @@ class GetEventMatchesMixin:
 
     def _get_first_match_start_time(self):
         qs = self.matches.order_by('match_start_time')
+        if not qs.exists():
+            return None
         return qs.first().match_start_time - datetime.timedelta(minutes=1)
 
     def get_current_matches(self):
