@@ -110,7 +110,7 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
         return kwargs
 
     def show_animation(self):
-        animation_picture_names = ['Elon.png', 'gandalf.png', 'Milko.png', 'Fiki.png', 'Suarez.png']
+        animation_picture_names = ['Elon.png', 'gandalf.png', 'Milko.png', 'Fiki.png', 'Suarez.png', 'putin.png']
         picture = random.choice(animation_picture_names)
         picture = settings.STATIC_URL + 'images/' + 'side_pictures/' + picture
         check_animation = self.request.session.get('check_animation', None)
