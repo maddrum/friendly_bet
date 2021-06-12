@@ -1,21 +1,12 @@
 import datetime
 
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect
-from django.urls import reverse_lazy
-from django.urls.exceptions import Http404
 from django.utils import timezone
-from django.views.generic import ListView, TemplateView
-from extra_views import ModelFormSetView
 
-from accounts.models import LastUserMatchInputStart
 from events.models import Event
 from matches.models import Matches
-from predictions.forms import PredictionForm
-from predictions.formsets import PredictionFormSet
+
+
 # from bonus_points.models import UserBonusSummary
-from predictions.models import UserPredictions
-from predictions.models import UserScores
 
 
 class GetEventMatchesMixin:
@@ -43,7 +34,7 @@ class GetEventMatchesMixin:
     def _get_first_match_start_time(self):
         qs = self.matches.order_by('match_start_time')
         if not qs.exists():
-            return None
+            return timezone.now() - datetime.timedelta(minutes=10)
         return qs.first().match_start_time - datetime.timedelta(minutes=1)
 
     def get_current_matches(self):
