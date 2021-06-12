@@ -12,7 +12,6 @@ from extra_views import ModelFormSetView
 
 from accounts.models import LastUserMatchInputStart
 from bonus_points.models import UserBonusSummary
-from matches.models import Matches
 from predictions.forms import PredictionForm
 from predictions.formsets import PredictionFormSet
 from predictions.models import UserPredictions, UserScores
@@ -78,6 +77,8 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
             try:
                 user_last_input_start = LastUserMatchInputStart.objects.get(user=self.request.user)
             except LastUserMatchInputStart.DoesNotExist:
+                raise Http404()
+            if user_last_input_start.valid_to is None:
                 raise Http404()
             if self._get_now_plus_time(plus_minutes=0) > user_last_input_start.valid_to:
                 raise Http404()
