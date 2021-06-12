@@ -74,6 +74,8 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
         if self.request.method == 'POST':
             if self.user_gave_prediction:
                 raise Http404()
+            if not self.matches.exists():
+                raise Http404()
             try:
                 user_last_input_start = LastUserMatchInputStart.objects.get(user=self.request.user)
             except LastUserMatchInputStart.DoesNotExist:
@@ -140,6 +142,9 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
         return context
 
     def formset_valid(self, formset):
+        formset_len = len(formset)
+        if formset_len != self.matches.count():
+            raise Http404()
         index = 0
         for form in formset:
             match = self.matches[index]
@@ -160,7 +165,7 @@ class UserUpdatePredictionView(EventCreatePredictionView):
         obj = qs.first()
         match = obj.match
         self.matches = self.matches.filter(pk=match.pk)
-        if not qs.exists():
+        if not qs.exists() or not self.matches.exists():
             raise Http404()
         if obj.user != self.request.user:
             raise Http404()
