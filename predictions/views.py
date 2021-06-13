@@ -91,7 +91,7 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
 
     def update_form_input_object(self):
         form_check_obj, created = LastUserMatchInputStart.objects.get_or_create(user=self.request.user)
-        form_check_obj.valid_to = self._get_first_match_start_time()
+        form_check_obj.valid_to = self._get_first_match_start_time() - datetime.timedelta(minutes=15)
         form_check_obj.save()
 
     def get_queryset(self):
@@ -129,7 +129,7 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
         self.update_form_input_object()
         match_check = self.matches.exists()
         if match_check:
-            time_delta = self._get_first_match_start_time() - datetime.timedelta(minutes=2)
+            time_delta = self._get_first_match_start_time() - datetime.timedelta(minutes=15)
         else:
             time_delta = False
         if self.user_gave_prediction:
