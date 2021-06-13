@@ -31,14 +31,14 @@ class GetEventMatchesMixin:
         now_time = timezone.now()
 
         #todo - debug setting
-        # now_time = datetime.datetime(2021,6,12,15,45)
+        # now_time = datetime.datetime(2021,6,13,15,42)
         return now_time + datetime.timedelta(minutes=plus_minutes)
 
     def _get_first_match_start_time(self):
         qs = self.matches.order_by('match_start_time')
         if not qs.exists():
             return timezone.now() - datetime.timedelta(minutes=10)
-        return qs.first().match_start_time - datetime.timedelta(minutes=1)
+        return qs.first().match_start_time
 
     def get_current_matches(self):
         now_plus_time = self._get_now_plus_time()
