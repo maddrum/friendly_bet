@@ -9,7 +9,7 @@ class ReadOnlyFields(admin.ModelAdmin):
 
 class UserPredictionsAdmin(ReadOnlyFields):
     list_display = (
-        'user', 'match', 'match_state_guess', 'goals_home', 'goals_home', 'valid_prediction', 'guessed_match_state',
+        'user', 'match', 'match_state_guess', 'goals_home', 'goals_guest', 'valid_prediction', 'guessed_match_state',
         'guessed_goals_home', 'guessed_goals_guest', 'points_gained')
 
     def match_state_guess(self, obj):
