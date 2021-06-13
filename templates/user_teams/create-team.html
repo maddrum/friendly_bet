@@ -1,0 +1,18 @@
+{% extends 'accounts/profile-base.html' %}
+
+{% block  profile_content %}
+    <h1 class="heading tab-heading">Отбори</h1>
+    <div class="text-block tab">Тук може да създадеш менажираш твоите отбори. <br></div>
+    <div class="form-txt">
+        <div class="text-block histprylist bonus-list">
+
+            <form method="post">
+                {% csrf_token %}
+                {{ form }}
+                <input type="submit" data-w-id="8782863a-1d5d-0d40-92f8-45790f30b309"
+                        class="submit-btn-no-glow w-button" value="Да БЪДЕ!">
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

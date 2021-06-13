@@ -102,6 +102,7 @@ INSTALLED_APPS = [
     'matches',
     'predictions',
     'bonus_points',
+    'user_teams',
 
     # 'debug_toolbar',
 ]

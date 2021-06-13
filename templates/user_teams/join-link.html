@@ -1,0 +1,11 @@
+{% extends 'accounts/profile-base.html' %}
+
+{% block  profile_content %}
+    <h1 class="heading tab-heading">Отбори</h1>
+    <div class="text-block tab">Изполвай линка по-долу за да каниш само наши хора в твоя отбор.<br></div>
+    <div class="form-txt">
+        <div class="text-block histprylist bonus-list">
+            {{ request.scheme }}://{{ request.get_host }}{{ link }}
+        </div>
+    </div>
+{% endblock %}

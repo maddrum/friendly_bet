@@ -12,6 +12,7 @@ urlpatterns = [
     path('matches/', include('matches.urls')),
     path('predictions/', include('predictions.urls')),
     path('bonus/', include('bonus_points.urls')),
+    path('teams/', include('user_teams.urls')),
     path('klimatik/', admin.site.urls),
 
     # path('__debug__/', include(debug_toolbar.urls)),

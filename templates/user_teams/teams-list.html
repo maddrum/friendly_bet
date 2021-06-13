@@ -1,0 +1,57 @@
+{% extends 'accounts/profile-base.html' %}
+
+{% block  profile_content %}
+    <h1 class="heading tab-heading">Отбори</h1>
+    <div class="text-block tab">Тук може да видиш, създадеш и менажираш твоите отбори.<br></div>
+    <div class="text-block tab" style="width:80%;">
+        Всеки отбор си има негова си мини-ранглиста,
+        което е супер-удобно за да натриеш носовете на
+        някакъв определен и затворен тип "разбирачи".
+    </div>
+    <div class="form-txt">
+        <div class="text-block histprylist bonus-list">
+            <a href="{% url 'teams_create' %}" data-w-id="8782863a-1d5d-0d40-92f8-45790f30b309"
+                    class="submit-btn-no-glow w-button" style="padding-top: 26px; margin-top:10px;">Създай тим</a>
+            {% if your_teams %}
+                <h2 class="blue">Твоите отбори</h2>
+            {% endif %}
+            {% for team in your_teams %}
+                <div style="border:1px solid #1c6bb4; width: 95%; border-radius:5px; margin: 0 auto;">
+                    <div class="w-row">
+                        <div class="w-col w-col-8">
+                            <div class="w-row">
+                                <div class="w-col w-col-12">
+                                    <h3 class="blue">{{ team.name }}</h3>
+                                </div>
+                            </div>
+                            <div class="w-row">
+                                <div class="w-col w-col-12">
+                                    <a href="{% url 'team_link' pk=team.pk %}" class="buttons small-btn">
+                                        Покани хора в отбора</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-col w-col-4">
+                            <select onchange="window.location=this.value">
+                                <option selected value="#">Избери си...</option>
+                                <option value="">Виж тим ранглиста</option>
+                                <option value="{% url 'teams_update' pk=team.pk %}">Редактирай тим</option>
+                                <option value="{% url 'team_members' pk=team.pk %}">Управление на членове</option>
+                            </select>
+                            <a href="#" class="button logout-btn white" style="margin: 10px auto; padding-top: 12px;">
+                                Премахни
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+            {% if teams %}
+                <h2 class="blue">Отбори, в които си член</h2>
+            {% endif %}
+            {% for team in teams %}
+                {{ team }}<br>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

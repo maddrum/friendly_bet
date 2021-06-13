@@ -1,0 +1,35 @@
+{% extends 'accounts/profile-base.html' %}
+
+{% block  profile_content %}
+    <h1 class="heading tab-heading">Членове на отбор: {{ team.name }}</h1>
+
+    <div class="form-txt">
+        <div class="text-block histprylist bonus-list">
+            {% for member in team_members %}
+                {% if member.user != user %}
+                    <div style="border:1px solid #1c6bb4; width: 95%; margin: 0 auto;">
+                        <div class="w-row">
+                            <div class="w-col w-col-4">
+                                <h3 class="blue">{{ member.user.extra.get_user_names }}</h3>
+                            </div>
+                            <div class="w-col w-col-4">
+                                {% if not member.approved %}
+                                    <a href="{% url 'approve_member' pk=member.pk %}" class="button small-btn"
+                                            style="margin: 10px auto; padding-top: 12px;"> одобрявам го
+                                    </a>
+                                {% endif %}
+                            </div>
+                            <div class="w-col w-col-4">
+                                <button class="button logout-btn white"
+                                        style="margin: 10px auto; padding-top: 5px;">
+                                    Оставка
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
