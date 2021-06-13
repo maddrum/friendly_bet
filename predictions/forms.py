@@ -16,14 +16,15 @@ class PredictionForm(forms.ModelForm):
         self.home_team = home_team
         self.guest_team = guest_team
         self.fields['goals_home'].widget.attrs = {
-            'style': "font-size: 17px;width: 200px",
+            'class': 'goals-input',
             'required': 'required',
         }
         self.fields['goals_guest'].widget.attrs = {
-            'style': "font-size: 17px;width: 200px",
+            'class': 'goals-input',
             'required': 'required',
         }
         self.fields['match_state'].widget.attrs = {
+            'class': 'match-select',
             'required': 'required',
         }
 
