@@ -30,7 +30,7 @@ class GetEventMatchesMixin:
     def _get_now_plus_time(self, plus_minutes=15):
         now_time = timezone.now()
 
-        #todo - debug setting
+        # todo - debug setting
         # now_time = datetime.datetime(2021,6,13,15,42)
         return now_time + datetime.timedelta(minutes=plus_minutes)
 
