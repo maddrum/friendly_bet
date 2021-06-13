@@ -25,14 +25,22 @@
                             <div class="column-3 w-col w-col-1 w-col-medium-1 w-col-small-1 w-col-tiny-1">
                                 <div class="score">
                                     <div class="score-txt">
-                                        ___
+                                        {% if item.match_result.match_is_over %}
+                                            {% get_match_home_result item.match_result %}
+                                        {% else %}
+                                            ⚽
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
                             <div class="column-2 w-col w-col-1 w-col-medium-1 w-col-small-1 w-col-tiny-1">
                                 <div class="score">
                                     <div class="score-txt">
-                                        ___
+                                        {% if item.match_result.match_is_over %}
+                                            {% get_match_guest_result item.match_result %}
+                                        {% else %}
+                                            ⚽
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -42,6 +50,9 @@
                                 </div>
                             </div>
                         </div>
+                        {% if item.match_result.match_is_over and item.match_result.penalties %}
+                            <div class="match-date">след дузпи</div>
+                        {% endif %}
                         <div class="match-date">{{ item.match_date }} {{ item.match_start_time }}</div>
                     </div>
                 {% endfor %}
@@ -73,7 +84,7 @@
                                             {% if item.match_result.match_is_over %}
                                                 {% get_match_home_result item.match_result %}
                                             {% else %}
-                                                ___
+                                                ⚽
                                             {% endif %}
                                         </div>
                                     </div>
@@ -84,7 +95,7 @@
                                             {% if item.match_result.match_is_over %}
                                                 {% get_match_guest_result item.match_result %}
                                             {% else %}
-                                                ___
+                                                ⚽
                                             {% endif %}
                                         </div>
                                     </div>

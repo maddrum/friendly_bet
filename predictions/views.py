@@ -86,8 +86,8 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
                 raise Http404()
 
     def check_for_user_predictions(self):
-        check = UserPredictions.objects.filter(user=self.request.user, match__in=self.all_today_matches).exists()
-        self.user_gave_prediction = check
+        self.user_gave_prediction = UserPredictions.objects.filter(
+            user=self.request.user, match__in=self.all_today_matches).exists()
 
     def update_form_input_object(self):
         form_check_obj, created = LastUserMatchInputStart.objects.get_or_create(user=self.request.user)
