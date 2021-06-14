@@ -1840,3 +1840,85 @@ a:hover {
         width: 36%;
     }
 }
+
+:root {
+    --primary: #23adad;
+    --greyLight: #23adade1;
+    --greyLight-2: #cbe0dd;
+    --greyDark: #2d4848;
+}
+
+
+ul.paginator {
+    list-style-type: none;
+}
+
+.items-list {
+    max-width: 90vw;
+    margin: 2rem;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 3rem;
+    justify-content: center;
+    align-content: center;
+}
+
+@media only screen and (max-width: 600px) {
+    .items-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 5rem;
+    margin: 3rem;
+    border-radius: 0.6rem;
+    background: #ffffff;
+    box-shadow: 0 0.8rem 2rem rgba(90, 97, 129, 0.05);
+}
+
+.page__numbers, .page__btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.8rem;
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+
+
+.page__numbers {
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 0.4rem;
+}
+
+.page__numbers:hover {
+    color: var(--primary);
+}
+
+.page__numbers.current {
+
+    background: var(--primary);
+    font-weight: 600;
+    border: 1px solid var(--primary);
+}
+
+.page__numbers.current > a {
+    color: #ffffff;
+}
+
+.page__btn {
+    color: var(--greyLight);
+}
+
+.page__btn.active {
+    color: var(--greyDark);
+}
+
+.page__btn.active:hover {
+    color: var(--primary);
+}

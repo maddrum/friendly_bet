@@ -7,7 +7,7 @@ from django.views.generic import CreateView, ListView, TemplateView, UpdateView
 from accounts import forms
 from predictions.models import UserPredictions
 from predictions.views_mixins import GetEventMatchesMixin
-from accounts.models import UserExtendModel
+from django.db.models import Q
 
 
 class UserRegisterView(CreateView):
@@ -51,22 +51,12 @@ class ProfilePredictionStats(LoginRequiredMixin, ListView):
     model = UserPredictions
     template_name = 'accounts/profile-history-and-points.html'
     context_object_name = 'history'
+    paginate_by = 4
 
     def get_queryset(self):
         queryset = UserPredictions.objects.filter(user=self.request.user).order_by(
-            '-match__match_start_time').prefetch_related('match').select_related('match__match_result')
+            '-match__match_start_time')
         return queryset
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(object_list=object_list, **kwargs)
-        now = timezone.now()
-        current_match = self.object_list.filter(match__match_start_time__lt=now,
-                                                match__match_result__match_is_over=False)
-        if current_match.exists():
-            context['history'] = [item for item in list(self.object_list) if item not in list(current_match)]
-            for match in current_match:
-                context['history'].insert(0, match)
-        return context
 
 
 class ProfileLogoutConfirm(TemplateView):
