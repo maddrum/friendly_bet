@@ -7,7 +7,7 @@
         <div class="heading inner-ttl">Прогнози на {{ username.extra.get_user_names }}</div>
     </div>
     <div class="content-wrp">
-        {% for item in ranklist %}
+        {% for item in page_obj %}
             <div class="game-single inprofile">
                 <div class="match-number matchnumberprofile color-primary">
                     мач {{ item.match.match_number }}
@@ -89,7 +89,6 @@
                 покажем!
             </div>
         {% endif %}
-
         {% if bonuses %}
             <h1 class="heading tab-heading history-ttl red color-primary">Получени бонус точки:</h1>
             <div class="text-block histprylist вхите"> {{ bonuses.total_summary|linebreaks }}<br>
@@ -102,6 +101,23 @@
             </div>
         {% endif %}
     </div>
+    <ul class="page" style="background-color: transparent;">
+        {% if page_obj.has_previous %}
+            <li class="page__btn inverted">
+                <a href="?page={{ page_obj.previous_page_number }}"> ◀ </a>
+            </li>
+        {% endif %}
+        {% for page in page_obj.paginator.page_range %}
+            <li class="page__numbers inverted {% if page_obj.number == forloop.counter %}current{% endif %}">
+                <a href="?page={{ forloop.counter }}">{{ forloop.counter }}</a>
+            </li>
+        {% endfor %}
+        {% if page_obj.has_next %}
+            <li class="page__btn inverted">
+                <a href="?page={{ page_obj.next_page_number }}"> ▶ </a>
+            </li>
+        {% endif %}
+    </ul>
 
 {% endblock %}
 

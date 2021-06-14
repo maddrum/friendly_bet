@@ -1915,10 +1915,14 @@ ul.paginator {
     color: var(--greyLight);
 }
 
-.page__btn.active {
-    color: var(--greyDark);
+.page__btn.inverted > a {
+    color: #f3daa8;
 }
 
-.page__btn.active:hover {
-    color: var(--primary);
+.page__numbers.inverted > a {
+    color: #f3daa8;
+}
+
+.page__numbers.current.inverted > a {
+    color: #fff;
 }

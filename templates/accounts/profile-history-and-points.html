@@ -76,7 +76,7 @@
     <ul class="page">
         {% if page_obj.has_previous %}
             <li class="page__btn">
-                <a href="?page={{ page_obj.previous_page_number }}"> < </a>
+                <a href="?page={{ page_obj.previous_page_number }}"> ◀ </a>
             </li>
         {% endif %}
         {% for page in page_obj.paginator.page_range %}
@@ -86,7 +86,7 @@
         {% endfor %}
         {% if page_obj.has_next %}
             <li class="page__btn">
-                <a href="?page={{ page_obj.next_page_number }}"> > </a>
+                <a href="?page={{ page_obj.next_page_number }}"> ▶ </a>
             </li>
         {% endif %}
     </ul>
