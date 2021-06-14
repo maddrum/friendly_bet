@@ -1,12 +1,13 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views.generic import CreateView, ListView, TemplateView, UpdateView
 
 from accounts import forms
 from predictions.models import UserPredictions
 from predictions.views_mixins import GetEventMatchesMixin
-from accounts.models import UserExtendModel
+from django.db.models import Q
 
 
 class UserRegisterView(CreateView):
@@ -50,44 +51,12 @@ class ProfilePredictionStats(LoginRequiredMixin, ListView):
     model = UserPredictions
     template_name = 'accounts/profile-history-and-points.html'
     context_object_name = 'history'
+    paginate_by = 4
 
     def get_queryset(self):
-        queryset = UserPredictions.objects.filter(user=self.request.user)
+        queryset = UserPredictions.objects.filter(user=self.request.user).order_by(
+            '-match__match_start_time')
         return queryset
-
-
-#
-#
-# class ProfileBonusView(ListView):
-#     model = BonusUserPrediction
-#     template_name = 'accounts/profile-bonuses-list.html'
-#     context_object_name = 'bonuses'
-#
-#     def get_queryset(self):
-#         username = self.request.user
-#         queryset = BonusUserPrediction.objects.filter(user=username)
-#         return queryset
-#
-#     def get_context_data(self, *, object_list=None, **kwargs):
-#         username = self.request.user
-#         context = super().get_context_data()
-#         queryset = BonusDescription.objects.filter(participate_link=False, bonus_active=True)
-#         queryset_gained_points = BonusUserPrediction.objects.exclude(points_gained=0)
-#         queryset_gained_points = queryset_gained_points.filter(user=username)
-#         if queryset.count() != 0:
-#             context['auto_in'] = queryset
-#         else:
-#             context['auto_in'] = False
-#         if queryset_gained_points.count() != 0:
-#             context['points_gained'] = queryset_gained_points
-#         else:
-#             context['points_gained'] = False
-#         queryset_auto_points = BonusUserAutoPoints.objects.filter(user=username)
-#         if queryset_auto_points.count() != 0:
-#             context['auto_points'] = queryset_auto_points
-#         else:
-#             context['auto_points'] = False
-#         return context
 
 
 class ProfileLogoutConfirm(TemplateView):

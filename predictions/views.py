@@ -34,6 +34,7 @@ class RankilstUserPoints(ListView):
     template_name = 'main_app/ranklist-detail.html'
     context_object_name = 'ranklist'
     user = None
+    paginate_by = 4
 
     def get_queryset(self):
         self.user = get_user_model().objects.get(pk=self.kwargs['pk'])
