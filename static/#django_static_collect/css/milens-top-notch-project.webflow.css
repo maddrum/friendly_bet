@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 a {
     color: rgb(0, 191, 214);
     text-decoration: none;
@@ -1925,4 +1927,39 @@ ul.paginator {
 
 .page__numbers.current.inverted > a {
     color: #fff;
+}
+
+.bonus-banner {
+    z-index: 9999;
+    background-color: #009bb4;
+    box-shadow: 3px 3px 13px -4px rgba(0, 0, 0, .5);
+    position: fixed;
+    top: 98px;
+    left: 0;
+    width: 100%;
+    height: 35px;
+    color: #fff;
+}
+
+
+.bonus-banner--content {
+    font-family: 'Press Start 2P', cursive;
+    animation: marquee 15s linear infinite;
+    text-transform: uppercase;
+    font-size: 1.4rem;
+    margin-top: 8px;
+    position: relative;
+}
+
+.bonus-banner--content > a {
+    color: #f3daa8;
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(0%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
 }
