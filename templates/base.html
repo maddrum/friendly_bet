@@ -79,8 +79,9 @@
 {% check_for_new_bonuses as bonus_check %}
 {% if bonus_check %}
     <div class="bonus-banner">
-        Засада няма! <strong>Има нов бонус!!!</strong> Напукай <a href="{% url 'bonus_main' %}">тука</a> да видиш к'во е
-        що е, мол ще се строи ли на Герена няма ли...
+        <div class="bonus-banner--content">
+            Има нов <a href="{% url 'bonus_main' %}">бонус</a>
+        </div>
     </div>
 {% endif %}
 
