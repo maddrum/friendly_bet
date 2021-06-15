@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-{% load static %}
+{% load static bonus_tags %}
 
 <html data-wf-page="5b3226fe6e67c336c7107507" data-wf-site="5b28dd2fc27e7d5341dc1103">
 <head>
@@ -76,6 +76,12 @@
         </div>
     </div>
 </div>
+{% check_for_new_bonuses as bonus_check %}
+{% if bonus_check %}
+    <div class="bonus-banner">
+        Има нов бонус
+    </div>
+{% endif %}
 
 {% block banner %}
 {% endblock %}

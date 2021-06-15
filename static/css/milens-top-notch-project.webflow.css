@@ -1926,3 +1926,14 @@ ul.paginator {
 .page__numbers.current.inverted > a {
     color: #fff;
 }
+
+.bonus-banner {
+    z-index: 9999;
+    background-color: #009bb4;
+    box-shadow: 3px 3px 13px -4px rgba(0, 0, 0, .5);
+    position: fixed;
+    top: 98px;
+    left: 0;
+    width: 100%;
+    height: 30px;
+}
