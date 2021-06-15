@@ -11,7 +11,7 @@ from bonus_points.models import BonusDescription
 
 @register.simple_tag(takes_context=True)
 def check_for_new_bonuses(context):
-    now_minus_days = timezone.now() - datetime.timedelta(days=2)
+    now_minus_days = timezone.now() - datetime.timedelta(days=3)
     bonus_check = BonusDescription.objects.filter(created_on__gte=now_minus_days, bonus_active=True).order_by(
         '-created_on')
     if bonus_check.exists():
