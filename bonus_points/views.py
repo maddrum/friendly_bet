@@ -7,7 +7,7 @@ from django.views.generic import ListView, FormView
 from django.utils import timezone
 from bonus_points.models import BonusDescription, BonusUserPrediction
 from bonus_points.forms import InputAllTeamsForm, InputChoicesForm, InputNumberForm
-from bonus_points.settings import INPUT_CHOICES_VALUE, INPUT_NUMBER_VALUE, INPUT_TEAMS_VALUE
+from bonus_points.settings import INPUT_CHOICES_VALUE, INPUT_NUMBER_VALUE, INPUT_TEAMS_VALUE, LAST_BONUS_VISIT_TIME_KEY
 from django.urls import reverse_lazy
 
 
@@ -20,6 +20,7 @@ class BonusMainListView(LoginRequiredMixin, ListView):
         return queryset
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        self.request.session[LAST_BONUS_VISIT_TIME_KEY] = timezone.now().isoformat()
         context = super().get_context_data()
         queryset = BonusDescription.objects.all()
         current_time = timezone.now()
