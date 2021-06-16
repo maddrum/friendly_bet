@@ -1930,7 +1930,7 @@ ul.paginator {
 }
 
 .bonus-banner {
-    z-index: 9999;
+    z-index: 1000;
     background-color: #009bb4;
     box-shadow: 3px 3px 13px -4px rgba(0, 0, 0, .5);
     position: fixed;

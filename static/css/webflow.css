@@ -1919,6 +1919,7 @@ textarea.w-select {
     text-align: center;
     overflow: visible;
     min-width: 200px;
+    z-index: 2000;
 }
 
 .w--nav-link-open {
