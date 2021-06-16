@@ -74,16 +74,17 @@
         <div class="menu-button w-nav-button">
             <div class="icon w-icon-nav-menu"></div>
         </div>
+        {% check_for_new_bonuses as bonus_check %}
+        {% if bonus_check and user.is_authenticated %}
+            <div class="bonus-banner">
+                <div class="bonus-banner--content">
+                    <a href="{% url 'bonus_main' %}">Има нов бонус!</a>
+                </div>
+            </div>
+        {% endif %}
     </div>
 </div>
-{% check_for_new_bonuses as bonus_check %}
-{% if bonus_check and user.is_authenticated %}
-    <div class="bonus-banner">
-        <div class="bonus-banner--content">
-            <a href="{% url 'bonus_main' %}">Има нов бонус!</a>
-        </div>
-    </div>
-{% endif %}
+
 
 {% block banner %}
 {% endblock %}
