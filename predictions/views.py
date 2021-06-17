@@ -112,17 +112,28 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
         return kwargs
 
     def show_animation(self):
-        animation_picture_names = ['Elon.png', 'gandalf.png', 'Milko.png', 'Fiki.png', 'Suarez.png', 'putin.png']
-        picture = random.choice(animation_picture_names)
+        # animation show checks
+        animation_counter = self.request.session.get('animation_counter', None)
+        # tweak animation show
+        if animation_counter is None:
+            animation_counter = 0
+        if animation_counter > 3:
+            animation_counter = 1
+        show_animation = animation_counter == 3 or animation_counter == 0
+        animation_counter += 1
+        self.request.session['animation_counter'] = animation_counter
+        # show animation picture
+        animation_picture_names = ['ronaldo.png', 'gandalf.png', 'Milko.png', 'Fiki.png', 'Suarez.png', 'putin.png']
+        show_picture_index = self.request.session.get('show_picture_index', None)
+        if show_picture_index is None:
+            show_picture_index = 0
+        if show_picture_index >= len(animation_picture_names):
+            show_picture_index = 0
+        picture = animation_picture_names[show_picture_index]
+        if show_animation:
+            show_picture_index += 1
+        self.request.session['show_picture_index'] = show_picture_index
         picture = settings.STATIC_URL + 'images/' + 'side_pictures/' + picture
-        check_animation = self.request.session.get('check_animation', None)
-        if check_animation is None:
-            self.request.session['check_animation'] = 0
-            return True, picture
-        if check_animation > 4:
-            self.request.session['check_animation'] = 0
-        self.request.session['check_animation'] += 1
-        show_animation = check_animation == 2
         return show_animation, picture
 
     def get_context_data(self, *args, **kwargs):
