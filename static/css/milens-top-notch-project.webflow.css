@@ -521,6 +521,7 @@ a:hover {
 
 .rarnk-txt.user {
     text-transform: none;
+    line-height: 2.2rem;
 }
 
 .rarnk-txt.points {
