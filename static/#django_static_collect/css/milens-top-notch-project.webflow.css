@@ -521,6 +521,7 @@ a:hover {
 
 .rarnk-txt.user {
     text-transform: none;
+    line-height: 2.2rem;
 }
 
 .rarnk-txt.points {
@@ -1851,7 +1852,7 @@ a:hover {
 }
 
 
-ul.paginator {
+ul.page {
     list-style-type: none;
 }
 
@@ -1878,8 +1879,7 @@ ul.paginator {
     height: 5rem;
     margin: 3rem;
     border-radius: 0.6rem;
-    background: #ffffff;
-    box-shadow: 0 0.8rem 2rem rgba(90, 97, 129, 0.05);
+    background: transparent;
 }
 
 .page__numbers, .page__btn {
