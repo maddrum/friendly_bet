@@ -1,7 +1,6 @@
 from matches.models import MatchResult
-from predictions.models import PredictionPoints, UserPredictions
-from predictions.models import UserScores
-from predictions.prediction_scores import PARTICIPATION_POINTS, GUESSED_MATCH_STATE, GUESSED_MATCH_RESULT
+from predictions.models import PredictionPoints, UserPredictions, UserScores
+from predictions.prediction_scores import GUESSED_MATCH_RESULT, GUESSED_MATCH_STATE, PARTICIPATION_POINTS
 
 
 def calculate_user_predictions(instance_id=None):
@@ -24,21 +23,18 @@ def calculate_user_predictions(instance_id=None):
             temp_points = GUESSED_MATCH_STATE * multiplier
             points += temp_points
             note = note + f'\n2. Познат изход от срещата: {temp_points} т.'
-        # check match result
-        check_full_score = False
-        if prediction.match.match_result.penalties:
-            if prediction.goals_home == prediction.match.match_result.score_after_penalties_home \
-                    and prediction.goals_guest == prediction.match.match_result.score_after_penalties_guest:
-                check_full_score = True
-        else:
-            if prediction.goals_home == prediction.match.match_result.score_home \
-                    and prediction.goals_guest == prediction.match.match_result.score_guest:
-                check_full_score = True
-        # assign points
-        if check_full_score:
-            temp_points = GUESSED_MATCH_RESULT * multiplier
-            points += temp_points
-            note = note + f'\n3.Познат точен резултат: {temp_points} т.'
+            # check match result
+            if prediction.match.match_result.penalties:
+                check_full_score = prediction.goals_home == prediction.match.match_result.score_after_penalties_home \
+                                   and prediction.goals_guest == prediction.match.match_result.score_after_penalties_guest
+            else:
+                check_full_score = prediction.goals_home == prediction.match.match_result.score_home \
+                                   and prediction.goals_guest == prediction.match.match_result.score_guest
+            # assign points
+            if check_full_score:
+                temp_points = GUESSED_MATCH_RESULT * multiplier
+                points += temp_points
+                note = note + f'\n3.Познат точен резултат: {temp_points} т.'
 
         # update points object
         prediction_points_obj, created = PredictionPoints.objects.get_or_create(prediction=prediction)
@@ -50,8 +46,8 @@ def calculate_user_predictions(instance_id=None):
 def calculate_ranklist(instance_id=None):
     """Calculate the ranklist for match or all matches"""
     if instance_id is None:
-        all_predictions = UserPredictions.objects.all().prefetch_related('prediction_points').select_related(
-            'match__phase__event')
+        all_predictions = UserPredictions.objects.filter(match__match_result__match_is_over=True).prefetch_related(
+            'prediction_points').select_related('match__phase__event')
     else:
         try:
             match_result_instance = MatchResult.objects.get(pk=instance_id)
