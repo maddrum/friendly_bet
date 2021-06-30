@@ -60,12 +60,24 @@
                             </li>
                             <li class="list-item-4">
                                 <div class="text-block histprylist white">
-                                    Голове за {{ item.match.home.name }}: {{ item.match.match_result.score_home }}<br>
+                                    Голове за {{ item.match.home.name }}:
+                                    {% if item.match.match_result.penalties %}
+                                        {{ item.match.match_result.score_after_penalties_home }}
+                                    {% else %}
+                                        {{ item.match.match_result.score_home }}
+                                    {% endif %}
+                                    <br>
                                 </div>
                             </li>
                             <li class="list-item-5">
                                 <div class="text-block histprylist white">
-                                    Голове за {{ item.match.guest.name }}: {{ item.match.match_result.score_guest }}
+                                    Голове за {{ item.match.guest.name }}:
+                                    {% if item.match.match_result.penalties %}
+                                        {{ item.match.match_result.score_after_penalties_guest }}
+                                    {% else %}
+                                        {{ item.match.match_result.score_guest }}
+                                    {% endif %}
+                                    <br>
                                 </div>
                             </li>
                         </ul>
