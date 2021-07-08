@@ -45,13 +45,17 @@ class RankilstUserPoints(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data()
-        bonuses_added_check = UserScores.objects.get(user=self.user).bonus_points_added
+        try:
+            bonuses_added_check = UserScores.objects.get(user=self.user).bonus_points_added
+        except UserScores.DoesNotExist:
+            bonuses_added_check = False
         if bonuses_added_check:
-            bonuses = UserBonusSummary.objects.get(user=self.username)
+            bonuses = UserBonusSummary.objects.get(user=self.user)
         else:
             bonuses = False
         context['bonuses'] = bonuses
         context['username'] = self.user
+
         return context
 
 
