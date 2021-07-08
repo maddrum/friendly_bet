@@ -123,7 +123,8 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
         animation_counter += 1
         self.request.session['animation_counter'] = animation_counter
         # show animation picture
-        animation_picture_names = ['ronaldo.png', 'gandalf.png', 'Milko.png', 'Fiki.png', 'Suarez.png', 'putin.png']
+        # animation_picture_names = ['ronaldo.png', 'gandalf.png', 'Milko.png', 'Fiki.png', 'Suarez.png', 'putin.png']
+        animation_picture_names = ['forza_queen.png']
         show_picture_index = self.request.session.get('show_picture_index', None)
         if show_picture_index is None:
             show_picture_index = 0
@@ -134,7 +135,8 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
             show_picture_index += 1
         self.request.session['show_picture_index'] = show_picture_index
         picture = settings.STATIC_URL + 'images/' + 'side_pictures/' + picture
-        return show_animation, picture
+        # return show_animation, picture
+        return True, picture
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
