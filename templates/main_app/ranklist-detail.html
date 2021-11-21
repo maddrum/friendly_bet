@@ -7,6 +7,17 @@
         <div class="heading inner-ttl">Прогнози на {{ username.extra.get_user_names }}</div>
     </div>
     <div class="content-wrp">
+        {% if bonuses and page_obj.number == 1 %}
+            <h1 class="heading tab-heading history-ttl color-primary">Получени бонус точки:</h1>
+            <div class="text-block histprylist white"> {{ bonuses.total_summary|linebreaks }}<br>
+            </div>
+            <div class="text-block histprylist points-indicator color-primary">
+                Общо бонус точки: {{ bonuses.total_bonus_points }} т.<br>
+            </div>
+            <div class="text-block histprylist points-indicator color-primary">
+                Всички бонус точки са прибавени към крайния резултат!<br>
+            </div>
+        {% endif %}
         {% for item in page_obj %}
             <div class="game-single inprofile">
                 <div class="match-number matchnumberprofile color-primary">
@@ -60,12 +71,24 @@
                             </li>
                             <li class="list-item-4">
                                 <div class="text-block histprylist white">
-                                    Голове за {{ item.match.home.name }}: {{ item.match.match_result.score_home }}<br>
+                                    Голове за {{ item.match.home.name }}:
+                                    {% if item.match.match_result.penalties %}
+                                        {{ item.match.match_result.score_after_penalties_home }}
+                                    {% else %}
+                                        {{ item.match.match_result.score_home }}
+                                    {% endif %}
+                                    <br>
                                 </div>
                             </li>
                             <li class="list-item-5">
                                 <div class="text-block histprylist white">
-                                    Голове за {{ item.match.guest.name }}: {{ item.match.match_result.score_guest }}
+                                    Голове за {{ item.match.guest.name }}:
+                                    {% if item.match.match_result.penalties %}
+                                        {{ item.match.match_result.score_after_penalties_guest }}
+                                    {% else %}
+                                        {{ item.match.match_result.score_guest }}
+                                    {% endif %}
+                                    <br>
                                 </div>
                             </li>
                         </ul>
@@ -87,17 +110,6 @@
             <div class="text-block histprylist white">
                 Все още няма завършили мачове, които този играч е прогнозирал. Когато такива се появят, веднага ще ги
                 покажем!
-            </div>
-        {% endif %}
-        {% if bonuses %}
-            <h1 class="heading tab-heading history-ttl red color-primary">Получени бонус точки:</h1>
-            <div class="text-block histprylist вхите"> {{ bonuses.total_summary|linebreaks }}<br>
-            </div>
-            <div class="text-block histprylist points-indicator color-primary">
-                Общо бонус точки: {{ bonuses.total_bonus_points }} т.<br>
-            </div>
-            <div class="text-block histprylist points-indicator color-primary">
-                Всички бонус точки са прибавени към крайния резултат!<br>
             </div>
         {% endif %}
     </div>

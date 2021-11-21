@@ -68,8 +68,9 @@ class AutoBonusUserScore(models.Model):
 
 class UserBonusSummary(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="user")
-    total_bonus_points = models.IntegerField()
-    total_summary = models.TextField()
+    total_bonus_points = models.IntegerField(default=0)
+    total_summary = models.TextField(blank=True)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='event_bonus', blank=True, null=True)
 
     created_on = models.DateTimeField(auto_now_add=True)
     edited_on = models.DateTimeField(auto_now=True)
