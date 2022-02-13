@@ -237,11 +237,14 @@ textarea {
     font-size: 25px;
     color: white;
     height: 50px;
-    font-family: 'Dusha fifa world cup 2018', sans-serif;
-    border: 4px solid #f3daa8;
-    background: #1c6bb4;
+    border: 4px solid #f2c464;
+    background: #8d1b3d;
     margin: 10px;
 
+}
+
+input:focus-visible {
+    outline: red;
 }
 
 /**

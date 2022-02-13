@@ -1,5 +1,4 @@
 import datetime
-import random
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -14,13 +13,13 @@ from accounts.models import LastUserMatchInputStart
 from bonus_points.models import UserBonusSummary
 from predictions.forms import PredictionForm
 from predictions.formsets import PredictionFormSet
-from predictions.models import UserPredictions, UserScores
+from predictions.models import UserPrediction, UserScore
 from predictions.views_mixins import GetEventMatchesMixin
 
 
 class RankList(ListView):
     template_name = 'predictions/ranklist.html'
-    model = UserScores
+    model = UserScore
     context_object_name = 'ranklist'
 
     def get_queryset(self):
@@ -30,7 +29,7 @@ class RankList(ListView):
 
 
 class RankilstUserPoints(ListView):
-    model = UserPredictions
+    model = UserPrediction
     template_name = 'main_app/ranklist-detail.html'
     context_object_name = 'ranklist'
     user = None
@@ -38,7 +37,7 @@ class RankilstUserPoints(ListView):
 
     def get_queryset(self):
         self.user = get_user_model().objects.get(pk=self.kwargs['pk'])
-        queryset = UserPredictions.objects.filter(
+        queryset = UserPrediction.objects.filter(
             user=self.user, match__match_result__match_is_over=True).order_by(
             '-match__match_start_time').select_related('match').prefetch_related('match__match_result')
         return queryset
@@ -46,8 +45,8 @@ class RankilstUserPoints(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data()
         try:
-            bonuses_added_check = UserScores.objects.get(user=self.user).bonus_points_added
-        except UserScores.DoesNotExist:
+            bonuses_added_check = UserScore.objects.get(user=self.user).bonus_points_added
+        except UserScore.DoesNotExist:
             bonuses_added_check = False
         if bonuses_added_check:
             bonuses = UserBonusSummary.objects.get(user=self.user)
@@ -62,7 +61,7 @@ class RankilstUserPoints(ListView):
 class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelFormSetView):
     template_name = 'predictions/input-prediction.html'
     fields = ('match_state', 'goals_home', 'goals_guest')
-    model = UserPredictions
+    model = UserPrediction
     form_class = PredictionForm
     formset_class = PredictionFormSet
     success_url = reverse_lazy('predictions_success')
@@ -91,7 +90,7 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
                 raise Http404()
 
     def check_for_user_predictions(self):
-        self.user_gave_prediction = UserPredictions.objects.filter(
+        self.user_gave_prediction = UserPrediction.objects.filter(
             user=self.request.user, match__in=self.all_today_matches).exists()
 
     def update_form_input_object(self):
@@ -100,7 +99,7 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
         form_check_obj.save()
 
     def get_queryset(self):
-        return UserPredictions.objects.none()
+        return UserPrediction.objects.none()
 
     def get_factory_kwargs(self):
         kwargs = super().get_factory_kwargs()
@@ -157,6 +156,8 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
         context['matches'] = list(self.matches)
         context['time_delta'] = time_delta
         context['show_animation'], context['animation_picture'] = self.show_animation()
+        user_points, created = UserScore.objects.get_or_create(user=self.request.user, event=self.event)
+        context['total_user_points'] = user_points.points
         return context
 
     def formset_valid(self, formset):
@@ -179,7 +180,7 @@ class UserUpdatePredictionView(EventCreatePredictionView):
         self.user_gave_prediction = False
 
     def get_queryset(self):
-        qs = UserPredictions.objects.filter(pk=self.kwargs['pk'])
+        qs = UserPrediction.objects.filter(pk=self.kwargs['pk'])
         obj = qs.first()
         match = obj.match
         self.matches = self.matches.filter(pk=match.pk)

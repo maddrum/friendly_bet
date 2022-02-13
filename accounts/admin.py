@@ -1,5 +1,6 @@
 from django.contrib import admin
-from accounts.models import LastUserMatchInputStart, UserExtendModel
+
+from accounts.models import LastUserMatchInputStart, User
 
 
 class ReadOnlyFields(admin.ModelAdmin):
@@ -7,4 +8,4 @@ class ReadOnlyFields(admin.ModelAdmin):
 
 
 admin.site.register(LastUserMatchInputStart, ReadOnlyFields)
-admin.site.register(UserExtendModel)
+admin.site.register(User)

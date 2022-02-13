@@ -1,14 +1,17 @@
 from django import forms
-
-from predictions.models import UserPredictions
-from events.settings import MATCH_STATE_HOME, MATCH_STATE_GUEST, MATCH_STATE_PENALTIES_HOME, \
-    MATCH_STATE_PENALTIES_GUEST, MATCH_STATE_TIE
 from django.core.exceptions import ValidationError
+
+from events.settings import MATCH_STATE_GUEST, MATCH_STATE_HOME, MATCH_STATE_PENALTIES_GUEST, \
+    MATCH_STATE_PENALTIES_HOME, MATCH_STATE_TIE
+from predictions.models import UserPrediction
 
 
 class PredictionForm(forms.ModelForm):
+    points_state = forms.IntegerField(min_value=0, initial=0)
+    points_result = forms.IntegerField(min_value=0, initial=0)
+
     class Meta:
-        model = UserPredictions
+        model = UserPrediction
         fields = ('match_state', 'goals_home', 'goals_guest')
 
     def __init__(self, phase=None, home_team=None, guest_team=None, *args, **kwargs):
@@ -25,6 +28,14 @@ class PredictionForm(forms.ModelForm):
         }
         self.fields['match_state'].widget.attrs = {
             'class': 'match-select',
+            'required': 'required',
+        }
+        self.fields['points_state'].widget.attrs = {
+            'class': 'goals-input update-total-points',
+            'required': 'required',
+        }
+        self.fields['points_result'].widget.attrs = {
+            'class': 'goals-input update-total-points',
             'required': 'required',
         }
 

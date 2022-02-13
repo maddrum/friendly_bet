@@ -6,7 +6,7 @@ a {
 }
 
 a:hover {
-    color: rgb(0, 138, 214);
+    color: #711631;
 }
 
 .brand {
@@ -35,7 +35,7 @@ a:hover {
     background-size: 1060px 136px;
     background-repeat: repeat-x;
     box-shadow: 3px 3px 13px -4px rgba(0, 0, 0, .5);
-    background-color: rgb(0, 138, 171);
+    background-color: #8d1b3d;
 }
 
 .nav-link {
@@ -91,7 +91,7 @@ a:hover {
 
 .hero::before {
     content: "";
-    background-image: url('../images/Bg.png');
+    background-image: url('../images/Bg.jpg');
     background-position: 0px 0px;
     background-size: cover;
     background-repeat: no-repeat;
@@ -100,7 +100,7 @@ a:hover {
     right: 0px;
     bottom: 0px;
     left: 0px;
-    opacity: 0.25;
+    opacity: 0.75;
 }
 
 .ttl-wrp {
@@ -128,10 +128,11 @@ a:hover {
     bottom: -360px;
     margin-top: 34px;
     font-family: 'BaseFont', sans-serif;
-    color: rgb(0, 191, 214);
+    color: #f9e2b2;
     font-size: 70px;
     font-weight: 400;
     text-transform: uppercase;
+    text-align: left;
 }
 
 .heading.gold {
@@ -139,8 +140,8 @@ a:hover {
     display: block;
     margin-right: auto;
     margin-left: auto;
-    font-family: 'BaseFont', sans-serif;
-    color: rgb(0, 138, 171);
+    font-family: 'ArabicFont', sans-serif;
+    color: #f2c464;
     font-size: 70px;
     text-transform: uppercase;
 }
@@ -152,7 +153,7 @@ a:hover {
     margin-right: auto;
     margin-left: auto;
     font-family: 'BaseFont', sans-serif;
-    color: rgb(0, 138, 171);
+    color: #f2c464;
     font-size: 46px;
     line-height: 145%;
     text-align: center;
@@ -210,8 +211,8 @@ a:hover {
     border-radius: 50px;
     background-color: rgb(234, 114, 0);
     box-shadow: 3px 3px 17px 0 rgb(189, 131, 202);
-    font-family: 'BaseFont', sans-serif;
-    font-size: 19px;
+    font-family: 'ArabicFont', sans-serif;
+    font-size: 40px;
     text-align: center;
     text-transform: uppercase;
     cursor: pointer;
@@ -367,8 +368,8 @@ a:hover {
     align-items: center;
     border-style: solid none none;
     border-width: 10px 3px 3px;
-    border-color: rgb(0, 191, 214);
-    background-color: rgb(0, 138, 171);
+    border-color: #f2c464;
+    background-color: #8d1b3d;
 }
 
 .footer-btn {
@@ -379,8 +380,8 @@ a:hover {
     margin-left: auto;
     padding-top: 15px;
     border-radius: 50px;
-    background-color: #d51e3a;
-    box-shadow: 3px 3px 17px 0 rgb(0, 191, 214);
+    background-color: #f2c464;;
+    /*box-shadow: 3px 3px 17px 0 rgb(234, 114, 0);*/
     font-family: 'BaseFont', sans-serif;
     font-size: 15px;
     text-align: center;
@@ -403,11 +404,11 @@ a:hover {
 
 .inner_page_header {
     height: 450px;
-    background-color: #1c6bb4;
-    /*background-image: url('../images/Bg_Inner.png');*/
-    background-position: 50% 0px;
-    background-size: cover;
-    background-repeat: no-repeat;
+    background-color: transparent;
+    /*background-image: url('../images/Bg.jpg');*/
+    /*background-position: 50% 0px;*/
+    /*background-size: cover;*/
+    /*background-repeat: no-repeat;*/
 }
 
 .body {
@@ -415,7 +416,7 @@ a:hover {
 }
 
 .results {
-    background-color: #1c6bb4;
+    background-color: transparent;
 }
 
 .game-wrp {
@@ -433,7 +434,7 @@ a:hover {
     margin-left: auto;
     border-radius: 100px;
     background-color: #fff;
-    box-shadow: 1px 1px 14px 0 #044a9e;
+    /*box-shadow: 1px 1px 14px 0 #f9e2b2;*/
 }
 
 .team.team-profile {
@@ -449,7 +450,7 @@ a:hover {
     margin-left: auto;
     border-radius: 8px;
     background-color: #f3daa8;
-    box-shadow: 1px 1px 14px 0 #044a9e;
+    /*box-shadow: 1px 1px 14px 0 #044a9e;*/
 }
 
 .score.scoreprofile {
@@ -492,7 +493,7 @@ a:hover {
 
 .team-ttl {
     padding-top: 29px;
-    color: #044a9e;
+    color: #8d1b3d;
     font-size: 36px;
 }
 
@@ -507,7 +508,9 @@ a:hover {
 }
 
 .body-2 {
-    background-color: #1c6bb4;
+    background-color: #711631;
+    background-image: url('../images/Bg.jpg');
+    background-size: cover;
 }
 
 .rarnk-txt {
@@ -696,7 +699,7 @@ a:hover {
 
 .input-wrp {
     padding-bottom: 72px;
-    border-bottom: 4px solid #2e84d3;
+    border-bottom: 4px solid #f2c464;;
 }
 
 .game-prediction-form {
@@ -715,7 +718,7 @@ a:hover {
     border-style: none;
     background-color: transparent;
     font-family: Montserrat, sans-serif;
-    color: #1c6bb4;
+    color: #8d1b3d;
     font-weight: 700;
 }
 
@@ -797,8 +800,8 @@ a:hover {
     margin-left: auto;
     padding-top: 20px;
     border: 4px solid #f3daa8;
-    background-color: #2e84d3;
-    box-shadow: 1px 1px 3px 0 #044a9e;
+    background-color: #91763c;
+    box-shadow: 1px 1px 3px 0 #f3daa8;
 }
 
 .text-input:hover {
@@ -819,14 +822,15 @@ a:hover {
     padding-top: 14px;
     border-radius: 80px;
     background-color: #f3daa8;
-    box-shadow: 6px 6px 28px 8px #184d8d;
+    /*box-shadow: 6px 6px 28px 8px #184d8d;*/
     font-family: 'BaseFont', sans-serif;
-    color: #044a9e;
+    color: #711631;
     font-size: 22px;
     font-weight: 400;
     text-align: center;
     text-transform: uppercase;
     text-decoration: InfoText;
+    border: 2px solid #711631;
 }
 
 .small-btn {
@@ -1029,7 +1033,7 @@ a:hover {
 }
 
 .unordered-list {
-    color: #1c6bb4;
+    color: #8d1b3d;
     font-size: 30px;
     text-align: center;
     list-style-type: none;
@@ -1723,8 +1727,15 @@ a:hover {
 }
 
 @font-face {
+    font-family: 'ArabicFont';
+    src: url('../fonts/ds_izmir.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
     font-family: 'BaseFont';
-    src: url('../fonts/RussoOne-Regular.ttf') format('truetype');
+    src: url('../fonts/Vulgat-Regular.otf') format('truetype');
     font-weight: 400;
     font-style: normal;
 }
@@ -1817,12 +1828,12 @@ a:hover {
 
 .match-select {
     font-size: 17px;
-    width: 50%;
+    width: 100%;
 }
 
 .goals-input {
     font-size: 17px;
-    width: 15%;
+    width: 100%;
 }
 
 @media (max-width: 479px) {
@@ -1962,4 +1973,18 @@ ul.page {
     100% {
         transform: translateX(100%);
     }
+}
+
+.points-container {
+    position: fixed;
+    top: 98px;
+    left: 0;
+    height: 32px;
+    width: 100%;
+    z-index: 999;
+    background-color: #cbe0dd;
+    text-align: center;
+    font-size: 1.8rem;
+    padding: 6px 0;
+    font-family: "BaseFont", sans-serif;
 }

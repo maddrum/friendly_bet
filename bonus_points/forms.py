@@ -1,13 +1,17 @@
 from django import forms
 from django.forms.widgets import Select
 
-from events.models import Teams
+from events.models import Team
 
 
 class InputAllTeamsForm(forms.Form):
-    countries = [(item.name, item.name) for item in Teams.objects.all()]
+    countries = ()
 
     user_prediction = forms.CharField(widget=Select(choices=countries), label='Избери отбор')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['countries'] = [(item.name, item.name) for item in Team.objects.all()]
 
 
 class InputNumberForm(forms.Form):

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from predictions.models import UserPredictions, PredictionPoints, UserScores
+from predictions.models import UserPrediction, PredictionPoint, UserScore
 
 
 class ReadOnlyFields(admin.ModelAdmin):
@@ -44,6 +44,6 @@ class UserPredictionsAdmin(ReadOnlyFields):
         return obj.prediction_points.points_gained
 
 
-admin.site.register(UserPredictions, UserPredictionsAdmin)
-admin.site.register(PredictionPoints, ReadOnlyFields)
-admin.site.register(UserScores, ReadOnlyFields)
+admin.site.register(UserPrediction, UserPredictionsAdmin)
+admin.site.register(PredictionPoint, ReadOnlyFields)
+admin.site.register(UserScore, ReadOnlyFields)

@@ -1,12 +1,12 @@
 from django.db import models
 
-from events.models import Event, EventPhases, EventGroups, EventMatchStates, Teams
+from events.models import EventMatchState, EventPhase, Team
 
 
-class Matches(models.Model):
-    home = models.ForeignKey(Teams, on_delete=models.CASCADE, related_name='country_home')
-    guest = models.ForeignKey(Teams, on_delete=models.CASCADE, related_name='country_guest')
-    phase = models.ForeignKey(EventPhases, on_delete=models.PROTECT, related_name='match_phase')
+class Match(models.Model):
+    home = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='country_home')
+    guest = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='country_guest')
+    phase = models.ForeignKey(EventPhase, on_delete=models.PROTECT, related_name='match_phase')
     match_number = models.IntegerField()
     match_start_time = models.DateTimeField()
     created_on = models.DateTimeField(auto_now_add=True)
@@ -18,14 +18,14 @@ class Matches(models.Model):
 
     class Meta:
         unique_together = ('home', 'guest', 'phase',)
-        ordering = ['match_number', ]
+        ordering = ['match_start_time']
 
 
 class MatchResult(models.Model):
     # !NB has post save signal - signals.py
 
-    match = models.OneToOneField(Matches, on_delete=models.CASCADE, related_name='match_result')
-    match_state = models.ForeignKey(EventMatchStates, on_delete=models.PROTECT)
+    match = models.OneToOneField(Match, on_delete=models.CASCADE, related_name='match_result')
+    match_state = models.ForeignKey(EventMatchState, on_delete=models.PROTECT)
     score_home = models.IntegerField(default=0)
     score_guest = models.IntegerField(default=0)
     score_after_penalties_home = models.IntegerField(default=0)

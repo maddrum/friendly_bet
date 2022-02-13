@@ -4,7 +4,7 @@
 
 {% block body_content %}
     <div class="inner_page_header">
-        <div class="heading inner-ttl">Прогнози на {{ username.extra.get_user_names }}</div>
+        <div class="heading inner-ttl">Прогнози на {{ username.get_user_names }}</div>
     </div>
     <div class="content-wrp">
         {% if bonuses and page_obj.number == 1 %}

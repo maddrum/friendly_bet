@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 
 from bonus_points.models import UserBonusSummary
-from predictions.models import UserScores
+from predictions.models import UserScore
 
 
 class Command(BaseCommand):
@@ -10,8 +10,8 @@ class Command(BaseCommand):
     @transaction.atomic
     def handle(self, *args, **options):
         for bonus_summary in UserBonusSummary.objects.all().prefetch_related('user', 'event'):
-            ranklist_object, created = UserScores.objects.get_or_create(user=bonus_summary.user,
-                                                                        event=bonus_summary.event)
+            ranklist_object, created = UserScore.objects.get_or_create(user=bonus_summary.user,
+                                                                       event=bonus_summary.event)
             if ranklist_object.bonus_points_added:
                 self.stdout.write(self.style.WARNING(f'[INFO] skipped for {bonus_summary.user}'))
                 continue

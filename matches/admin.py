@@ -1,11 +1,17 @@
 from django.contrib import admin
 
-from matches.models import Matches, MatchResult
+from matches.models import Match, MatchResult
 
 
 class ReadOnlyFields(admin.ModelAdmin):
     readonly_fields = ('created_on', 'edited_on')
 
 
-admin.site.register(Matches, ReadOnlyFields)
+class MatchAdmin(ReadOnlyFields):
+    readonly_fields = ('created_on', 'edited_on')
+    search_fields = ('home__name', 'guest__name', 'match_number')
+    autocomplete_fields = ('home', 'guest')
+
+
+admin.site.register(Match, MatchAdmin)
 admin.site.register(MatchResult, ReadOnlyFields)

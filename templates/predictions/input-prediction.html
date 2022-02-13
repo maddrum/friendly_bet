@@ -10,7 +10,9 @@
             {% now "j-M-Y" %}
         </div>
     </div>
-
+    <div class="points-container" id="points-container">
+        Може да разпределиш <span class="points--counter">{{ total_user_points }}</span> от твоите точки.
+    </div>
     <div class="content-wrp">
         {% if match_check %}
             <p id="time-counter" class="text-input input-counter white"></p>
@@ -44,9 +46,35 @@
                                 </div>
 
                             {% endwith %}
-                            {{ form.match_state }}
-                            {{ form.goals_home }}
-                            {{ form.goals_guest }}
+                            <div class="w-row">
+                                <div class="w-col w-col-6 w-col-small-12 w-col-tiny-12">
+                                    {{ form.match_state }}
+                                </div>
+                                <div class="w-col w-col-3 w-col-small-6 w-col-tiny-6">
+                                    {{ form.goals_home }}
+                                </div>
+                                <div class="w-col w-col-3 w-col-small-6 w-col-tiny-6">
+                                    {{ form.goals_guest }}
+                                </div>
+                            </div>
+                            <h4 style="margin-top: 2rem">
+                                Бате, толко' ми е ясен тоя мач, че слагам още тия точки от мойте си:
+                            </h4>
+                            <div class="w-row">
+                                <div class="w-col w-col-6 w-col-small-6 w-col-tiny-6">
+                                    <div class="white" style="font-size: 1.3rem">
+                                        за изхода от двубоя
+                                    </div>
+                                    {{ form.points_state }}
+                                </div>
+                                <div class="w-col w-col-6 w-col-small-6 w-col-tiny-6">
+                                    <div class="white" style="font-size: 1.3rem">
+                                        за крайния резултат
+                                    </div>
+                                    {{ form.points_result }}
+                                </div>
+                            </div>
+
                             {% if form.errors %}
                                 <div class="text-block white">
                                     {{ form.non_field_errors.as_text }}
@@ -61,6 +89,7 @@
                             class="submit-btn w-button" value="дай прогноза">
                 </div>
             </form>
+            {# counter #}
             <script>
                 // Set the date we're counting down to
                 var countDownDate = new Date("{{ time_delta|date:'c' }}").getTime();
@@ -90,6 +119,58 @@
                         document.getElementById("demo").innerHTML = "Свърши се тя! Моля, презареди тази страница.";
                     }
                 }, 1000);
+            </script>
+            {# points #}
+            <script>
+                let totalEnteredPoints;
+                let userTotalPoints = parseInt('{{ total_user_points }}');
+                let initialFieldValue;
+                let remainingPoints;
+                let alertShowed = false;
+
+                function updatePoints() {
+                    totalEnteredPoints = 0;
+                    document.querySelectorAll('.update-total-points').forEach(singleEl => {
+                        totalEnteredPoints += parseInt(singleEl.value);
+                    })
+                    remainingPoints = userTotalPoints - totalEnteredPoints;
+                }
+
+                document.querySelectorAll('.update-total-points').forEach(el => {
+                    el.addEventListener('click', ev => {
+                        initialFieldValue = ev.target.value;
+                    })
+                    el.addEventListener('change', ev => {
+                        alertShowed = false
+                        if (ev.target.value.length === 0 || ev.target.value < 0) {
+                            alert("Що се ебаваш с апаратурата ся??!\n" +
+                                "Тука трябва да туриш число дето или да е Божинка /кръгла 0/ или да е повече от нула.")
+                            ev.target.value = initialFieldValue;
+                        }
+                        updatePoints();
+                        if (remainingPoints < 0) {
+                            if (!alertShowed) {
+                                alert('Соре, нямаш толкова точки!');
+                                alertShowed = true;
+                            }
+                            ev.target.value = initialFieldValue;
+                        } else {
+                            document.querySelectorAll('.points--counter').forEach(singleEl => {
+                                singleEl.innerHTML = remainingPoints;
+                            })
+                        }
+                        if (remainingPoints === 0) {
+                            document.getElementById('points-container').innerHTML = 'Дал си всички твои точки.'
+                        }
+                    })
+                })
+
+                window.onload = function () {
+                    updatePoints()
+                    document.querySelectorAll('.points--counter').forEach(singleEl => {
+                        singleEl.innerHTML = remainingPoints;
+                    })
+                }
             </script>
         {% else %}
             <div class="w-row">

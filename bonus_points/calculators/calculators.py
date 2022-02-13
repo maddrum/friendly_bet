@@ -1,12 +1,12 @@
 from bonus_points.models import AutoBonusUserScore
-from predictions.models import UserPredictions
+from predictions.models import UserPrediction
 
 __all__ = ['predictions_for_all', 'prediction_for_first_match']
 
 
 def predictions_for_all(user, bonus, *args, **kwargs):
     total_match_count = kwargs['total_matches']
-    total_user_predictions = UserPredictions.objects.filter(user=user).count()
+    total_user_predictions = UserPrediction.objects.filter(user=user).count()
     if total_match_count == total_user_predictions:
         bonus_obj, created = AutoBonusUserScore.objects.get_or_create(user=user, bonus=bonus)
         bonus_obj.points_gained = bonus.points
@@ -17,7 +17,7 @@ def predictions_for_all(user, bonus, *args, **kwargs):
 
 def prediction_for_first_match(user, bonus, *args, **kwargs):
     first_match = kwargs['first_match']
-    check_prediction = UserPredictions.objects.filter(user=user, match=first_match).exists()
+    check_prediction = UserPrediction.objects.filter(user=user, match=first_match).exists()
     if check_prediction:
         bonus_obj, created = AutoBonusUserScore.objects.get_or_create(user=user, bonus=bonus)
         bonus_obj.points_gained = bonus.points

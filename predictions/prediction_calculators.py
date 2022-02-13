@@ -1,17 +1,17 @@
 from matches.models import MatchResult
-from predictions.models import PredictionPoints, UserPredictions, UserScores
+from predictions.models import PredictionPoint, UserPrediction, UserScore
 from predictions.prediction_scores import GUESSED_MATCH_RESULT, GUESSED_MATCH_STATE, PARTICIPATION_POINTS
 
 
 def calculate_user_predictions(instance_id=None):
     if instance_id is None:
-        queryset = UserPredictions.objects.all()
+        queryset = UserPrediction.objects.all()
     else:
         try:
             match_result_instance = MatchResult.objects.get(pk=instance_id)
         except MatchResult.DoesNotExist:
             return
-        queryset = UserPredictions.objects.filter(match=match_result_instance.match).prefetch_related(
+        queryset = UserPrediction.objects.filter(match=match_result_instance.match).prefetch_related(
             'match__match_result').select_related('match')
 
     for prediction in queryset:
@@ -37,7 +37,7 @@ def calculate_user_predictions(instance_id=None):
                 note = note + f'\n3.Познат точен резултат: {temp_points} т.'
 
         # update points object
-        prediction_points_obj, created = PredictionPoints.objects.get_or_create(prediction=prediction)
+        prediction_points_obj, created = PredictionPoint.objects.get_or_create(prediction=prediction)
         prediction_points_obj.points_gained = points
         prediction_points_obj.note = note
         prediction_points_obj.save()
@@ -46,14 +46,14 @@ def calculate_user_predictions(instance_id=None):
 def calculate_ranklist(instance_id=None):
     """Calculate the ranklist for match or all matches"""
     if instance_id is None:
-        all_predictions = UserPredictions.objects.filter(match__match_result__match_is_over=True).prefetch_related(
+        all_predictions = UserPrediction.objects.filter(match__match_result__match_is_over=True).prefetch_related(
             'prediction_points').select_related('match__phase__event')
     else:
         try:
             match_result_instance = MatchResult.objects.get(pk=instance_id)
         except MatchResult.DoesNotExist:
             return
-        all_predictions = UserPredictions.objects.filter(match=match_result_instance.match).prefetch_related(
+        all_predictions = UserPrediction.objects.filter(match=match_result_instance.match).prefetch_related(
             'prediction_points')
 
     ranklist = {item.user_id: 0 for item in all_predictions}
@@ -66,7 +66,7 @@ def calculate_ranklist(instance_id=None):
         ranklist[key] = points
 
     for item in ranklist:
-        obj, created = UserScores.objects.get_or_create(user_id=item, event=ranklist_event[item])
+        obj, created = UserScore.objects.get_or_create(user_id=item, event=ranklist_event[item])
         if instance_id is None:
             obj.points = ranklist[obj.user.id]
         else:
