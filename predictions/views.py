@@ -13,7 +13,7 @@ from accounts.models import LastUserMatchInputStart
 from bonus_points.models import UserBonusSummary
 from predictions.forms import PredictionForm
 from predictions.formsets import PredictionFormSet
-from predictions.models import UserPrediction, UserScore
+from predictions.models import BetAdditionalPoint, UserPrediction, UserScore
 from predictions.views_mixins import GetEventMatchesMixin
 
 
@@ -170,6 +170,8 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
             form.instance.match = match
             form.instance.user = self.request.user
             form.save()
+            add_points_obj = BetAdditionalPoint.objects.get_or_create(prediction=form.instance)
+            add_points_obj.points_match_state = form.cleaned_data['']
             index += 1
         return HttpResponseRedirect(self.get_success_url())
 

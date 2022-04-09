@@ -26,6 +26,7 @@ class BetAdditionalPoint(models.Model):
     prediction = models.OneToOneField(UserPrediction, on_delete=models.CASCADE, related_name='bet_points')
     points_match_state = models.SmallIntegerField(default=0)
     points_result = models.SmallIntegerField(default=0)
+    multiplier = models.SmallIntegerField(default=1)
 
     def __str__(self):
         return f'{str(self.prediction)} -> state: {str(self.points_match_state)} -> result: {str(self.points_result)}'
