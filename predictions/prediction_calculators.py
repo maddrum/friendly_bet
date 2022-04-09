@@ -103,7 +103,7 @@ def calculate_extra_points(prediction, check_full_score):
                            f'затова от точките си даде: {bet_points_obj.points_match_state}.' \
                            f'Ама сделката пропадна и затова ги взехме.'
 
-    if bet_points_obj.points_match_state != 0:
+    if bet_points_obj.points_result != 0:
         if check_full_score:
             add_points = bet_points_obj.multiplier * bet_points_obj.points_result
             result_points += add_points
@@ -115,6 +115,6 @@ def calculate_extra_points(prediction, check_full_score):
             result_points -= bet_points_obj.points_result
             result_note += f'\n Беше "уредил/а" мача да свърши {prediction.goals_home}:{prediction.goals_guest}, ' \
                            f'затова от точките си даде: {bet_points_obj.points_match_state}.' \
-                           f'Ама Меси удари гредата и затова ги взехме.'
+                           f'Ама като Божинката удари греда и затова ги взехме.'
 
     return result_points, result_note
