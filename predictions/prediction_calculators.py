@@ -12,7 +12,7 @@ def calculate_user_predictions(instance_id=None):
         except MatchResult.DoesNotExist:
             return
         queryset = UserPrediction.objects.filter(match=match_result_instance.match).prefetch_related(
-            'match__match_result').select_related('match')
+            'match__match_result').select_related('match').select_related('bet_points')
 
     for prediction in queryset:
         multiplier = prediction.match.phase.multiplier
@@ -72,3 +72,7 @@ def calculate_ranklist(instance_id=None):
         else:
             obj.points += ranklist[obj.user.id]
         obj.save()
+
+
+def calculate_bet_points(prediction):
+    pass

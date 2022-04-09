@@ -23,7 +23,7 @@ class UserPrediction(models.Model):
 
 
 class BetAdditionalPoint(models.Model):
-    prediction = models.OneToOneField(UserPrediction, on_delete=models.CASCADE)
+    prediction = models.OneToOneField(UserPrediction, on_delete=models.CASCADE, related_name='bet_points')
     points_match_state = models.SmallIntegerField(default=0)
     points_result = models.SmallIntegerField(default=0)
 
