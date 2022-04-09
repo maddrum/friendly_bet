@@ -60,8 +60,10 @@
                     class="nav-link w-nav-link">
                 Ранглиста
             </a>
-            <a href="{% url 'bonus_main' %}" data-w-id="ae7752c4-2d27-e763-7bb8-8c9c52735f95"
-                    class="nav-link bb w-nav-link">Бонуси</a>
+
+            {# removed bonuses support#}
+            {# <a href="{% url 'bonus_main' %}" data-w-id="ae7752c4-2d27-e763-7bb8-8c9c52735f95"#}
+            {# class="nav-link bb w-nav-link">Бонуси</a>#}
 
             {% if user.is_authenticated %}
                 <a href="{% url 'profile' %}" data-w-id="ae7752c4-2d27-e763-7bb8-8c9c52735f93"

@@ -12,14 +12,16 @@ def calculate_user_predictions(instance_id=None):
         except MatchResult.DoesNotExist:
             return
         queryset = UserPrediction.objects.filter(match=match_result_instance.match).prefetch_related(
-            'match__match_result').select_related('match')
+            'match__match_result').select_related('match').select_related('bet_points')
 
     for prediction in queryset:
+        check_full_score = False
         multiplier = prediction.match.phase.multiplier
         points = PARTICIPATION_POINTS
         note = '1. Прогноза за мач: 1 т.'
         # check match state
         if prediction.match_state == prediction.match.match_result.match_state:
+
             temp_points = GUESSED_MATCH_STATE * multiplier
             points += temp_points
             note = note + f'\n2. Познат изход от срещата: {temp_points} т.'
@@ -35,6 +37,10 @@ def calculate_user_predictions(instance_id=None):
                 temp_points = GUESSED_MATCH_RESULT * multiplier
                 points += temp_points
                 note = note + f'\n3.Познат точен резултат: {temp_points} т.'
+        # handle extra bet points
+        extra_bet_points, extra_bet_note = calculate_extra_points(prediction, check_full_score)
+        points += extra_bet_points
+        note += extra_bet_note
 
         # update points object
         prediction_points_obj, created = PredictionPoint.objects.get_or_create(prediction=prediction)
@@ -72,3 +78,55 @@ def calculate_ranklist(instance_id=None):
         else:
             obj.points += ranklist[obj.user.id]
         obj.save()
+
+
+def calculate_extra_bet_multiplier(user):
+    top_points = UserScore.objects.all().order_by('points').first().points
+    user_points_obj = UserScore.objects.filter(user=user).first()
+    user_points = 0 if user_points_obj is None else user_points_obj.points
+    multiplier = int(round(top_points / user_points), 0) + 1 if user_points != 0 else 2
+    if multiplier > 15:
+        multiplier = 15
+    if multiplier < 2:
+        multiplier = 2
+    return multiplier
+
+
+def calculate_extra_points(prediction, check_full_score):
+    result_points = 0
+    result_note = ''
+
+    bet_points_obj = prediction.bet_points
+
+    if bet_points_obj.points_match_state == 0 and bet_points_obj.points_result == 0:
+        return result_points, result_note
+
+    if bet_points_obj.points_match_state != 0:
+        if prediction.match_state == prediction.match.match_result.match_state:
+            add_points = bet_points_obj.multiplier * bet_points_obj.points_match_state
+            result_points += add_points
+            result_note += f'\n Беше "уредил/а" изхода от двубоя, ' \
+                           f'затова от точките си даде: {bet_points_obj.points_match_state}.' \
+                           f'И позна та получи още: ' \
+                           f'{bet_points_obj.multiplier} * {bet_points_obj.points_match_state} = {add_points} '
+        else:
+            result_points -= bet_points_obj.points_match_state
+            result_note += f'\n Беше "уредил/а" изхода от двубоя, ' \
+                           f'затова от точките си даде: {bet_points_obj.points_match_state}.' \
+                           f'Ама сделката пропадна и затова ги взехме.'
+
+    if bet_points_obj.points_result != 0:
+        if check_full_score:
+            add_points = bet_points_obj.multiplier * bet_points_obj.points_result
+            result_points += add_points
+            result_note += f'\n Беше "уредил/а" мача да свърши {prediction.goals_home}:{prediction.goals_guest}, ' \
+                           f'затова от точките си даде: {bet_points_obj.points_match_state}.' \
+                           f'И позна та получи още: ' \
+                           f'{bet_points_obj.multiplier} * {bet_points_obj.points_match_state} = {add_points} '
+        else:
+            result_points -= bet_points_obj.points_result
+            result_note += f'\n Беше "уредил/а" мача да свърши {prediction.goals_home}:{prediction.goals_guest}, ' \
+                           f'затова от точките си даде: {bet_points_obj.points_match_state}.' \
+                           f'Ама като Божинката удари греда и затова ги взехме.'
+
+    return result_points, result_note

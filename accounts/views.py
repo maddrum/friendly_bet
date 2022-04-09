@@ -1,13 +1,12 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
-from django.utils import timezone
 from django.views.generic import CreateView, ListView, TemplateView, UpdateView
 
 from accounts import forms
 from predictions.models import UserPrediction
 from predictions.views_mixins import GetEventMatchesMixin
-from django.db.models import Q
 
 
 class UserRegisterView(CreateView):
@@ -31,9 +30,8 @@ class UserSettingsUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('profile')
 
     def get_object(self, queryset=None):
-        username = self.request.user
-        queryset = User.objects.get(username=username)
-        return queryset
+        user = get_user_model().objects.get(pk=self.request.user.pk)
+        return user
 
 
 class UserPredictionsListView(LoginRequiredMixin, GetEventMatchesMixin, ListView):

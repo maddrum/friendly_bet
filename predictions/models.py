@@ -23,12 +23,18 @@ class UserPrediction(models.Model):
 
 
 class BetAdditionalPoint(models.Model):
-    prediction = models.OneToOneField(UserPrediction, on_delete=models.CASCADE)
-    points_match_state = models.SmallIntegerField(default=0)
-    points_result = models.SmallIntegerField(default=0)
+    prediction = models.OneToOneField(UserPrediction, on_delete=models.CASCADE, related_name='bet_points')
+    apply_match_state = models.BooleanField(default=False)
+    apply_result = models.BooleanField(default=False)
+    points_match_state_to_take = models.SmallIntegerField(default=0)
+    points_result_to_take = models.SmallIntegerField(default=0)
+    points_match_state_to_give = models.SmallIntegerField(default=0)
+    points_result_to_give = models.SmallIntegerField(default=0)
+    created_on = models.DateTimeField(auto_now_add=True)
+    edited_on = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'{str(self.prediction)} -> state: {str(self.points_match_state)} -> result: {str(self.points_result)}'
+        return f'{str(self.prediction)}'
 
 
 class PredictionPoint(models.Model):

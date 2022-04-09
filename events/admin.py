@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from events.models import Event, EventGroup, EventMatchState, EventPhase, Team
+from events.models import Event, EventGroup, EventMatchState, EventPhase, PhaseBetPoint, Team
 
 
 class ReadOnlyFields(admin.ModelAdmin):
@@ -29,6 +29,11 @@ class EventPhasesAdmin(ReadOnlyFields):
 
 class TeamAdmin(ReadOnlyFields):
     search_fields = ('name',)
+    list_display = ('group', 'name')
+
+
+class PhaseBetPointAdmin(admin.ModelAdmin):
+    list_display = ('phase', 'points_state', 'return_points_state', 'points_result', 'return_points_result')
 
 
 admin.site.register(Event, ReadOnlyFields)
@@ -36,3 +41,4 @@ admin.site.register(EventPhase, EventPhasesAdmin)
 admin.site.register(EventGroup, ReadOnlyFields)
 admin.site.register(EventMatchState, ReadOnlyFields)
 admin.site.register(Team, TeamAdmin)
+admin.site.register(PhaseBetPoint, PhaseBetPointAdmin)

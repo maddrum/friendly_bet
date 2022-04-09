@@ -1,0 +1,1196 @@
+[
+  {
+    "model": "events.event",
+    "pk": 1,
+    "fields": {
+      "event_name": "Катар 22",
+      "slug_name": "katar-22",
+      "event_start_date": "2022-11-21",
+      "event_end_date": "2022-12-18",
+      "top_event": true,
+      "event_total_matches": 64,
+      "created_on": "2022-04-02T17:19:08.598",
+      "edited_on": "2022-04-02T17:19:08.598"
+    }
+  },
+  {
+    "model": "events.eventgroup",
+    "pk": 1,
+    "fields": {
+      "event": 1,
+      "event_group": "Група А",
+      "created_on": "2022-04-02T17:21:32.759",
+      "edited_on": "2022-04-02T17:21:32.759"
+    }
+  },
+  {
+    "model": "events.eventgroup",
+    "pk": 2,
+    "fields": {
+      "event": 1,
+      "event_group": "Група B",
+      "created_on": "2022-04-02T17:21:44.065",
+      "edited_on": "2022-04-02T17:43:12.637"
+    }
+  },
+  {
+    "model": "events.eventgroup",
+    "pk": 3,
+    "fields": {
+      "event": 1,
+      "event_group": "Група C",
+      "created_on": "2022-04-02T17:21:56.013",
+      "edited_on": "2022-04-02T17:21:56.013"
+    }
+  },
+  {
+    "model": "events.eventgroup",
+    "pk": 4,
+    "fields": {
+      "event": 1,
+      "event_group": "Група D",
+      "created_on": "2022-04-02T17:22:04.993",
+      "edited_on": "2022-04-02T17:22:04.993"
+    }
+  },
+  {
+    "model": "events.eventgroup",
+    "pk": 5,
+    "fields": {
+      "event": 1,
+      "event_group": "Група E",
+      "created_on": "2022-04-02T17:22:21.055",
+      "edited_on": "2022-04-02T17:22:21.055"
+    }
+  },
+  {
+    "model": "events.eventgroup",
+    "pk": 6,
+    "fields": {
+      "event": 1,
+      "event_group": "Група F",
+      "created_on": "2022-04-02T17:22:29.426",
+      "edited_on": "2022-04-02T17:22:29.426"
+    }
+  },
+  {
+    "model": "events.eventgroup",
+    "pk": 7,
+    "fields": {
+      "event": 1,
+      "event_group": "Група G",
+      "created_on": "2022-04-02T17:22:38.882",
+      "edited_on": "2022-04-02T17:22:38.882"
+    }
+  },
+  {
+    "model": "events.eventgroup",
+    "pk": 8,
+    "fields": {
+      "event": 1,
+      "event_group": "Група H",
+      "created_on": "2022-04-02T17:22:48.129",
+      "edited_on": "2022-04-02T17:22:48.129"
+    }
+  },
+  {
+    "model": "events.eventmatchstate",
+    "pk": 1,
+    "fields": {
+      "event": 1,
+      "match_state": "home",
+      "created_on": "2022-04-02T17:23:13.541",
+      "edited_on": "2022-04-02T17:23:13.541"
+    }
+  },
+  {
+    "model": "events.eventmatchstate",
+    "pk": 2,
+    "fields": {
+      "event": 1,
+      "match_state": "guest",
+      "created_on": "2022-04-02T17:23:20.120",
+      "edited_on": "2022-04-02T17:23:20.120"
+    }
+  },
+  {
+    "model": "events.eventmatchstate",
+    "pk": 3,
+    "fields": {
+      "event": 1,
+      "match_state": "tie",
+      "created_on": "2022-04-02T17:23:27.529",
+      "edited_on": "2022-04-02T17:23:27.529"
+    }
+  },
+  {
+    "model": "events.eventmatchstate",
+    "pk": 4,
+    "fields": {
+      "event": 1,
+      "match_state": "penalties_home",
+      "created_on": "2022-04-02T17:23:34.144",
+      "edited_on": "2022-04-02T17:23:34.144"
+    }
+  },
+  {
+    "model": "events.eventmatchstate",
+    "pk": 5,
+    "fields": {
+      "event": 1,
+      "match_state": "penalties_guest",
+      "created_on": "2022-04-02T17:23:40.972",
+      "edited_on": "2022-04-02T17:23:40.972"
+    }
+  },
+  {
+    "model": "events.eventphase",
+    "pk": 1,
+    "fields": {
+      "event": 1,
+      "phase": "group",
+      "multiplier": 1,
+      "created_on": "2022-04-02T17:23:59.995",
+      "edited_on": "2022-04-02T17:23:59.995",
+      "phase_match_states": [
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  {
+    "model": "events.eventphase",
+    "pk": 2,
+    "fields": {
+      "event": 1,
+      "phase": "eight_final",
+      "multiplier": 2,
+      "created_on": "2022-04-02T17:26:03.762",
+      "edited_on": "2022-04-02T17:26:03.762",
+      "phase_match_states": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  },
+  {
+    "model": "events.eventphase",
+    "pk": 3,
+    "fields": {
+      "event": 1,
+      "phase": "quarter_final",
+      "multiplier": 4,
+      "created_on": "2022-04-02T17:26:16.480",
+      "edited_on": "2022-04-02T17:26:16.480",
+      "phase_match_states": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  },
+  {
+    "model": "events.eventphase",
+    "pk": 4,
+    "fields": {
+      "event": 1,
+      "phase": "semi_final",
+      "multiplier": 6,
+      "created_on": "2022-04-02T17:26:32.085",
+      "edited_on": "2022-04-02T17:30:04.694",
+      "phase_match_states": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  },
+  {
+    "model": "events.eventphase",
+    "pk": 5,
+    "fields": {
+      "event": 1,
+      "phase": "little_final",
+      "multiplier": 6,
+      "created_on": "2022-04-02T17:26:46.146",
+      "edited_on": "2022-04-02T17:30:11.069",
+      "phase_match_states": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  },
+  {
+    "model": "events.eventphase",
+    "pk": 6,
+    "fields": {
+      "event": 1,
+      "phase": "final",
+      "multiplier": 10,
+      "created_on": "2022-04-02T17:27:01.949",
+      "edited_on": "2022-04-02T17:30:16.861",
+      "phase_match_states": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 1,
+    "fields": {
+      "group": 1,
+      "name": "Катар",
+      "created_on": "2022-04-02T17:29:02.524",
+      "edited_on": "2022-04-02T17:29:02.524"
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 2,
+    "fields": {
+      "group": 1,
+      "name": "Еквадор",
+      "created_on": "2022-04-02T17:29:11.583",
+      "edited_on": "2022-04-02T17:29:11.583"
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 3,
+    "fields": {
+      "group": 1,
+      "name": "Сенегал",
+      "created_on": "2022-04-02T17:29:23.887",
+      "edited_on": "2022-04-02T17:29:23.887"
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 4,
+    "fields": {
+      "group": 1,
+      "name": "Нидерландия",
+      "created_on": "2022-04-02T17:29:34.028",
+      "edited_on": "2022-04-02T17:29:34.028"
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 5,
+    "fields": {
+      "group": 2,
+      "name": "Англия",
+      "created_on": "2022-04-02T17:30:49.914",
+      "edited_on": "2022-04-02T17:30:49.914"
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 6,
+    "fields": {
+      "group": 2,
+      "name": "Иран",
+      "created_on": "2022-04-02T17:31:01.442",
+      "edited_on": "2022-04-02T17:31:01.442"
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 7,
+    "fields": {
+      "group": 2,
+      "name": "САЩ",
+      "created_on": "2022-04-02T17:31:15.205",
+      "edited_on": "2022-04-02T17:31:15.205"
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 8,
+    "fields": {
+      "group": 3,
+      "name": "Аржентина",
+      "created_on": "2022-04-02T17:31:50.317",
+      "edited_on": "2022-04-02T17:31:50.317"
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 9,
+    "fields": {
+      "group": 3,
+      "name": "Саудитска Арабия",
+      "created_on": "2022-04-02T17:32:07.128",
+      "edited_on": "2022-04-02T17:32:07.128"
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 10,
+    "fields": {
+      "group": 3,
+      "name": "Мексико",
+      "created_on": "2022-04-02T17:32:16.006",
+      "edited_on": "2022-04-02T17:32:16.006"
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 11,
+    "fields": {
+      "group": 3,
+      "name": "Полша",
+      "created_on": "2022-04-02T17:32:29.655",
+      "edited_on": "2022-04-02T17:32:29.655"
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 12,
+    "fields": {
+      "group": 4,
+      "name": "Франция",
+      "created_on": "2022-04-02T17:32:47.765",
+      "edited_on": "2022-04-02T17:32:47.765"
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 13,
+    "fields": {
+      "group": 4,
+      "name": "Дания",
+      "created_on": "2022-04-02T17:32:59.689",
+      "edited_on": "2022-04-02T17:32:59.689"
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 14,
+    "fields": {
+      "group": 4,
+      "name": "Тунис",
+      "created_on": "2022-04-02T17:33:09.357",
+      "edited_on": "2022-04-02T17:33:09.357"
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 15,
+    "fields": {
+      "group": 2,
+      "name": "Уелс",
+      "created_on": "2022-04-02T17:33:28.381",
+      "edited_on": "2022-07-09T19:38:18.233"
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 16,
+    "fields": {
+      "group": 4,
+      "name": "Австралия",
+      "created_on": "2022-04-02T17:44:27.731",
+      "edited_on": "2022-07-09T19:39:06.575"
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 17,
+    "fields": {
+      "group": 5,
+      "name": "Испания",
+      "created_on": "2022-04-02T17:44:40.824",
+      "edited_on": "2022-04-02T17:44:40.824"
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 18,
+    "fields": {
+      "group": 5,
+      "name": "Коста Рика",
+      "created_on": "2022-04-02T17:44:59.011",
+      "edited_on": "2022-07-09T19:40:28.481"
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 19,
+    "fields": {
+      "group": 5,
+      "name": "Германия",
+      "created_on": "2022-04-02T17:45:08.047",
+      "edited_on": "2022-04-02T17:45:08.047"
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 20,
+    "fields": {
+      "group": 5,
+      "name": "Япония",
+      "created_on": "2022-04-02T17:45:17.126",
+      "edited_on": "2022-04-02T17:45:17.126"
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 21,
+    "fields": {
+      "group": 6,
+      "name": "Белгия",
+      "created_on": "2022-04-02T17:45:35.625",
+      "edited_on": "2022-04-02T17:45:35.625"
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 22,
+    "fields": {
+      "group": 6,
+      "name": "Канада",
+      "created_on": "2022-04-02T17:45:46.736",
+      "edited_on": "2022-04-02T17:45:46.736"
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 23,
+    "fields": {
+      "group": 6,
+      "name": "Мароко",
+      "created_on": "2022-04-02T17:45:55.273",
+      "edited_on": "2022-04-02T17:45:55.273"
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 24,
+    "fields": {
+      "group": 6,
+      "name": "Хърватия",
+      "created_on": "2022-04-02T17:46:04.417",
+      "edited_on": "2022-04-02T17:46:04.417"
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 25,
+    "fields": {
+      "group": 7,
+      "name": "Бразилия",
+      "created_on": "2022-04-02T17:46:15.795",
+      "edited_on": "2022-04-02T17:46:15.795"
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 26,
+    "fields": {
+      "group": 7,
+      "name": "Сърбия",
+      "created_on": "2022-04-02T17:46:26.977",
+      "edited_on": "2022-04-02T17:46:26.977"
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 27,
+    "fields": {
+      "group": 7,
+      "name": "Швейцария",
+      "created_on": "2022-04-02T17:46:35.407",
+      "edited_on": "2022-04-02T17:46:35.407"
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 28,
+    "fields": {
+      "group": 7,
+      "name": "Камерун",
+      "created_on": "2022-04-02T17:46:47.632",
+      "edited_on": "2022-04-02T17:46:47.632"
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 29,
+    "fields": {
+      "group": 8,
+      "name": "Португалия",
+      "created_on": "2022-04-02T17:46:59.312",
+      "edited_on": "2022-04-02T17:46:59.312"
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 30,
+    "fields": {
+      "group": 8,
+      "name": "Гана",
+      "created_on": "2022-04-02T17:47:08.862",
+      "edited_on": "2022-04-02T17:47:08.862"
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 31,
+    "fields": {
+      "group": 8,
+      "name": "Уругвай",
+      "created_on": "2022-04-02T17:47:16.900",
+      "edited_on": "2022-04-02T17:47:16.900"
+    }
+  },
+  {
+    "model": "events.team",
+    "pk": 32,
+    "fields": {
+      "group": 8,
+      "name": "Република Корея",
+      "created_on": "2022-04-02T17:47:27.666",
+      "edited_on": "2022-04-02T17:47:27.666"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 1,
+    "fields": {
+      "home": 1,
+      "guest": 2,
+      "phase": 1,
+      "match_number": 1,
+      "match_start_time": "2022-11-21T19:00:00",
+      "created_on": "2022-04-02T17:49:07.510",
+      "edited_on": "2022-04-02T17:49:07.510"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 2,
+    "fields": {
+      "home": 3,
+      "guest": 4,
+      "phase": 1,
+      "match_number": 2,
+      "match_start_time": "2022-11-21T12:00:00",
+      "created_on": "2022-04-02T17:49:48.884",
+      "edited_on": "2022-04-02T18:20:52.020"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 3,
+    "fields": {
+      "home": 1,
+      "guest": 3,
+      "phase": 1,
+      "match_number": 18,
+      "match_start_time": "2022-11-25T15:00:00",
+      "created_on": "2022-04-02T17:51:02.620",
+      "edited_on": "2022-04-02T17:51:02.620"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 4,
+    "fields": {
+      "home": 4,
+      "guest": 2,
+      "phase": 1,
+      "match_number": 19,
+      "match_start_time": "2022-11-25T18:00:00",
+      "created_on": "2022-04-02T17:51:38.974",
+      "edited_on": "2022-04-02T17:51:38.974"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 5,
+    "fields": {
+      "home": 2,
+      "guest": 3,
+      "phase": 1,
+      "match_number": 35,
+      "match_start_time": "2022-11-29T17:00:00",
+      "created_on": "2022-04-02T17:52:07.174",
+      "edited_on": "2022-04-02T17:52:07.174"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 6,
+    "fields": {
+      "home": 4,
+      "guest": 1,
+      "phase": 1,
+      "match_number": 36,
+      "match_start_time": "2022-11-29T17:00:00",
+      "created_on": "2022-04-02T17:52:39.315",
+      "edited_on": "2022-04-02T17:52:39.315"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 7,
+    "fields": {
+      "home": 5,
+      "guest": 6,
+      "phase": 1,
+      "match_number": 3,
+      "match_start_time": "2022-11-21T15:00:00",
+      "created_on": "2022-04-02T17:53:26.631",
+      "edited_on": "2022-04-02T17:53:26.631"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 8,
+    "fields": {
+      "home": 7,
+      "guest": 15,
+      "phase": 1,
+      "match_number": 4,
+      "match_start_time": "2022-11-21T21:00:00",
+      "created_on": "2022-04-02T17:54:09.175",
+      "edited_on": "2022-04-02T17:54:09.175"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 9,
+    "fields": {
+      "home": 15,
+      "guest": 6,
+      "phase": 1,
+      "match_number": 17,
+      "match_start_time": "2022-11-25T12:00:00",
+      "created_on": "2022-04-02T17:54:43.617",
+      "edited_on": "2022-04-02T17:54:43.617"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 10,
+    "fields": {
+      "home": 5,
+      "guest": 7,
+      "phase": 1,
+      "match_number": 20,
+      "match_start_time": "2022-11-25T21:00:00",
+      "created_on": "2022-04-02T17:59:29.620",
+      "edited_on": "2022-04-02T17:59:29.620"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 11,
+    "fields": {
+      "home": 6,
+      "guest": 7,
+      "phase": 1,
+      "match_number": 34,
+      "match_start_time": "2022-11-29T21:00:00",
+      "created_on": "2022-04-02T18:00:24.115",
+      "edited_on": "2022-04-03T10:28:47.419"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 12,
+    "fields": {
+      "home": 15,
+      "guest": 5,
+      "phase": 1,
+      "match_number": 33,
+      "match_start_time": "2022-11-29T21:00:00",
+      "created_on": "2022-04-02T18:01:17.566",
+      "edited_on": "2022-04-02T18:01:17.566"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 13,
+    "fields": {
+      "home": 8,
+      "guest": 9,
+      "phase": 1,
+      "match_number": 8,
+      "match_start_time": "2022-11-22T12:00:00",
+      "created_on": "2022-04-02T18:30:34.314",
+      "edited_on": "2022-04-02T18:30:34.314"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 14,
+    "fields": {
+      "home": 10,
+      "guest": 11,
+      "phase": 1,
+      "match_number": 7,
+      "match_start_time": "2022-11-22T18:00:00",
+      "created_on": "2022-04-02T18:30:59.147",
+      "edited_on": "2022-04-02T18:30:59.147"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 15,
+    "fields": {
+      "home": 11,
+      "guest": 9,
+      "phase": 1,
+      "match_number": 22,
+      "match_start_time": "2022-11-26T15:00:00",
+      "created_on": "2022-04-02T18:31:20.951",
+      "edited_on": "2022-04-02T18:31:20.951"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 16,
+    "fields": {
+      "home": 8,
+      "guest": 10,
+      "phase": 1,
+      "match_number": 24,
+      "match_start_time": "2022-11-26T21:00:00",
+      "created_on": "2022-04-02T18:44:46.734",
+      "edited_on": "2022-04-02T18:44:46.734"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 17,
+    "fields": {
+      "home": 11,
+      "guest": 8,
+      "phase": 1,
+      "match_number": 39,
+      "match_start_time": "2022-11-30T21:00:00",
+      "created_on": "2022-04-02T18:45:21.584",
+      "edited_on": "2022-04-02T18:45:21.584"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 18,
+    "fields": {
+      "home": 9,
+      "guest": 10,
+      "phase": 1,
+      "match_number": 40,
+      "match_start_time": "2022-11-30T21:00:00",
+      "created_on": "2022-04-02T18:45:44.129",
+      "edited_on": "2022-04-02T18:45:44.129"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 19,
+    "fields": {
+      "home": 13,
+      "guest": 14,
+      "phase": 1,
+      "match_number": 6,
+      "match_start_time": "2022-11-22T15:00:00",
+      "created_on": "2022-04-02T18:46:04.824",
+      "edited_on": "2022-04-02T18:46:04.824"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 20,
+    "fields": {
+      "home": 12,
+      "guest": 16,
+      "phase": 1,
+      "match_number": 5,
+      "match_start_time": "2022-11-22T21:00:00",
+      "created_on": "2022-04-02T18:46:27.429",
+      "edited_on": "2022-04-02T18:46:27.429"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 21,
+    "fields": {
+      "home": 14,
+      "guest": 16,
+      "phase": 1,
+      "match_number": 21,
+      "match_start_time": "2022-11-26T12:00:00",
+      "created_on": "2022-04-02T18:46:55.875",
+      "edited_on": "2022-04-02T18:46:55.875"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 22,
+    "fields": {
+      "home": 12,
+      "guest": 13,
+      "phase": 1,
+      "match_number": 23,
+      "match_start_time": "2022-11-26T18:00:00",
+      "created_on": "2022-04-02T18:47:18.882",
+      "edited_on": "2022-04-02T18:47:18.882"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 23,
+    "fields": {
+      "home": 16,
+      "guest": 13,
+      "phase": 1,
+      "match_number": 37,
+      "match_start_time": "2022-11-30T17:00:00",
+      "created_on": "2022-04-02T18:47:38.923",
+      "edited_on": "2022-04-02T18:47:38.923"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 24,
+    "fields": {
+      "home": 14,
+      "guest": 12,
+      "phase": 1,
+      "match_number": 38,
+      "match_start_time": "2022-11-30T17:00:00",
+      "created_on": "2022-04-02T18:47:56.348",
+      "edited_on": "2022-04-02T18:47:56.348"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 25,
+    "fields": {
+      "home": 19,
+      "guest": 20,
+      "phase": 1,
+      "match_number": 11,
+      "match_start_time": "2022-11-23T15:00:00",
+      "created_on": "2022-04-02T18:48:20.144",
+      "edited_on": "2022-04-02T18:48:20.144"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 26,
+    "fields": {
+      "home": 17,
+      "guest": 18,
+      "phase": 1,
+      "match_number": 10,
+      "match_start_time": "2022-11-23T18:00:00",
+      "created_on": "2022-04-02T18:48:46.141",
+      "edited_on": "2022-04-02T18:48:46.142"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 27,
+    "fields": {
+      "home": 20,
+      "guest": 18,
+      "phase": 1,
+      "match_number": 25,
+      "match_start_time": "2022-11-27T12:00:00",
+      "created_on": "2022-04-02T18:49:07.375",
+      "edited_on": "2022-04-02T18:49:07.375"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 28,
+    "fields": {
+      "home": 17,
+      "guest": 19,
+      "phase": 1,
+      "match_number": 28,
+      "match_start_time": "2022-11-27T21:00:00",
+      "created_on": "2022-04-02T18:49:27.231",
+      "edited_on": "2022-04-02T18:49:27.231"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 29,
+    "fields": {
+      "home": 20,
+      "guest": 17,
+      "phase": 1,
+      "match_number": 43,
+      "match_start_time": "2022-12-01T21:00:00",
+      "created_on": "2022-04-02T18:49:55.085",
+      "edited_on": "2022-04-02T18:49:55.085"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 30,
+    "fields": {
+      "home": 18,
+      "guest": 19,
+      "phase": 1,
+      "match_number": 44,
+      "match_start_time": "2022-12-01T21:00:00",
+      "created_on": "2022-04-02T18:50:22.567",
+      "edited_on": "2022-04-02T18:50:22.567"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 31,
+    "fields": {
+      "home": 23,
+      "guest": 24,
+      "phase": 1,
+      "match_number": 12,
+      "match_start_time": "2022-11-23T13:00:00",
+      "created_on": "2022-04-02T18:50:43.206",
+      "edited_on": "2022-04-02T18:50:43.206"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 32,
+    "fields": {
+      "home": 21,
+      "guest": 22,
+      "phase": 1,
+      "match_number": 9,
+      "match_start_time": "2022-11-23T21:00:00",
+      "created_on": "2022-04-02T18:51:05.901",
+      "edited_on": "2022-04-02T18:51:05.901"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 33,
+    "fields": {
+      "home": 21,
+      "guest": 23,
+      "phase": 1,
+      "match_number": 26,
+      "match_start_time": "2022-11-27T15:00:00",
+      "created_on": "2022-04-02T18:51:25.999",
+      "edited_on": "2022-04-02T18:51:25.999"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 34,
+    "fields": {
+      "home": 24,
+      "guest": 22,
+      "phase": 1,
+      "match_number": 27,
+      "match_start_time": "2022-11-27T18:00:00",
+      "created_on": "2022-04-02T18:51:47.893",
+      "edited_on": "2022-04-02T18:51:47.893"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 35,
+    "fields": {
+      "home": 24,
+      "guest": 21,
+      "phase": 1,
+      "match_number": 41,
+      "match_start_time": "2022-12-01T17:00:00",
+      "created_on": "2022-04-02T18:52:10.102",
+      "edited_on": "2022-04-02T18:52:10.102"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 36,
+    "fields": {
+      "home": 22,
+      "guest": 23,
+      "phase": 1,
+      "match_number": 42,
+      "match_start_time": "2022-12-01T17:00:00",
+      "created_on": "2022-04-02T18:52:31.466",
+      "edited_on": "2022-04-02T18:52:31.466"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 37,
+    "fields": {
+      "home": 27,
+      "guest": 28,
+      "phase": 1,
+      "match_number": 13,
+      "match_start_time": "2022-11-24T12:00:00",
+      "created_on": "2022-04-02T18:52:57.069",
+      "edited_on": "2022-04-02T18:52:57.069"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 38,
+    "fields": {
+      "home": 21,
+      "guest": 26,
+      "phase": 1,
+      "match_number": 16,
+      "match_start_time": "2022-11-24T21:00:00",
+      "created_on": "2022-04-02T18:53:14.835",
+      "edited_on": "2022-04-02T18:53:14.835"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 39,
+    "fields": {
+      "home": 28,
+      "guest": 26,
+      "phase": 1,
+      "match_number": 29,
+      "match_start_time": "2022-11-28T12:00:00",
+      "created_on": "2022-04-02T18:53:31.786",
+      "edited_on": "2022-04-02T18:53:31.786"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 40,
+    "fields": {
+      "home": 25,
+      "guest": 27,
+      "phase": 1,
+      "match_number": 31,
+      "match_start_time": "2022-11-28T18:00:00",
+      "created_on": "2022-04-02T18:53:48.766",
+      "edited_on": "2022-04-02T18:53:48.766"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 41,
+    "fields": {
+      "home": 26,
+      "guest": 27,
+      "phase": 1,
+      "match_number": 47,
+      "match_start_time": "2022-12-02T21:00:00",
+      "created_on": "2022-04-02T18:54:09.099",
+      "edited_on": "2022-04-02T18:54:09.099"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 42,
+    "fields": {
+      "home": 28,
+      "guest": 25,
+      "phase": 1,
+      "match_number": 48,
+      "match_start_time": "2022-12-02T21:00:00",
+      "created_on": "2022-04-02T18:54:26.701",
+      "edited_on": "2022-04-02T18:54:26.701"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 43,
+    "fields": {
+      "home": 31,
+      "guest": 32,
+      "phase": 1,
+      "match_number": 14,
+      "match_start_time": "2022-11-24T15:00:00",
+      "created_on": "2022-04-02T18:54:49.663",
+      "edited_on": "2022-04-02T18:54:49.663"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 44,
+    "fields": {
+      "home": 29,
+      "guest": 30,
+      "phase": 1,
+      "match_number": 15,
+      "match_start_time": "2022-11-24T18:00:00",
+      "created_on": "2022-04-02T18:55:14.721",
+      "edited_on": "2022-04-02T18:55:14.721"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 45,
+    "fields": {
+      "home": 32,
+      "guest": 30,
+      "phase": 1,
+      "match_number": 30,
+      "match_start_time": "2022-11-28T15:00:00",
+      "created_on": "2022-04-02T18:55:35.007",
+      "edited_on": "2022-04-02T18:55:35.007"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 46,
+    "fields": {
+      "home": 29,
+      "guest": 31,
+      "phase": 1,
+      "match_number": 32,
+      "match_start_time": "2022-11-28T21:00:00",
+      "created_on": "2022-04-02T18:55:50.930",
+      "edited_on": "2022-04-02T18:55:50.930"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 47,
+    "fields": {
+      "home": 30,
+      "guest": 31,
+      "phase": 1,
+      "match_number": 45,
+      "match_start_time": "2022-12-02T17:00:00",
+      "created_on": "2022-04-02T18:56:14.836",
+      "edited_on": "2022-04-02T18:56:14.836"
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 48,
+    "fields": {
+      "home": 32,
+      "guest": 29,
+      "phase": 1,
+      "match_number": 46,
+      "match_start_time": "2022-12-02T17:00:00",
+      "created_on": "2022-04-02T18:56:32.655",
+      "edited_on": "2022-04-02T18:56:32.655"
+    }
+  }
+]
