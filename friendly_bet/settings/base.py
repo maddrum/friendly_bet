@@ -20,6 +20,22 @@ with open(email_password_file, 'r') as file:
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'friendly_bet': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+        },
+    },
+}
+
 # EMAIL CONFIGURATIONS
 EMAIL_HOST = 'mail.privateemail.com'
 EMAIL_HOST_USER = 'no-reply@selapt.com'

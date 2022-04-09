@@ -6,9 +6,6 @@ from events.models import Event
 from matches.models import Match
 
 
-# from bonus_points.models import UserBonusSummary
-
-
 class GetEventMatchesMixin:
     event = None
     matches = None
@@ -27,12 +24,12 @@ class GetEventMatchesMixin:
         first_match = Match.objects.filter(phase__event=self.event).order_by('match_start_time').first()
         return first_match.match_start_time
 
-    def _get_now_plus_time(self, plus_minutes=15):
-        now_time = timezone.now()
+    @staticmethod
+    def _get_current_time():
+        return timezone.now()
 
-        # todo - debug setting
-        # now_time = datetime.datetime(2022, 11, 25, 10, 42)
-        return now_time + datetime.timedelta(minutes=plus_minutes)
+    def _get_now_plus_time(self, plus_minutes=15):
+        return self._get_current_time() + datetime.timedelta(minutes=plus_minutes)
 
     @staticmethod
     def get_date_wrapper(check_datetime):

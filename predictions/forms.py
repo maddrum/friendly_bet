@@ -7,8 +7,8 @@ from predictions.models import UserPrediction
 
 
 class PredictionForm(forms.ModelForm):
-    points_state = forms.IntegerField(min_value=0, initial=0)
-    points_result = forms.IntegerField(min_value=0, initial=0)
+    accept_match_state_bet = forms.BooleanField(widget=forms.CheckboxInput, required=False, initial=False)
+    accept_match_result_bet = forms.BooleanField(widget=forms.CheckboxInput, required=False, initial=False)
 
     class Meta:
         model = UserPrediction
@@ -30,13 +30,11 @@ class PredictionForm(forms.ModelForm):
             'class': 'match-select',
             'required': 'required',
         }
-        self.fields['points_state'].widget.attrs = {
-            'class': 'goals-input update-total-points',
-            'required': 'required',
+        self.fields['accept_match_state_bet'].widget.attrs = {
+            'class': 'prediction_offer',
         }
-        self.fields['points_result'].widget.attrs = {
-            'class': 'goals-input update-total-points',
-            'required': 'required',
+        self.fields['accept_match_result_bet'].widget.attrs = {
+            'class': 'prediction_offer',
         }
 
         MATCH_STATE_OPTIONS = {

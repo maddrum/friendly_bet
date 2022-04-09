@@ -3,6 +3,7 @@ from django.utils.text import slugify
 from unidecode import unidecode
 
 from events import settings as event_settings
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class Event(models.Model):
@@ -89,3 +90,29 @@ class Team(models.Model):
     class Meta:
         unique_together = ['group', 'name']
         ordering = ('-group__event_group', 'name')
+
+
+class PhaseBetPoint(models.Model):
+    phase = models.OneToOneField(EventPhase, on_delete=models.CASCADE, related_name='bet_points')
+    points_state = models.SmallIntegerField(
+        default=0,
+        validators=[MinValueValidator(0), MaxValueValidator(1000)],
+        help_text='Defines how much points will be TAKEN from the user on FAILED bet on match state.',
+    )
+    return_points_state = models.SmallIntegerField(
+        default=0, validators=[MinValueValidator(0), MaxValueValidator(5000)],
+        help_text='Defines how much points will be GIVEN to the user on SUCCESS bet on match state.',
+    )
+    points_result = models.SmallIntegerField(
+        default=0,
+        validators=[MinValueValidator(0), MaxValueValidator(1000)],
+        help_text='Defines how much points will be TAKEN from the user on FAILED bet on match result.',
+    )
+    return_points_result = models.SmallIntegerField(
+        default=0,
+        validators=[MinValueValidator(0), MaxValueValidator(5000)],
+        help_text='Defines how much points will be GIVEN from the user on SUCCESS bet on match result.',
+    )
+
+    def __str__(self):
+        return f'PhaseBetPoints -> {str(self.phase)}'
