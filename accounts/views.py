@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.views.generic import CreateView, ListView, TemplateView, UpdateView
 
 from accounts import forms
-from predictions.models import UserPredictions
+from predictions.models import UserPrediction
 from predictions.views_mixins import GetEventMatchesMixin
 from django.db.models import Q
 
@@ -37,24 +37,24 @@ class UserSettingsUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class UserPredictionsListView(LoginRequiredMixin, GetEventMatchesMixin, ListView):
-    model = UserPredictions
+    model = UserPrediction
     template_name = 'accounts/profile-update-predictions.html'
     context_object_name = 'predictions'
 
     def get_queryset(self):
         current_matches = list(self.matches)
-        queryset = UserPredictions.objects.filter(user=self.request.user, match__in=current_matches)
+        queryset = UserPrediction.objects.filter(user=self.request.user, match__in=current_matches)
         return queryset
 
 
 class ProfilePredictionStats(LoginRequiredMixin, ListView):
-    model = UserPredictions
+    model = UserPrediction
     template_name = 'accounts/profile-history-and-points.html'
     context_object_name = 'history'
     paginate_by = 4
 
     def get_queryset(self):
-        queryset = UserPredictions.objects.filter(user=self.request.user).order_by(
+        queryset = UserPrediction.objects.filter(user=self.request.user).order_by(
             '-match__match_start_time')
         return queryset
 

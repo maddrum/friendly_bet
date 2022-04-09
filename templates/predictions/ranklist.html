@@ -22,7 +22,7 @@
                         <div class="w-col w-col-4">
                             <div class="rarnk-txt user">
                                 <a href="{% url 'ranklist_detail' pk=item.user.pk %}" class="white">
-                                    {{ item.user.extra.get_user_names }}
+                                    {{ item.user.get_user_names }}
                                 </a>
                             </div>
                         </div>

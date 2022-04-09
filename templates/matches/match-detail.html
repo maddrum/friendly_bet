@@ -37,7 +37,7 @@
         </div>
         {% for item in predictions %}
             <div class="smetka-wrp">
-                <div class="heading content white">Прогноза на {{ item.user.extra.get_user_names }}</div>
+                <div class="heading content white">Прогноза на {{ item.user.get_user_names }}</div>
                 <ul class="result w-list-unstyled">
                     <li class="list-item-2">
                         <div class="text-block white">

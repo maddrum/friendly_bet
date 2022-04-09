@@ -32,7 +32,7 @@ class Event(models.Model):
         self.save()
 
 
-class EventGroups(models.Model):
+class EventGroup(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='event_group')
     event_group = models.CharField(max_length=200)
     created_on = models.DateTimeField(auto_now_add=True)
@@ -45,7 +45,7 @@ class EventGroups(models.Model):
         unique_together = ['event', 'event_group']
 
 
-class EventMatchStates(models.Model):
+class EventMatchState(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='event_match_states')
     match_state = models.CharField(max_length=20, choices=event_settings.MATCH_STATES)
     created_on = models.DateTimeField(auto_now_add=True)
@@ -58,10 +58,10 @@ class EventMatchStates(models.Model):
         unique_together = ['event', 'match_state']
 
 
-class EventPhases(models.Model):
+class EventPhase(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='event_phases')
     phase = models.CharField(max_length=20, choices=event_settings.PHASE_SELECTOR)
-    phase_match_states = models.ManyToManyField(EventMatchStates)
+    phase_match_states = models.ManyToManyField(EventMatchState)
     multiplier = models.IntegerField(default=1)
     created_on = models.DateTimeField(auto_now_add=True)
     edited_on = models.DateTimeField(auto_now=True)
@@ -73,12 +73,12 @@ class EventPhases(models.Model):
         unique_together = ['event', 'phase']
 
     def limit_event_phases_choices(self):
-        choices = EventMatchStates.objects.filter(event=self.event).values_list()
+        choices = EventMatchState.objects.filter(event=self.event).values_list()
         return choices
 
 
-class Teams(models.Model):
-    group = models.ForeignKey(EventGroups, on_delete=models.CASCADE, related_name='group')
+class Team(models.Model):
+    group = models.ForeignKey(EventGroup, on_delete=models.CASCADE, related_name='group')
     name = models.CharField(max_length=100, blank=False, unique=True)
     created_on = models.DateTimeField(auto_now_add=True)
     edited_on = models.DateTimeField(auto_now=True)
@@ -88,3 +88,4 @@ class Teams(models.Model):
 
     class Meta:
         unique_together = ['group', 'name']
+        ordering = ('-group__event_group', 'name')
