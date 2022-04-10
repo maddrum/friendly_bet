@@ -10,6 +10,9 @@
             {% now "j-M-Y" %}
         </div>
     </div>
+    <div class="inner-page-image">
+        <img src="{{ head_img }}" class="text-center">
+    </div>
     {% if total_user_points %}
         <div class="points-container" id="points-container">
             Може да разпределиш <span class="points--counter">{{ total_user_points }}</span> от твоите точки.
@@ -187,9 +190,4 @@
             </div>
         {% endif %}
     </div>
-    {% if show_animation %}
-        <img src="{{ animation_picture }}" data-w-id="52e67e0c-e3e2-e8a1-7dbb-2cf3731cb346"
-                class="ronaldo">
-    {% endif %}
-
 {% endblock %}

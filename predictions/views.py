@@ -1,4 +1,5 @@
 import datetime
+import random
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -115,32 +116,14 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
         kwargs['matches'] = self.matches
         return kwargs
 
-    def show_animation(self):
-        # animation show checks
-        animation_counter = self.request.session.get('animation_counter', None)
-        # tweak animation show
-        if animation_counter is None:
-            animation_counter = 0
-        if animation_counter > 3:
-            animation_counter = 1
-        show_animation = animation_counter == 3 or animation_counter == 0
-        animation_counter += 1
-        self.request.session['animation_counter'] = animation_counter
+    @staticmethod
+    def get_head_img():
         # show animation picture
-        # animation_picture_names = ['ronaldo.png', 'gandalf.png', 'Milko.png', 'Fiki.png', 'Suarez.png', 'putin.png']
-        animation_picture_names = ['forza_queen.png']
-        show_picture_index = self.request.session.get('show_picture_index', None)
-        if show_picture_index is None:
-            show_picture_index = 0
-        if show_picture_index >= len(animation_picture_names):
-            show_picture_index = 0
-        picture = animation_picture_names[show_picture_index]
-        if show_animation:
-            show_picture_index += 1
-        self.request.session['show_picture_index'] = show_picture_index
-        picture = settings.STATIC_URL + 'images/' + 'side_pictures/' + picture
+        animation_picture_names = ['ronaldo.png', 'gandalf.png', 'Milko.png', 'Fiki.png', 'Suarez.png', 'putin.png']
+        random.shuffle(animation_picture_names)
+        picture = settings.STATIC_URL + 'images/' + 'side_pictures/' + animation_picture_names[0]
         # return show_animation, picture
-        return True, picture
+        return picture
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -156,7 +139,7 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
             context['match_check'] = match_check
         context['matches'] = list(self.matches)
         context['time_delta'] = time_delta
-        context['show_animation'], context['animation_picture'] = self.show_animation()
+        context['head_img'] = self.get_head_img()
         user_points, created = UserScore.objects.get_or_create(user=self.request.user, event=self.event)
         context['total_user_points'] = user_points.points
         context['extra_bet_multiplier'] = calculate_extra_bet_multiplier(self.request.user)

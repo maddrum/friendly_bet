@@ -173,7 +173,7 @@ a:hover {
 
 .heading.inner-ttl {
     position: relative;
-    bottom: -300px;
+    bottom: -160px;
     height: 75px;
     margin-top: 0px;
     color: #f3daa8;
@@ -403,7 +403,7 @@ a:hover {
 }
 
 .inner_page_header {
-    height: 450px;
+    height: 200px;
     background-color: transparent;
     /*background-image: url('../images/Bg.jpg');*/
     /*background-position: 50% 0px;*/
@@ -1099,7 +1099,7 @@ a:hover {
     }
 
     .heading.inner-ttl {
-        margin-top: -117px;
+        margin-top: -100px;
     }
 
     .heading.inner-ttl.bravo {
@@ -1629,7 +1629,7 @@ a:hover {
     }
 
     .inner_page_header {
-        margin-top: 70px;
+        margin-top: 160px;
         padding-top: 0px;
     }
 
@@ -1987,4 +1987,10 @@ ul.page {
     font-size: 1.8rem;
     padding: 6px 0;
     font-family: "BaseFont", sans-serif;
+}
+
+.inner-page-image {
+    display: flex;
+    width: 100%;
+    justify-content: center;
 }
