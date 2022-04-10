@@ -80,6 +80,18 @@ def calculate_ranklist(instance_id=None):
         obj.save()
 
 
+def calculate_extra_bet_multiplier(user):
+    top_points = UserScore.objects.all().order_by('points').first().points
+    user_points_obj = UserScore.objects.filter(user=user).first()
+    user_points = 0 if user_points_obj is None else user_points_obj.points
+    multiplier = int(round(top_points / user_points), 0) + 1 if user_points != 0 else 2
+    if multiplier > 15:
+        multiplier = 15
+    if multiplier < 2:
+        multiplier = 2
+    return multiplier
+
+
 def calculate_extra_points(prediction, check_full_score):
     result_points = 0
     result_note = ''

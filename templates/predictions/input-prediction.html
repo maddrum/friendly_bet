@@ -10,9 +10,12 @@
             {% now "j-M-Y" %}
         </div>
     </div>
-    <div class="points-container" id="points-container">
-        Може да разпределиш <span class="points--counter">{{ total_user_points }}</span> от твоите точки.
-    </div>
+    {% if total_user_points %}
+        <div class="points-container" id="points-container">
+            Може да разпределиш <span class="points--counter">{{ total_user_points }}</span> от твоите точки.
+            Tекущия ти множител за допълнително заложените точки е: {{ extra_bet_multiplier }}.
+        </div>
+    {% endif %}
     <div class="content-wrp">
         {% if match_check %}
             <p id="time-counter" class="text-input input-counter white"></p>

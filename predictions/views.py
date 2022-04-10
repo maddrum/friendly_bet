@@ -14,6 +14,7 @@ from bonus_points.models import UserBonusSummary
 from predictions.forms import PredictionForm
 from predictions.formsets import PredictionFormSet
 from predictions.models import BetAdditionalPoint, UserPrediction, UserScore
+from predictions.prediction_calculators import calculate_extra_bet_multiplier
 from predictions.views_mixins import GetEventMatchesMixin
 
 
@@ -158,6 +159,7 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
         context['show_animation'], context['animation_picture'] = self.show_animation()
         user_points, created = UserScore.objects.get_or_create(user=self.request.user, event=self.event)
         context['total_user_points'] = user_points.points
+        context['extra_bet_multiplier'] = calculate_extra_bet_multiplier(self.request.user)
         return context
 
     def formset_valid(self, formset):
