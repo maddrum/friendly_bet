@@ -172,8 +172,12 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
             form.instance.match = match
             form.instance.user = self.request.user
             form.save()
+            # additional bet points
             add_points_obj = BetAdditionalPoint.objects.get_or_create(prediction=form.instance)
-            add_points_obj.points_match_state = form.cleaned_data['']
+            add_points_obj.points_match_state = form.cleaned_data['points_state']
+            add_points_obj.points_match_state = form.cleaned_data['points_result']
+            add_points_obj.multiplier = calculate_extra_bet_multiplier(self.request.user)
+            add_points_obj.save()
             index += 1
         return HttpResponseRedirect(self.get_success_url())
 
