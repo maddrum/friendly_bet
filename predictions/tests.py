@@ -15,7 +15,7 @@ from predictions.models import UserPrediction
 from predictions.views_mixins import GetEventMatchesMixin
 
 
-class PlayerFormTest(LiveServerTestCase):
+class PredictionsCreateUpdateTest(LiveServerTestCase):
     test_users = None
     driver = None
     event = None
@@ -77,6 +77,13 @@ class PlayerFormTest(LiveServerTestCase):
         if prediction[6]:
             apply_result.click()
 
+    def validate_submit_btn(self, should_have_submit_btn=True):
+        submit = self.driver.find_elements(By.CSS_SELECTOR, 'input[type=submit]')
+        if should_have_submit_btn:
+            self.assertNotEqual(len(submit), 0)
+        else:
+            self.assertEqual(len(submit), 0)
+
     def validate_user_predictions(self, user, matches):
         matches_prediction = {}
         counter = 0
@@ -111,6 +118,7 @@ class PlayerFormTest(LiveServerTestCase):
             self.login_user(user=user)
             predictions_url = reverse('create_predictions')
             self.driver.get(f'{self.live_server_url}{predictions_url}')
+            self.validate_submit_btn()
             self.validate_user_predictions(user=user, matches=self.mixin.matches)
 
     def user_try_to_create_prediction_for_started_match(self):
@@ -126,10 +134,16 @@ class PlayerFormTest(LiveServerTestCase):
                 match = Match.objects.filter(pk=prediction.match.pk)
                 predictions_url = reverse('update_prediction', kwargs={'pk': prediction.pk})
                 self.driver.get(f'{self.live_server_url}{predictions_url}')
+                self.validate_submit_btn()
                 self.validate_user_predictions(user=user, matches=match)
 
     def test_user_update_prediction_of_other_user(self):
-        pass
+        add_user_predictions(event=self.event, users=0)
+        self.login_user(user=self.test_users[0])
+        prediction = self.test_users[1].predictions.all().first()
+        predictions_url = reverse('update_prediction', kwargs={'pk': prediction.pk})
+        self.driver.get(f'{self.live_server_url}{predictions_url}')
+        self.validate_submit_btn(should_have_submit_btn=False)
 
     def test_user_update_prediction_of_started_match(self):
         pass
