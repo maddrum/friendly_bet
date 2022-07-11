@@ -4,12 +4,28 @@
 {% block body_classes %}body-2{% endblock %}
 {% block body_content %}
     <div class="inner_page_header">
-        <div class="heading inner-ttl">ЗАСАДА 404!</div>
+        <div class="heading inner-ttl" id="404-page">ЗАСАДА 404!</div>
     </div>
     <div class="content-wrp">
         <div class="form-txt">
             <h1>От целиo интернет ти избра баш тука да се бутурясaш къде няма никой!</h1>
             <img src="{% static 'images/Gif_logout.gif' %}">
+            <h2>А може би си тука защото:</h2>
+            <div class="text-left">
+                <ul>
+                    <li>
+                        Не си логнат
+                    </li>
+                    <li>
+                        Опитваш се да дадеш прогноза за мач, който вече е почнал, вместо да го гледаш и да пиеш бира.
+                        <br>
+                        Ако си се опитвал да дадеш прогноза - опитай оново! Ако си редактирал - сори брат!
+                    </li>
+                    <li>
+                        Божинка ти е минала път
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 {% endblock %}
