@@ -200,9 +200,9 @@ class PredictionsCreateUpdateTest(LiveServerTestCase):
             prediction_data = create_valid_prediction()
             if prediction_data[1] == prediction.match_state.match_state:
                 continue
-            self.fill_in_prediction(form_id='0', prediction=prediction_data)
             break
 
+        self.fill_in_prediction(form_id='0', prediction=prediction_data)
         submit.send_keys(Keys.RETURN)
         prediction = UserPrediction.objects.get(pk=prediction_specs[0])
         self.assertEqual(prediction.match_state, prediction_specs[1])
@@ -228,8 +228,9 @@ class PredictionsCreateUpdateTest(LiveServerTestCase):
             prediction_data = create_valid_prediction()
             if prediction_data[1] == prediction.match_state.match_state:
                 continue
-            self.fill_in_prediction(form_id='0', prediction=prediction_data)
             break
+
+        self.fill_in_prediction(form_id='0', prediction=prediction_data)
 
         submit.send_keys(Keys.RETURN)
         prediction = UserPrediction.objects.get(pk=prediction_specs[0])
