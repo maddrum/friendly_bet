@@ -53,6 +53,7 @@ class PlayerFormTest(LiveServerTestCase):
             'secure': False,
             'path': '/',
         }
+        self.driver.delete_cookie(settings.SESSION_COOKIE_NAME)
         self.driver.add_cookie(session_cookie)
 
     def fill_in_prediction(self, form_id, prediction):
@@ -100,6 +101,10 @@ class PlayerFormTest(LiveServerTestCase):
             bet_points = prediction.bet_points
             self.assertEqual(bet_points.apply_match_state, given_prediction[5])
             self.assertEqual(bet_points.apply_result, given_prediction[6])
+            bet_points.points_match_state_to_take = prediction.match.phase.bet_points.points_state
+            bet_points.points_match_state_to_give = prediction.match.phase.bet_points.return_points_state
+            bet_points.points_result_to_take = prediction.match.phase.bet_points.points_result
+            bet_points.points_result_to_give = prediction.match.phase.bet_points.return_points_result
 
     def test_create_prediction_form(self):
         for user in self.test_users:
@@ -108,13 +113,23 @@ class PlayerFormTest(LiveServerTestCase):
             self.driver.get(f'{self.live_server_url}{predictions_url}')
             self.validate_user_predictions(user=user, matches=self.mixin.matches)
 
+    def user_try_to_create_prediction_for_started_match(self):
+        pass
+
     def test_update_prediction_form(self):
-        # todo
         add_user_predictions(event=self.event, users=0)
         for user in self.test_users:
             self.login_user(user=user)
             for prediction in user.predictions.all():
+                if prediction.match not in self.mixin.matches:
+                    break
                 match = Match.objects.filter(pk=prediction.match.pk)
                 predictions_url = reverse('update_prediction', kwargs={'pk': prediction.pk})
                 self.driver.get(f'{self.live_server_url}{predictions_url}')
                 self.validate_user_predictions(user=user, matches=match)
+
+    def test_user_update_prediction_of_other_user(self):
+        pass
+
+    def test_user_update_prediction_of_started_match(self):
+        pass
