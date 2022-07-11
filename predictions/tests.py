@@ -236,3 +236,12 @@ class PredictionsCreateUpdateTest(LiveServerTestCase):
         prediction = UserPrediction.objects.get(pk=prediction_specs[0])
         self.assertNotEqual(prediction.match_state, prediction_specs[1])
         self.validate_submit_btn(should_have_submit_btn=False)
+
+    def test_invalid_form_check(self):
+        # todo
+        self.login_user(user=self.test_users[0])
+        predictions_url = reverse('create_predictions')
+        self.driver.get(f'{self.live_server_url}{predictions_url}')
+        self.validate_user_predictions(matches=self.mixin.matches, user=self.test_users[0])
+        self.assertEqual(self.test_users[0].predictions.all().count(), 0)
+
