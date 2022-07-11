@@ -15,6 +15,7 @@ from matches.models import Match
 from predictions.model_factories import UserPredictionFactory
 from predictions.models import BetAdditionalPoint
 
+# todo - remove
 call_command('migrate')
 if not get_user_model().objects.filter(is_superuser=True).exists():
     admin_user = get_user_model().objects.create(username='maddrum')
@@ -39,8 +40,10 @@ def create_valid_prediction():
         goals_guest = goals_home + 1
     else:
         goals_guest = goals_home
+    apply_match_state = random.choice([True, False])
+    apply_result = random.choice([True, False])
 
-    return match_state, pk, goals_home, goals_guest, event_match_state
+    return match_state, pk, goals_home, goals_guest, event_match_state, apply_match_state, apply_result
 
 
 @transaction.atomic
@@ -91,8 +94,7 @@ def initialize_event(groups=8):
 
 
 @transaction.atomic
-def add_user_predictions(users=5):
-    event = initialize_event()
+def add_user_predictions(event, users=5):
     for item in range(users):
         temp_user = UserFactory()
         temp_user.set_password('qqwerty123')
@@ -113,12 +115,10 @@ def add_user_predictions(users=5):
 
             add_points_obj, created = BetAdditionalPoint.objects.get_or_create(prediction=prediction)
             phase_points = match.phase.bet_points
-            print(phase_points)
             add_points_obj.apply_match_state = random.choice([True, False])
             add_points_obj.apply_result = random.choice([True, False])
             add_points_obj.points_match_state_to_take = phase_points.points_state
             add_points_obj.points_match_state_to_give = phase_points.return_points_state
             add_points_obj.points_result_to_take = phase_points.points_result
             add_points_obj.points_result_to_give = phase_points.return_points_result
-            print(phase_points.points_result)
             add_points_obj.save()
