@@ -10,9 +10,12 @@
             {% now "j-M-Y" %}
         </div>
     </div>
-    <div class="points-container" id="points-container">
-        Може да разпределиш <span class="points--counter">{{ total_user_points }}</span> от твоите точки.
+    <div class="inner-page-image">
+        <img src="{{ head_img }}">
     </div>
+    {#    <div class="points-container" id="points-container">#}
+    {#        Твоите точки са: <span class="points--counter">{{ total_user_points }}</span>#}
+    {#    </div>#}
     <div class="content-wrp">
         {% if match_check %}
             <p id="time-counter" class="text-input input-counter white"></p>
@@ -44,36 +47,72 @@
                                     {{ match_info.match_start_time }}<br>
                                     Множител за точки: {{ match_info.phase.multiplier }}
                                 </div>
-
+                                <div class="w-row">
+                                    <div class="w-col w-col-6 w-col-small-12 w-col-tiny-12">
+                                        {{ form.match_state }}
+                                    </div>
+                                    <div class="w-col w-col-3 w-col-small-6 w-col-tiny-6">
+                                        {{ form.goals_home }}
+                                    </div>
+                                    <div class="w-col w-col-3 w-col-small-6 w-col-tiny-6">
+                                        {{ form.goals_guest }}
+                                    </div>
+                                </div>
+                                <div class="w-row mt10">
+                                    <div class="w-col w-col-12 w-col-small-12 w-col-tiny-12">
+                                        <h4>
+                                            Облог с джина
+                                        </h4>
+                                    </div>
+                                    <div class="w-col w-col-3 w-col-small-12 w-col-tiny-12">
+                                        <div class="white">
+                                            <div class="inner-page-image">
+                                                <img src="{% static 'images/gin1.png' %}"
+                                                        id="gin-image-{{ forloop.counter0 }}" class="gin-image">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="w-col w-col-9 w-col-small-12 w-col-tiny-12 gin-checkboxes">
+                                        <div class="w-row mt10 mb20">
+                                            <div class="w-col w-col-2 w-col-small-2 w-col-tiny-2">
+                                                {{ form.accept_match_state_bet }}
+                                            </div>
+                                            <div class="w-col w-col-10 w-col-small-10 w-col-tiny-10 gin-proposal">
+                                                На бас по
+                                                <strong>
+                                                    {{ match_info.phase.bet_points.points_state }} точки
+                                                </strong>, че няма да познаеш <strong>ИЗХОДА</strong> от двубоя.
+                                                <br>
+                                                Ако познаеш аз ще ти
+                                                <strong>
+                                                    дам {{ match_info.phase.bet_points.return_points_state }} точки
+                                                </strong>!
+                                                Ако не - ще ти
+                                                <strong>
+                                                    взема {{ match_info.phase.bet_points.points_state }}
+                                                </strong>.
+                                            </div>
+                                        </div>
+                                        <div class="w-row mt10 mb10">
+                                            <div class="w-col w-col-2 w-col-small-2 w-col-tiny-2">
+                                                {{ form.accept_match_result_bet }}
+                                            </div>
+                                            <div class="w-col w-col-10 w-col-small-10 w-col-tiny-10 gin-proposal">
+                                                На бас по
+                                                <strong>
+                                                    {{ match_info.phase.bet_points.points_result }} точки
+                                                </strong>, че няма да познаеш <strong>КРАЙНИЯ</strong> резултат.
+                                                <br>
+                                                Ако познаеш аз ще ти дам
+                                                <strong>
+                                                    {{ match_info.phase.bet_points.return_points_result }} точки
+                                                </strong>! Ако не - ще ти взема
+                                                <strong>{{ match_info.phase.bet_points.points_result }}</strong>.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             {% endwith %}
-                            <div class="w-row">
-                                <div class="w-col w-col-6 w-col-small-12 w-col-tiny-12">
-                                    {{ form.match_state }}
-                                </div>
-                                <div class="w-col w-col-3 w-col-small-6 w-col-tiny-6">
-                                    {{ form.goals_home }}
-                                </div>
-                                <div class="w-col w-col-3 w-col-small-6 w-col-tiny-6">
-                                    {{ form.goals_guest }}
-                                </div>
-                            </div>
-                            <h4 style="margin-top: 2rem">
-                                Бате, толко' ми е ясен тоя мач, че слагам още тия точки от мойте си:
-                            </h4>
-                            <div class="w-row">
-                                <div class="w-col w-col-6 w-col-small-6 w-col-tiny-6">
-                                    <div class="white" style="font-size: 1.3rem">
-                                        за изхода от двубоя
-                                    </div>
-                                    {{ form.points_state }}
-                                </div>
-                                <div class="w-col w-col-6 w-col-small-6 w-col-tiny-6">
-                                    <div class="white" style="font-size: 1.3rem">
-                                        за крайния резултат
-                                    </div>
-                                    {{ form.points_result }}
-                                </div>
-                            </div>
 
                             {% if form.errors %}
                                 <div class="text-block white">
@@ -120,57 +159,19 @@
                     }
                 }, 1000);
             </script>
-            {# points #}
+            {# gin #}
             <script>
-                let totalEnteredPoints;
-                let userTotalPoints = parseInt('{{ total_user_points }}');
-                let initialFieldValue;
-                let remainingPoints;
-                let alertShowed = false;
+                let offerChecks = document.querySelectorAll('.prediction_offer');
 
-                function updatePoints() {
-                    totalEnteredPoints = 0;
-                    document.querySelectorAll('.update-total-points').forEach(singleEl => {
-                        totalEnteredPoints += parseInt(singleEl.value);
-                    })
-                    remainingPoints = userTotalPoints - totalEnteredPoints;
-                }
-
-                document.querySelectorAll('.update-total-points').forEach(el => {
-                    el.addEventListener('click', ev => {
-                        initialFieldValue = ev.target.value;
-                    })
+                offerChecks.forEach(el => {
                     el.addEventListener('change', ev => {
-                        alertShowed = false
-                        if (ev.target.value.length === 0 || ev.target.value < 0) {
-                            alert("Що се ебаваш с апаратурата ся??!\n" +
-                                "Тука трябва да туриш число дето или да е Божинка /кръгла 0/ или да е повече от нула.")
-                            ev.target.value = initialFieldValue;
-                        }
-                        updatePoints();
-                        if (remainingPoints < 0) {
-                            if (!alertShowed) {
-                                alert('Соре, нямаш толкова точки!');
-                                alertShowed = true;
-                            }
-                            ev.target.value = initialFieldValue;
+                        if (ev.target.checked) {
+                            document.getElementById('gin-image-' + ev.target.id.split('-')[1]).src = "{% static 'images/gin2.png' %}"
                         } else {
-                            document.querySelectorAll('.points--counter').forEach(singleEl => {
-                                singleEl.innerHTML = remainingPoints;
-                            })
-                        }
-                        if (remainingPoints === 0) {
-                            document.getElementById('points-container').innerHTML = 'Дал си всички твои точки.'
+                            document.getElementById('gin-image-' + ev.target.id.split('-')[1]).src = "{% static 'images/gin1.png' %}"
                         }
                     })
                 })
-
-                window.onload = function () {
-                    updatePoints()
-                    document.querySelectorAll('.points--counter').forEach(singleEl => {
-                        singleEl.innerHTML = remainingPoints;
-                    })
-                }
             </script>
         {% else %}
             <div class="w-row">
@@ -184,9 +185,4 @@
             </div>
         {% endif %}
     </div>
-    {% if show_animation %}
-        <img src="{{ animation_picture }}" data-w-id="52e67e0c-e3e2-e8a1-7dbb-2cf3731cb346"
-                class="ronaldo">
-    {% endif %}
-
 {% endblock %}

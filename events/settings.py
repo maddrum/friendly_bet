@@ -21,6 +21,14 @@ MATCH_STATE_PENALTIES_HOME = 'penalties_home'
 MATCH_STATE_PENALTIES_GUEST = 'penalties_guest'
 MATCH_STATE_TIE = 'tie'
 
+ALL_MATCH_STATES_LIST = [
+    MATCH_STATE_HOME,
+    MATCH_STATE_GUEST,
+    MATCH_STATE_PENALTIES_HOME,
+    MATCH_STATE_PENALTIES_GUEST,
+    MATCH_STATE_TIE,
+]
+
 MATCH_STATES_BASE = [(MATCH_STATE_HOME, 'Победа домакин'),
                      (MATCH_STATE_GUEST, 'Победа гост'),
                      (MATCH_STATE_TIE, 'Равен')]
