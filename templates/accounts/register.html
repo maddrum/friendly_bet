@@ -19,19 +19,31 @@
                 <label>Потребителско име</label>
                 {% if form.username.errors %}
                     <h2>ЗАСАДА!</h2>
-                    {{ form.username.errors }}
+                    {% for error in form.username.errors %}
+                        <div class="error">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
                 {% endif %}
                 {{ form.username }}
                 <label>Парола</label>
                 {% if form.password1.errors %}
                     <h2>ЖЪЛТ КАРТОН!</h2>
-                    {{ form.password1.errors }}
+                    {% for error in form.password1.errors %}
+                        <div class="error">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
                 {% endif %}
                 {{ form.password1 }}
                 <label>Я дай пак паролата</label>
                 {% if form.password2.errors %}
                     <h2>ГРЕДА!</h2>
-                    {{ form.password2.errors }}
+                    {% for error in form.password2.errors %}
+                        <div class="error">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
                 {% endif %}
                 {{ form.password2 }}
                 <br><br><br>

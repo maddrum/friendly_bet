@@ -16,10 +16,11 @@ from selenium.webdriver.support.ui import Select
 from accounts.model_factories import UserFactory
 from events.models import EventMatchState
 from events.settings import ALL_MATCH_STATES_LIST
-from main_app.object_tools import add_user_predictions, create_invalid_prediction, create_valid_prediction, \
-    generate_valid_goals_by_match_state, initialize_event
 from matches.models import Match, MatchResult
+from matches.tools import initialize_matches
 from predictions.models import BetAdditionalPoint, PredictionPoint, UserPrediction, UserScore
+from predictions.tools import add_user_predictions, create_invalid_prediction, create_valid_prediction, \
+    generate_valid_goals_by_match_state
 from predictions.views_mixins import GetEventMatchesMixin
 
 logger = logging.getLogger('friendly_bet')
@@ -121,7 +122,7 @@ class BaseTestCase(LiveServerTestCase, UserPredictionsToolBox):
             temp_user.set_password('qqwerty123')
             temp_user.save()
             self.test_users.append(temp_user)
-        self.event = initialize_event()
+        self.event = initialize_matches()
         self.mixin = GetEventMatchesMixin(event=self.event)
         self.driver.get(self.live_server_url)
 
