@@ -2,12 +2,16 @@
 {% load static %}
 {% block body_classes %}body-2{% endblock %}
 {% block body_content %}
-
-    <div data-w-id="7eddeff2-5452-50d1-a561-7b858bc5ec91" class="parallax-wrp">
-        <div class="content-wrp">
-            <h1 class="heading inner-ttl bravo">В играта си!</h1>
-            <div class="text-block white bravo">Но ако искаш да коригираш нещо, може да го направиш в твоя профил!
-            </div>
+    <div class="inner_page_header">
+        <div class="heading inner-ttl">
+            Играем го!
+        </div>
+    </div>
+    <div class="content-wrp content-wrp--limits">
+        <div data-w-id="7eddeff2-5452-50d1-a561-7b858bc5ec91">
+            <h3 class="white text-center">
+                Aко искаш да коригираш нещо, може да го направиш в твоя профил!
+            </h3>
             <img src="{% static 'images/Star_Big.png' %}" data-w-id="0f6efd41-2f85-a6a7-d28a-322ee6ba8440"
                     class="star-big secondstar">
             <img src="{% static 'images/Star_Big.png' %}" data-w-id="d0ed1e72-1d5a-c1e3-49e5-5529a84ccf8d"
@@ -16,6 +20,4 @@
                     class="stars-small">
         </div>
     </div>
-{% endblock %}
-{% block footer %}
 {% endblock %}

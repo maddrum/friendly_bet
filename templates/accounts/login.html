@@ -2,19 +2,17 @@
 {% block body_classes %}body-2{% endblock %}
 {% block body_content %}
     <div class="inner_page_header">
-        <div class="heading inner-ttl">ЛОГИН</div>
+        <div class="heading inner-ttl">ВЛЕЗ</div>
     </div>
     <div class="content-wrp">
         <div class="form-txt">
-            <h3 style="margin-bottom: 40px;">ГРЕДА! Нямам профил....-> <a href="{% url 'register' %}"
-                    class="buttons small-btn">Удри тук</a>
-            </h3>
+            <a href="{% url 'register' %}" class="btn mb20 mt10 register-btn text-center">НЯМАМ ПРОФИЛ БЕ!</a>
             <form method="POST">
                 {{ form.as_p }}
                 {% csrf_token %}
                 <div class="buttons">
                     <input type="submit" data-w-id="8782863a-1d5d-0d40-92f8-45790f30b309" class="submit-btn w-button"
-                            value="логин">
+                            value="ВЛЕЗ">
                 </div>
 
             </form>

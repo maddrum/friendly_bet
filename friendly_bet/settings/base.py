@@ -136,10 +136,13 @@ USE_TZ = False
 
 DATETIME_FORMAT = 'l, d-M-Y  @ H:i'
 
-# Static files (CSS, JavaScript, Images)
+version_file = open(os.path.join(BASE_DIR, 'VERSION'), 'r')
+VERSION = version_file.read().strip()
+version_file.close()
 
+# Static files (CSS, JavaScript, Images)
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
-STATIC_URL = '/static/'
+STATIC_URL = f'/static.{VERSION}/'
 STATICFILES_DIRS = [
     STATIC_DIR,
 ]

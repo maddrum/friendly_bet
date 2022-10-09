@@ -4,7 +4,6 @@
 {% block body_classes %}body-2{% endblock %}
 
 {% block body_content %}
-
     <div class="inner_page_header">
         <div class="heading inner-ttl">
             {% now "j-M-Y" %}
@@ -13,9 +12,6 @@
     <div class="inner-page-image">
         <img src="{{ head_img }}">
     </div>
-    {#    <div class="points-container" id="points-container">#}
-    {#        Твоите точки са: <span class="points--counter">{{ total_user_points }}</span>#}
-    {#    </div>#}
     <div class="content-wrp">
         {% if match_check %}
             <p id="time-counter" class="text-input input-counter white"></p>

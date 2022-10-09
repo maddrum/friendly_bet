@@ -30,8 +30,8 @@
     <meta property="og:url" content="{{ request.build_absolute_uri }}">
     <meta name="twitter:card" content="summary_large_image">
     <link href="{% static 'css/normalize.css' %}" rel="stylesheet" type="text/css">
-    <link href="{% static 'css/webflow.css' %}" rel="stylesheet" type="text/css">
-    <link href="{% static 'css/milens-top-notch-project.webflow.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/base.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/custom.css' %}" rel="stylesheet" type="text/css">
     <link rel="shortcut icon" type="image/jpg" href="{% static 'favicon-32x32.png' %}"/>
     {% block header_link_load %}
     {% endblock %}
@@ -62,17 +62,12 @@
                     class="nav-link w-nav-link">
                 Ранглиста
             </a>
-
-            {# removed bonuses support#}
-            {# <a href="{% url 'bonus_main' %}" data-w-id="ae7752c4-2d27-e763-7bb8-8c9c52735f95"#}
-            {# class="nav-link bb w-nav-link">Бонуси</a>#}
-
             {% if user.is_authenticated %}
                 <a href="{% url 'profile' %}" data-w-id="ae7752c4-2d27-e763-7bb8-8c9c52735f93"
                         class="nav-link w-nav-link">Профил</a>
             {% else %}
                 <a href="{% url 'login' %}" data-w-id="ae7752c4-2d27-e763-7bb8-8c9c52735f93"
-                        class="nav-link w-nav-link">LOGIN</a>
+                        class="nav-link w-nav-link">ВЛЕЗ</a>
             {% endif %}
         </nav>
         <div class="menu-button w-nav-button">
@@ -98,17 +93,16 @@
 
 {% block footer %}
     <div class="footer">
-        <div class="foot-wrp">
-            <div class="text-block ftr">
-                <div class="text-center">
-                    <a href="{% url 'instructions' %}" class="footer-link white" target="_blank">
-                        ЗА КОНГРЕСА</a>
-                </div>
-                design:брат му | backend: maddrum | За контакти: <br>
+        <div class="text-block ftr">
+            <div class="text-center">
+                <a href="{% url 'instructions' %}" class="footer-link white" target="_blank">
+                    ЗА КОНГРЕСА
+                </a>
             </div>
-            <a href="{% url 'contact' %}" data-w-id="81ebefb1-c4c9-0842-eeae-60febe184d79"
-                    class="footer-btn w-button">Удри тук</a>
+            Ⓚoмбайна-Ⓑършачка™<br>
         </div>
+        <a href="{% url 'contact' %}" data-w-id="81ebefb1-c4c9-0842-eeae-60febe184d79"
+                class="footer-btn w-button">кажи си мъката</a>
     </div>
 {% endblock %}
 
