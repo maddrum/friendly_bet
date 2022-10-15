@@ -23,19 +23,18 @@ a:hover {
 
 .navbar {
     position: fixed;
-    left: 0px;
-    top: 0px;
-    right: 0px;
+    left: 0;
+    top: 0;
     display: block;
-    height: 98px;
+    height: 100px;
     margin-right: auto;
     margin-left: auto;
-    /*background-image: url('../images/Pattern1.svg');*/
     background-position: 0px 50%;
     background-size: 1060px 136px;
     background-repeat: repeat-x;
     box-shadow: 3px 3px 13px -4px rgba(0, 0, 0, .5);
-    background-color: #8d1b3d;
+    background-color: #470e1f;
+    width: 100%;
 }
 
 .nav-link {
@@ -81,7 +80,7 @@ a:hover {
 
 .hero {
     position: relative;
-    height: 80vh;
+    height: 90vh;
     width: 100%;
     display: flex;
     align-items: center;
@@ -91,16 +90,15 @@ a:hover {
 
 .hero::before {
     content: "";
-    background-image: url('../images/Bg.jpg');
-    background-position: 0px 0px;
+    background-position: 0 0;
     background-size: cover;
     background-repeat: no-repeat;
     position: absolute;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
-    left: 0px;
-    opacity: 0.75;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.7);
 }
 
 .ttl-wrp {
@@ -125,25 +123,26 @@ a:hover {
 
 .heading {
     position: static;
-    bottom: -360px;
     margin-top: 34px;
+    margin-bottom: 34px;
     font-family: 'BaseFont', sans-serif;
     color: #f9e2b2;
-    font-size: 70px;
+    font-size: 2.5rem;
     font-weight: 400;
     text-transform: uppercase;
     text-align: left;
 }
 
 .heading.gold {
-    bottom: -350px;
     display: block;
     margin-right: auto;
     margin-left: auto;
     font-family: 'ArabicFont', sans-serif;
-    color: #f2c464;
-    font-size: 70px;
+    color: #ffc300;
+    font-size: 5rem;
     text-transform: uppercase;
+    text-align: left;
+    text-shadow: 16px 22px 11px rgba(219, 180, 44, .6);
 }
 
 .heading.content {
@@ -173,12 +172,12 @@ a:hover {
 
 .heading.inner-ttl {
     position: relative;
-    bottom: -160px;
-    height: 75px;
-    margin-top: 0px;
     color: #f3daa8;
-    font-size: 90px;
+    font-size: 4rem;
+    top: 0;
+    left: 0;
     text-align: center;
+    line-height: 3.5rem;
 }
 
 .heading.tab-heading {
@@ -204,23 +203,24 @@ a:hover {
 }
 
 .start-btn {
-    width: 180px;
-    height: 50px;
-    margin-top: 32px;
-    padding-top: 15px;
+    width: 200px;
+    height: 80px;
+    margin-top: 40px;
+    padding-top: 26px;
     border-radius: 50px;
-    background-color: rgb(234, 114, 0);
+    background-color: #ffc300;
     box-shadow: 3px 3px 17px 0 rgb(189, 131, 202);
     font-family: 'ArabicFont', sans-serif;
-    font-size: 40px;
+    font-size: 3.5rem;
     text-align: center;
     text-transform: uppercase;
     cursor: pointer;
+    display: block;
 }
 
 .start-btn:hover {
-    background-color: rgb(250, 60, 0);
-    color: #fff;
+    background-color: #ffc300;
+    transform: scale(1.1);
 }
 
 .logout-bn {
@@ -247,11 +247,9 @@ a:hover {
 
 .cup-wrp {
     position: relative;
-    left: 142px;
-    top: 17px;
-    width: 269px;
-    height: 609px;
-    margin-top: 49px;
+    left: 4rem;
+    width: 30vh;
+    height: 100vh;
     clear: right;
     background-image: url('../images/Cup.png');
     background-position: 50% 50%;
@@ -262,16 +260,16 @@ a:hover {
 .content-wrp {
     position: relative;
     display: block;
-    max-width: 1160px;
-    min-height: 100vh;
-    margin-right: auto;
-    margin-left: auto;
-    padding-top: 17px;
-    padding-bottom: 90px;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-    -ms-flex-align: center;
-    align-items: center;
+    top: 3.5rem;
+    left: 0;
+    width: 80%;
+    margin: 0 auto;
+    padding-bottom: 6rem;
+    min-height: calc(100vh - 310px);
+}
+
+.content-wrp--limits {
+    width: 80% !important;
 }
 
 .text-block {
@@ -280,7 +278,7 @@ a:hover {
     margin-right: auto;
     margin-left: auto;
     font-family: Montserrat, sans-serif;
-    color: #044a9e;
+    color: #f2c464;
     font-size: 21px;
     line-height: 143%;
     font-weight: 500;
@@ -293,7 +291,6 @@ a:hover {
 }
 
 .text-block.ftr {
-    width: 400px;
     margin-top: -2px;
     color: #fff;
     font-size: 14px;
@@ -344,71 +341,43 @@ a:hover {
 }
 
 .footer {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    height: 100px;
-    margin-top: 0px;
-    margin-right: auto;
-    margin-left: auto;
-    clear: both;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-    -ms-flex-align: center;
-    align-items: center;
+    width: 100%;
+    margin-top: 0;
+    position: sticky;
+    bottom: 0;
+    left: 0;
     border-style: solid none none;
     border-width: 10px 3px 3px;
-    border-color: #f2c464;
-    background-color: #8d1b3d;
+    border-color: #ffd60a;
+    background-color: #470e1f;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
 }
 
 .footer-btn {
     display: block;
     width: 180px;
-    height: 50px;
-    margin-right: auto;
-    margin-left: auto;
-    padding-top: 15px;
-    border-radius: 50px;
-    background-color: #f2c464;;
-    /*box-shadow: 3px 3px 17px 0 rgb(234, 114, 0);*/
+    height: 30px;
+    padding-top: 5px;
+    border-radius: 5px;
+    background-color: #f2c464;
     font-family: 'BaseFont', sans-serif;
     font-size: 15px;
     text-align: center;
     text-transform: uppercase;
     cursor: pointer;
-}
-
-.foot-wrp {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    width: 600px;
-    height: 75px;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-    -ms-flex-align: center;
-    align-items: center;
+    margin: 1rem auto;
+    margin-bottom: 0;
 }
 
 .inner_page_header {
-    height: 200px;
+    height: 100px;
     background-color: transparent;
-    /*background-image: url('../images/Bg.jpg');*/
-    /*background-position: 50% 0px;*/
-    /*background-size: cover;*/
-    /*background-repeat: no-repeat;*/
+    top: 120px;
+    position: relative;
+    left: 0;
+    width: 100%;
+    margin-bottom: 2rem;
 }
 
 .body {
@@ -818,11 +787,10 @@ a:hover {
     display: block;
     width: 350px;
     height: 75px;
-    margin: 89px auto 19px;
+    margin: 2.5rem auto;
     padding-top: 14px;
     border-radius: 80px;
     background-color: #f3daa8;
-    /*box-shadow: 6px 6px 28px 8px #184d8d;*/
     font-family: 'BaseFont', sans-serif;
     color: #711631;
     font-size: 22px;
@@ -866,9 +834,8 @@ a:hover {
     text-decoration: InfoText;
 }
 
-.submit-btn:hover {
+.submit-btn:hover, .register-btn:hover {
     transform: translateX(0px) translateY(0px) translateZ(0px) scaleX(1.1) scaleY(1.1) scaleZ(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skewX(0deg) skewY(0deg);
-
 }
 
 .submit-btn-no-glow:hover {
@@ -879,6 +846,20 @@ a:hover {
 .small-btn:hover {
     transform: translateX(0px) translateY(0px) translateZ(0px) scaleX(2) scaleY(2) scaleZ(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skewX(0deg) skewY(0deg);
 
+}
+
+.register-btn {
+    display: block;
+    width: 320px;
+    height: 50px;
+    font-size: 1.5rem;
+    color: #711631;
+    padding-top: 13px;
+    background-color: #f3daa8;
+    border-radius: 80px;
+    border: 2px solid #711631;
+    margin: 0 auto;
+    box-shadow: rgba(213, 218, 168, 0.4) 0 19px 38px, rgba(113, 22, 49, 0.22) 0 15px 12px;
 }
 
 .star-big {
@@ -907,12 +888,6 @@ a:hover {
     margin-top: 219px;
     margin-right: auto;
     margin-left: auto;
-}
-
-.parallax-wrp {
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
 }
 
 .ronaldo {
@@ -1075,15 +1050,17 @@ a:hover {
         justify-content: space-around;
     }
 
+    .hero {
+        height: 90vh;
+    }
+
     .heading {
-        margin-top: -13px;
-        line-height: 100%;
+        font-size: 2.5rem;
+        text-align: center;
     }
 
     .heading.gold {
-        display: block;
-        margin-right: auto;
-        margin-left: auto;
+        font-size: 6rem;
         text-align: center;
     }
 
@@ -1098,10 +1075,6 @@ a:hover {
         font-size: 20px;
     }
 
-    .heading.inner-ttl {
-        margin-top: -100px;
-    }
-
     .heading.inner-ttl.bravo {
         margin-top: 24px;
     }
@@ -1109,20 +1082,16 @@ a:hover {
     .ttl-wrp {
         top: 156px;
         display: block;
-        width: 75%;
+        width: 100%;
         margin-right: auto;
         margin-left: auto;
-        text-align: center;
     }
 
     .cup-wrp {
-        left: 2px;
-        top: 107px;
-        width: 140px;
-        height: 300px;
-        margin-top: 8px;
         clear: both;
-        background-size: 140px;
+        margin: 0 auto;
+        left: unset;
+        height: 40vh;
     }
 
     .menu-button {
@@ -1156,6 +1125,11 @@ a:hover {
     .text-block {
         padding-right: 35px;
         padding-left: 35px;
+    }
+
+    .start-btn {
+        width: 200px;
+        margin: 0 auto;
     }
 
     .text-block.white {
@@ -1343,7 +1317,6 @@ a:hover {
         padding-top: 0 !important;
     }
 
-
 }
 
 @media (max-width: 767px) {
@@ -1353,11 +1326,13 @@ a:hover {
     }
 
     .heading {
-        font-size: 55px;
+        font-size: 2.5rem;
+        text-align: center;
     }
 
     .heading.gold {
-        font-size: 55px;
+        font-size: 5rem;
+        text-align: center;
     }
 
     .heading.content {
@@ -1371,15 +1346,6 @@ a:hover {
         padding-left: 48px;
     }
 
-    .heading.inner-ttl {
-        margin-top: -130px;
-        font-size: 4rem;
-    }
-
-    .start-btn {
-        width: 120px;
-    }
-
     .logout-bn {
         width: 120px;
         height: 50px;
@@ -1387,6 +1353,7 @@ a:hover {
 
     .content-wrp {
         padding-top: 1px;
+        width: 100%;
     }
 
     .text-block {
@@ -1408,14 +1375,6 @@ a:hover {
     .text-block.white.message {
         margin-top: 330px;
         margin-bottom: 330px;
-    }
-
-    .footer-btn {
-        width: 120px;
-    }
-
-    .foot-wrp {
-        width: 600px;
     }
 
     .game-wrp {
@@ -1509,12 +1468,17 @@ a:hover {
     }
 
     .heading {
-        margin-top: -9px;
-        font-size: 32px;
+        font-size: 1.8rem;
+        text-align: center;
     }
 
     .heading.gold {
-        font-size: 32px;
+        font-size: 3.5rem;
+        text-align: center;
+    }
+
+    .heading.inner-ttl {
+        font-size: 3.5rem;
     }
 
     .heading.content {
@@ -1523,15 +1487,6 @@ a:hover {
 
     .heading.content.white {
         font-size: 20px;
-    }
-
-    .heading.inner-ttl {
-        margin-top: -208px;
-        font-size: 42px;
-    }
-
-    .heading.inner-ttl.bravo {
-        margin-top: -77px;
     }
 
     .heading.tab-heading.history-ttl {
@@ -1545,13 +1500,12 @@ a:hover {
     }
 
     .ttl-wrp {
-        top: 106px;
+        top: 6rem;
     }
 
     .start-btn {
         display: block;
-        margin-right: auto;
-        margin-left: auto;
+        margin: 0 auto
     }
 
     .logout-bn {
@@ -1564,10 +1518,6 @@ a:hover {
         max-width: 80%;
     }
 
-    .cup-wrp {
-        margin-top: -93px;
-    }
-
     .content-wrp {
         padding-top: 7px;
         width: 100%;
@@ -1575,11 +1525,6 @@ a:hover {
 
     .panel {
         padding: 0 0;
-    }
-
-    .text-block.ftr {
-        width: 200px;
-        margin-top: 35px;
     }
 
     .text-block.white {
@@ -1606,34 +1551,7 @@ a:hover {
         font-size: 14px;
     }
 
-    .footer {
-        position: relative;
-        display: inline-block;
-        width: 100%;
-        height: 225px;
-        -webkit-box-pack: end;
-        -webkit-justify-content: flex-end;
-        -ms-flex-pack: end;
-        justify-content: flex-end;
-        padding-bottom: 10px;
-    }
-
-    .footer-btn {
-        display: block;
-        margin-top: 27px;
-        margin-right: auto;
-        margin-left: auto;
-    }
-
-    .foot-wrp {
-        display: block;
-        width: 200px;
-        margin-right: auto;
-        margin-left: auto;
-    }
-
     .inner_page_header {
-        margin-top: 160px;
         padding-top: 0px;
     }
 
@@ -1730,7 +1648,7 @@ a:hover {
     }
 
     .gin-checkboxes {
-        padding-top: 10px !important;
+        padding-top: 3rem !important;
     }
 }
 
@@ -1791,6 +1709,9 @@ a:hover {
 
 .text-center {
     text-align: center;
+}
+
+.center-block {
     margin: 0 auto;
 }
 
@@ -1816,8 +1737,9 @@ a:hover {
 
 .instructions {
     text-align: justify;
-    line-height: 1.5;
-    font-size: 1.5rem;
+    line-height: 1.2;
+    font-size: 1rem;
+    margin-bottom: 2.5rem;
 }
 
 .footer-link {
@@ -2001,6 +1923,8 @@ ul.page {
     display: flex;
     width: 100%;
     justify-content: center;
+    position: relative;
+    top: 2.5rem;
 }
 
 input[type='checkbox'] {
@@ -2037,6 +1961,7 @@ input[type='checkbox'] {
 .mt10 {
     margin-top: 10px;
 }
+
 .mt20 {
     margin-top: 30px;
 }

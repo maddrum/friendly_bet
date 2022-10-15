@@ -5,7 +5,7 @@
 
 {% block body_content %}
     <div class="inner_page_header">
-        <div class="heading inner-ttl">Здравей, {{ user }}!</div>
+        <div class="heading inner-ttl">Профил</div>
     </div>
     <div class="content-wrp">
         <div data-duration-in="300" data-duration-out="100" class="tabs w-tabs">
@@ -16,9 +16,9 @@
                 <a href="{% url 'profile_history' %}" class="tab-link w-inline-block w-tab-link">
                     <div class="tab-text">История</div>
                 </a>
-{#                <a href="#" class="tab-link w-inline-block w-tab-link">#}
-{#                    <div class="tab-text">Бонуси</div>#}
-{#                </a>#}
+                {#                <a href="#" class="tab-link w-inline-block w-tab-link">#}
+                {#                    <div class="tab-text">Бонуси</div>#}
+                {#                </a>#}
                 <a href="{% url 'profile_settings' %}" class="tab-link w-inline-block w-tab-link">
                     <div class="tab-text">Настройки</div>
                 </a>
