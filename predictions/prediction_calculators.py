@@ -57,12 +57,10 @@ def calculate_ranklist(instance_id=None):
         all_predictions = UserPrediction.objects.filter(match__match_result__match_is_over=True).prefetch_related(
             'prediction_points').select_related('match__phase__event')
     else:
-        try:
-            match_result_instance = MatchResult.objects.get(pk=instance_id)
-        except MatchResult.DoesNotExist:
-            return
-        all_predictions = UserPrediction.objects.filter(match=match_result_instance.match).prefetch_related(
-            'prediction_points')
+        all_predictions = UserPrediction.objects.filter(match__match_result__pk=instance_id).prefetch_related(
+            'prediction_points').select_related('match__phase__event')
+    if not all_predictions.exists():
+        return
 
     ranklist = {item.user_id: 0 for item in all_predictions}
     ranklist_event = {item.user_id: item.match.phase.event for item in all_predictions}

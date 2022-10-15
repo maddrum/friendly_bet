@@ -28,6 +28,7 @@ class RegisterLoginUserTest(LiveServerTestCase):
         super().setUpClass()
         chromedriver_autoinstaller.install()
         chrome_options = Options()
+        chrome_options.add_argument('--window-size=1920,1080')
         chrome_options.add_argument('--headless')
         cls.driver = webdriver.Chrome(options=chrome_options)
         cls.driver.implicitly_wait(10)
@@ -87,8 +88,6 @@ class RegisterLoginUserTest(LiveServerTestCase):
     def test_user_is_taken(self):
         username = 'user_0'
         password = 'qqwerty1234'
-        print('aaaaa')
-        print(get_user_model().objects.all())
         self.register_helper(username=username, password_1=password, password_2=password)
         self.assertNotEqual(len(self.driver.find_elements(By.CSS_SELECTOR, '.error')), 0)
 

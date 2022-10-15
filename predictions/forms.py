@@ -18,6 +18,7 @@ class PredictionForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.home_team = home_team
         self.guest_team = guest_team
+        self.phase = phase
         self.fields['goals_home'].widget.attrs = {
             'class': 'goals-input',
             'required': 'required',
@@ -37,6 +38,10 @@ class PredictionForm(forms.ModelForm):
             'class': 'prediction_offer',
         }
 
+        self._update_match_state_option_names()
+        self._handle_initial_bet_points()
+
+    def _update_match_state_option_names(self):
         MATCH_STATE_OPTIONS = {
             MATCH_STATE_HOME: f'ПОБЕДА за {self.home_team}',
             MATCH_STATE_GUEST: f'ПОБЕДА за {self.guest_team}',
@@ -45,7 +50,7 @@ class PredictionForm(forms.ModelForm):
             MATCH_STATE_TIE: 'Тики-така, скучен РАВЕН'
         }
         try:
-            self.fields['match_state'].queryset = phase.phase_match_states.all()
+            self.fields['match_state'].queryset = self.phase.phase_match_states.all()
         except AttributeError:
             pass
 
@@ -59,6 +64,13 @@ class PredictionForm(forms.ModelForm):
             result_names.append((choice[0], new_string))
 
         self.fields['match_state'].choices = result_names
+
+    def _handle_initial_bet_points(self):
+        if self.instance.pk is None:
+            return
+        bet_points = self.instance.bet_points
+        self.fields['accept_match_state_bet'].initial = bet_points.apply_match_state
+        self.fields['accept_match_result_bet'].initial = bet_points.apply_result
 
     def clean(self):
         cleaned_data = super().clean()

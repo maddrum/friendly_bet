@@ -139,8 +139,6 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
         context['matches'] = list(self.matches)
         context['time_delta'] = time_delta
         context['head_img'] = self.get_head_img()
-        user_points, created = UserScore.objects.get_or_create(user=self.request.user, event=self.event)
-        context['total_user_points'] = user_points.points
         return context
 
     def update_bet_points(self, form):
