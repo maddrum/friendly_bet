@@ -18,7 +18,7 @@
     </script>
 
 
-    <title>Като за световно!</title>
+    <title>Кат' за световно!</title>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -73,14 +73,6 @@
         <div class="menu-button w-nav-button">
             <div class="icon w-icon-nav-menu"></div>
         </div>
-        {% check_for_new_bonuses as bonus_check %}
-        {% if bonus_check and user.is_authenticated %}
-            <div class="bonus-banner">
-                <div class="bonus-banner--content">
-                    <a href="{% url 'bonus_main' %}">Има нов бонус!</a>
-                </div>
-            </div>
-        {% endif %}
     </div>
 </div>
 
@@ -99,10 +91,12 @@
                     ЗА КОНГРЕСА
                 </a>
             </div>
+            <a href="{% url 'contact' %}" data-w-id="81ebefb1-c4c9-0842-eeae-60febe184d79"
+                    class="footer-btn w-button">
+                кажи си мъката
+            </a>
             Ⓚoмбайна-Ⓑършачка™<br>
         </div>
-        <a href="{% url 'contact' %}" data-w-id="81ebefb1-c4c9-0842-eeae-60febe184d79"
-                class="footer-btn w-button">кажи си мъката</a>
     </div>
 {% endblock %}
 
