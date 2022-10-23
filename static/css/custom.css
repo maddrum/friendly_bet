@@ -13,8 +13,8 @@ a:hover {
     z-index: 1001;
     width: 227px;
     height: 54px;
-    margin-top: 24px;
-    margin-left: 20px;
+    margin-top: 14px;
+    margin-left: 10px;
     background-image: url('../images/Logo.png');
     background-position: 0px 0px;
     background-size: 227px;
@@ -26,7 +26,7 @@ a:hover {
     left: 0;
     top: 0;
     display: block;
-    height: 100px;
+    height: 80px;
     margin-right: auto;
     margin-left: auto;
     background-position: 0px 50%;
@@ -39,7 +39,7 @@ a:hover {
 
 .nav-link {
     height: 50px;
-    padding-top: 39px;
+    padding-top: 30px;
     font-family: 'BaseFont', sans-serif;
     color: #fff;
     font-size: 18px;
@@ -1095,7 +1095,7 @@ a:hover {
     }
 
     .menu-button {
-        margin-top: 20px;
+        margin-top: 4px;
     }
 
     .menu-button.w--open {
