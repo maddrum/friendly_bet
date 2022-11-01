@@ -1,4 +1,5 @@
 import random
+from dataclasses import dataclass
 
 from django.contrib.auth import get_user_model
 from django.db import transaction
@@ -10,6 +11,17 @@ from events.settings import MATCH_STATE_GUEST, MATCH_STATE_HOME, MATCH_STATE_PEN
 from matches.models import Match
 from predictions.model_factories import UserPredictionFactory
 from predictions.models import BetAdditionalPoint
+
+
+@dataclass
+class PredictionDTO:
+    match_state: str
+    pk: int
+    goals_home: int
+    goals_guest: int
+    event_match_state: EventMatchState
+    apply_match_state: bool
+    apply_result: bool
 
 
 def generate_valid_goals_by_match_state(match_state):
@@ -26,7 +38,7 @@ def generate_valid_goals_by_match_state(match_state):
     return goals_home, goals_guest
 
 
-def create_valid_prediction():
+def create_valid_prediction() -> PredictionDTO:
     iter_items = [item[0] for item in MATCH_STATES if
                   item[0] not in [MATCH_STATE_PENALTIES_HOME, MATCH_STATE_PENALTIES_GUEST]]
     match_state = random.choice(iter_items)
@@ -36,21 +48,39 @@ def create_valid_prediction():
     goals_home, goals_guest = generate_valid_goals_by_match_state(match_state=match_state)
     apply_match_state = random.choice([True, False])
     apply_result = random.choice([True, False])
+    prediction_dto = PredictionDTO(
+        match_state=match_state,
+        pk=pk,
+        goals_home=goals_home,
+        goals_guest=goals_guest,
+        event_match_state=event_match_state,
+        apply_match_state=apply_match_state,
+        apply_result=apply_result,
+    )
 
-    return match_state, pk, goals_home, goals_guest, event_match_state, apply_match_state, apply_result
+    return prediction_dto
 
 
 def create_invalid_prediction():
-    match_state, pk, goals_home, goals_guest, \
-    event_match_state, apply_match_state, apply_result = create_valid_prediction()
+    prediction_dto = create_valid_prediction()
 
-    if match_state == MATCH_STATE_TIE:
-        goals_home += 1
-    temp_goals_home = goals_home
-    goals_home = goals_guest
-    goals_guest = temp_goals_home
+    if prediction_dto.match_state == MATCH_STATE_TIE:
+        prediction_dto.goals_home += 1
+    temp_goals_home = prediction_dto.goals_home
+    prediction_dto.goals_home = prediction_dto.goals_guest
+    prediction_dto.goals_guest = temp_goals_home
 
-    return match_state, pk, goals_home, goals_guest, event_match_state, apply_match_state, apply_result
+    prediction_dto = PredictionDTO(
+        match_state=prediction_dto.match_state,
+        pk=prediction_dto.pk,
+        goals_home=prediction_dto.goals_home,
+        goals_guest=prediction_dto.goals_guest,
+        event_match_state=prediction_dto.event_match_state,
+        apply_match_state=prediction_dto.apply_match_state,
+        apply_result=prediction_dto.apply_result,
+    )
+
+    return prediction_dto
 
 
 @transaction.atomic
@@ -66,9 +96,9 @@ def add_user_predictions(event, users=5):
             prediction = UserPredictionFactory(
                 user=user,
                 match=match,
-                match_state=prediction_data[4],
-                goals_home=prediction_data[2],
-                goals_guest=prediction_data[3],
+                match_state=prediction_data.event_match_state,
+                goals_home=prediction_data.goals_home,
+                goals_guest=prediction_data.goals_guest,
             )
             prediction.save()
 

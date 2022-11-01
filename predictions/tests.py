@@ -20,7 +20,7 @@ from matches.models import Match, MatchResult
 from matches.tools import initialize_matches
 from predictions.models import BetAdditionalPoint, PredictionPoint, UserPrediction, UserScore
 from predictions.tools import add_user_predictions, create_invalid_prediction, create_valid_prediction, \
-    generate_valid_goals_by_match_state
+    generate_valid_goals_by_match_state, PredictionDTO
 from predictions.views_mixins import GetEventMatchesMixin
 
 logger = logging.getLogger('friendly_bet')
@@ -100,7 +100,7 @@ class UserPredictionsToolBox:
         return return_points
 
 
-class BaseTestCase(LiveServerTestCase, UserPredictionsToolBox):
+class PredictionsBaseTestCase(LiveServerTestCase, UserPredictionsToolBox):
     test_users = None
     driver = None
     event = None
@@ -111,6 +111,7 @@ class BaseTestCase(LiveServerTestCase, UserPredictionsToolBox):
         super().setUpClass()
         chromedriver_autoinstaller.install()
         chrome_options = Options()
+        chrome_options.add_argument('--window-size=1920,1080')
         chrome_options.add_argument('--headless')
         cls.driver = webdriver.Chrome(options=chrome_options)
         cls.driver.implicitly_wait(10)
@@ -143,26 +144,33 @@ class BaseTestCase(LiveServerTestCase, UserPredictionsToolBox):
         self.driver.delete_cookie(settings.SESSION_COOKIE_NAME)
         self.driver.add_cookie(session_cookie)
 
-    def fill_in_prediction(self, form_id, prediction):
+    def fill_in_prediction(self, form_id, prediction: PredictionDTO):
         match_state_element = self.driver.find_element(By.ID, f'id_form-{str(form_id)}-match_state')
         match_state_selector = Select(match_state_element)
-        match_state_selector.select_by_value(str(prediction[1]))
+        match_state_selector.select_by_value(str(prediction.pk))
 
         home_score_element = self.driver.find_element(By.ID, f'id_form-{str(form_id)}-goals_home')
         home_score_element.clear()
-        home_score_element.send_keys(prediction[2])
+        home_score_element.send_keys(prediction.goals_home)
 
         guest_score_element = self.driver.find_element(By.ID, f'id_form-{str(form_id)}-goals_guest')
         guest_score_element.clear()
-        guest_score_element.send_keys(prediction[3])
+        guest_score_element.send_keys(prediction.goals_guest)
 
+        # clicks on bet points checkboxes until state is right
         apply_match_state = self.driver.find_element(By.ID, f'id_form-{form_id}-accept_match_state_bet')
-        if prediction[5]:
-            apply_match_state.click()
+        while True:
+            if apply_match_state.is_selected() != prediction.apply_match_state:
+                apply_match_state.click()
+            else:
+                break
 
         apply_result = self.driver.find_element(By.ID, f'id_form-{form_id}-accept_match_result_bet')
-        if prediction[6]:
-            apply_result.click()
+        while True:
+            if apply_result.is_selected() != prediction.apply_result:
+                apply_result.click()
+            else:
+                break
 
     def validate_submit_btn(self, should_have_submit_btn=True):
         submit = self.driver.find_elements(By.CSS_SELECTOR, 'input[type=submit]')
@@ -181,6 +189,12 @@ class BaseTestCase(LiveServerTestCase, UserPredictionsToolBox):
         matches_prediction = {}
         counter = 0
         for match in matches:
+            # validate apply initial state
+            if not UserPrediction.objects.filter(user=user, match=match).exists():
+                checkbox_state = self.driver.find_element(By.NAME, f'form-{counter}-accept_match_state_bet')
+                checkbox_result = self.driver.find_element(By.NAME, f'form-{counter}-accept_match_result_bet')
+                self.assertFalse(checkbox_state.is_selected())
+                self.assertFalse(checkbox_result.is_selected())
             # input prediction is driven by the matches which are ordered like
             # GetEventMatchesMixin. This is simulation of so.
             prediction_data = create_valid_prediction()
@@ -195,19 +209,19 @@ class BaseTestCase(LiveServerTestCase, UserPredictionsToolBox):
             prediction_qs = UserPrediction.objects.filter(user=user, match=match)
             self.assertEqual(prediction_qs.count(), 1)
             prediction = prediction_qs.first()
-            self.assertEqual(prediction.match_state.match_state, given_prediction[0])
-            self.assertEqual(prediction.goals_home, given_prediction[2])
-            self.assertEqual(prediction.goals_guest, given_prediction[3])
+            self.assertEqual(prediction.match_state.match_state, given_prediction.match_state)
+            self.assertEqual(prediction.goals_home, given_prediction.goals_home)
+            self.assertEqual(prediction.goals_guest, given_prediction.goals_guest)
             bet_points = prediction.bet_points
-            self.assertEqual(bet_points.apply_match_state, given_prediction[5])
-            self.assertEqual(bet_points.apply_result, given_prediction[6])
+            self.assertEqual(bet_points.apply_match_state, given_prediction.apply_match_state)
+            self.assertEqual(bet_points.apply_result, given_prediction.apply_result)
             bet_points.points_match_state_to_take = prediction.match.phase.bet_points.points_state
             bet_points.points_match_state_to_give = prediction.match.phase.bet_points.return_points_state
             bet_points.points_result_to_take = prediction.match.phase.bet_points.points_result
             bet_points.points_result_to_give = prediction.match.phase.bet_points.return_points_result
 
 
-class PredictionsCreateUpdateTest(BaseTestCase):
+class PredictionsCreateUpdateTest(PredictionsBaseTestCase):
 
     def test_create_prediction_form(self):
         for user in self.test_users:
@@ -286,7 +300,7 @@ class PredictionsCreateUpdateTest(BaseTestCase):
         mocked_datetime.return_value = prediction.match.match_start_time + timezone.timedelta(minutes=30)
         while True:
             prediction_data = create_valid_prediction()
-            if prediction_data[4] == prediction.match_state:
+            if prediction_data.event_match_state == prediction.match_state:
                 continue
             break
 
@@ -314,7 +328,7 @@ class PredictionsCreateUpdateTest(BaseTestCase):
         mocked_datetime.return_value = prediction.match.match_start_time - timezone.timedelta(minutes=30)
         while True:
             prediction_data = create_valid_prediction()
-            if prediction_data[4] == prediction.match_state:
+            if prediction_data.event_match_state == prediction.match_state:
                 continue
             break
 
@@ -346,8 +360,30 @@ class PredictionsCreateUpdateTest(BaseTestCase):
             wrong_prediction_match += 1
         self.assertEqual(self.test_users[0].predictions.all().count(), 0)
 
+    @patch('predictions.views_mixins.GetEventMatchesMixin._get_current_time')
+    def test_user_update_prediction_valid_apply_match_state_initial_value(self, mocked_datetime):
+        add_user_predictions(event=self.event, users=0)
+        self.login_user(user=self.test_users[0])
+        prediction = self.test_users[0].predictions.all().first()
+        mocked_datetime.return_value = prediction.match.match_start_time - timezone.timedelta(minutes=30)
+        predictions_url = reverse('update_prediction', kwargs={'pk': prediction.pk})
+        # validate applied
+        bet_points_obj = prediction.bet_points
+        bet_points_obj.apply_match_state = True
+        bet_points_obj.save()
+        self.driver.get(f'{self.live_server_url}{predictions_url}')
+        checkbox = self.driver.find_element(By.NAME, 'form-0-accept_match_state_bet')
+        self.assertTrue(checkbox.is_selected())
+        # validate not applied
+        bet_points_obj = prediction.bet_points
+        bet_points_obj.apply_match_state = False
+        bet_points_obj.save()
+        self.driver.get(f'{self.live_server_url}{predictions_url}')
+        checkbox = self.driver.find_element(By.NAME, 'form-0-accept_match_state_bet')
+        self.assertFalse(checkbox.is_selected())
 
-class PredictionCalculatorTest(BaseTestCase):
+
+class PredictionCalculatorTest(PredictionsBaseTestCase):
     def check_prediction_points(self, user):
         generate_methods = {
             'generate_match_prediction_nothing_guessed': 'Nothing guessed -> 1 pt',
@@ -378,11 +414,9 @@ class PredictionCalculatorTest(BaseTestCase):
         for user in self.test_users:
             self.check_prediction_points(user=user)
 
-    def test_apply_match_state_bet(self):
+    def test_apply_match_state_bet_nothing_guessed(self):
         user = self.test_users[0]
         match = self.mixin.matches[0]
-
-        # nothing guessed
         user_prediction, bet_points = self.create_user_prediction(user, match, apply_match_state=True)
         points = self.generate_match_prediction_nothing_guessed(user_prediction)
         user_score = UserScore.objects.get(user=user)
@@ -390,11 +424,10 @@ class PredictionCalculatorTest(BaseTestCase):
         prediction_obj = PredictionPoint.objects.get(prediction=user_prediction)
         self.assertEqual(prediction_obj.points_gained, points - bet_points.points_match_state_to_take)
         logger.info('bet_points match_state note is: %s', prediction_obj.note)
-        user_prediction.delete()
-        bet_points.delete()
-        user_score.delete()
 
-        # guessed state
+    def test_apply_match_state_bet_guessed_state(self):
+        user = self.test_users[0]
+        match = self.mixin.matches[0]
         user_prediction, bet_points = self.create_user_prediction(user, match, apply_match_state=True)
         points = self.generate_match_prediction_guessed_state(user_prediction)
         prediction_obj = PredictionPoint.objects.get(prediction=user_prediction)
@@ -402,11 +435,10 @@ class PredictionCalculatorTest(BaseTestCase):
         user_score = UserScore.objects.get(user=user)
         self.assertEqual(user_score.points, points + bet_points.points_match_state_to_give)
         logger.info('bet_points match_state note is: %s', prediction_obj.note)
-        user_prediction.delete()
-        bet_points.delete()
-        user_score.delete()
 
-        # guessed result
+    def test_apply_match_state_bet_guessed_result(self):
+        user = self.test_users[0]
+        match = self.mixin.matches[0]
         user_prediction, bet_points = self.create_user_prediction(user, match, apply_match_state=True)
         points = self.generate_match_prediction_guessed_result(user_prediction)
         prediction_obj = PredictionPoint.objects.get(prediction=user_prediction)
@@ -415,11 +447,9 @@ class PredictionCalculatorTest(BaseTestCase):
         self.assertEqual(user_score.points, points + bet_points.points_match_state_to_give)
         logger.info('bet_points match_state note is: %s', prediction_obj.note)
 
-    def test_apply_result_bet(self):
+    def test_apply_result_bet_nothing_guessed(self):
         user = self.test_users[0]
         match = self.mixin.matches[0]
-
-        # nothing guessed
         user_prediction, bet_points = self.create_user_prediction(user, match, apply_result=True)
         points = self.generate_match_prediction_nothing_guessed(user_prediction)
         user_score = UserScore.objects.get(user=user)
@@ -427,11 +457,10 @@ class PredictionCalculatorTest(BaseTestCase):
         prediction_obj = PredictionPoint.objects.get(prediction=user_prediction)
         self.assertEqual(prediction_obj.points_gained, points - bet_points.points_result_to_take)
         logger.info('bet_points match_state note is: %s', prediction_obj.note)
-        user_prediction.delete()
-        bet_points.delete()
-        user_score.delete()
 
-        # guessed state
+    def test_apply_result_bet_guessed_state(self):
+        user = self.test_users[0]
+        match = self.mixin.matches[0]
         user_prediction, bet_points = self.create_user_prediction(user, match, apply_result=True)
         points = self.generate_match_prediction_guessed_state(user_prediction)
         user_score = UserScore.objects.get(user=user)
@@ -439,11 +468,10 @@ class PredictionCalculatorTest(BaseTestCase):
         prediction_obj = PredictionPoint.objects.get(prediction=user_prediction)
         self.assertEqual(prediction_obj.points_gained, points - bet_points.points_result_to_take)
         logger.info('bet_points match_state note is: %s', prediction_obj.note)
-        user_prediction.delete()
-        bet_points.delete()
-        user_score.delete()
 
-        # guessed result
+    def test_apply_result_bet_guessed_result(self):
+        user = self.test_users[0]
+        match = self.mixin.matches[0]
         user_prediction, bet_points = self.create_user_prediction(user, match, apply_result=True)
         points = self.generate_match_prediction_guessed_result(user_prediction)
         user_score = UserScore.objects.get(user=user)
