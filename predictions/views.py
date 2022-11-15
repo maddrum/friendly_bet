@@ -116,9 +116,9 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
         return kwargs
 
     @staticmethod
-    def get_head_img():
+    def get_head_img(number_of_memes=3):
         # show animation picture
-        animation_picture_names = ['ronaldo.png', 'gandalf.png', 'Milko.png', 'Fiki.png', 'Suarez.png', 'putin.png']
+        animation_picture_names = [f'meme{str(item)}.png' for item in range(number_of_memes)]
         random.shuffle(animation_picture_names)
         picture = settings.STATIC_URL + 'images/' + 'side_pictures/' + animation_picture_names[0]
         # return show_animation, picture

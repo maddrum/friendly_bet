@@ -80,11 +80,16 @@ a:hover {
 
 .hero {
     position: relative;
-    height: 90vh;
+    height: 95vh;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    background-image: url('../images/Bg.png');
+    background-size: cover;
+    border-bottom-style: solid;
+    border-bottom-width: 10px;
+    border-color: #ffd60a;
 }
 
 
@@ -98,7 +103,7 @@ a:hover {
     right: 0;
     bottom: 0;
     left: 0;
-    background-color: rgba(0, 0, 0, 0.7);
+
 }
 
 .ttl-wrp {
@@ -142,7 +147,7 @@ a:hover {
     font-size: 5rem;
     text-transform: uppercase;
     text-align: left;
-    text-shadow: 16px 22px 11px rgba(219, 180, 44, .6);
+    /*text-shadow: 16px 22px 11px rgba(219, 180, 44, .6);*/
 }
 
 .heading.content {
@@ -203,19 +208,20 @@ a:hover {
 }
 
 .start-btn {
-    width: 200px;
+    width: 220px;
     height: 80px;
     margin-top: 40px;
-    padding-top: 26px;
+    padding-top: 33px;
     border-radius: 50px;
     background-color: #ffc300;
-    box-shadow: 3px 3px 17px 0 rgb(189, 131, 202);
-    font-family: 'ArabicFont', sans-serif;
-    font-size: 3.5rem;
+    font-family: 'BaseFont', sans-serif;
+    font-weight: bold;
+    font-size: 3rem;
     text-align: center;
     text-transform: uppercase;
     cursor: pointer;
     display: block;
+    color: #333333;
 }
 
 .start-btn:hover {
@@ -478,7 +484,7 @@ a:hover {
 
 .body-2 {
     background-color: #711631;
-    background-image: url('../images/Bg.jpg');
+    background-image: url('../images/Bg.png');
     background-size: cover;
 }
 
@@ -1060,7 +1066,7 @@ a:hover {
     }
 
     .heading.gold {
-        font-size: 6rem;
+        font-size: 5rem;
         text-align: center;
     }
 
@@ -1080,7 +1086,7 @@ a:hover {
     }
 
     .ttl-wrp {
-        top: 156px;
+        top: 6rem;
         display: block;
         width: 100%;
         margin-right: auto;
@@ -1305,13 +1311,6 @@ a:hover {
         width: 120px;
     }
 
-    .hero {
-        height: 800px;
-    }
-
-    .hero-wrp {
-        height: 800px;
-    }
 
     .gin-checkboxes {
         padding-top: 0 !important;
@@ -1440,14 +1439,6 @@ a:hover {
         border-radius: 0px;
     }
 
-    .hero {
-        height: 800px;
-    }
-
-    .hero-wrp {
-        height: 800px;
-    }
-
 }
 
 @media (max-width: 479px) {
@@ -1459,13 +1450,6 @@ a:hover {
         padding: 14px 25px;
     }
 
-    .hero {
-        height: 800px;
-    }
-
-    .hero-wrp {
-        height: 800px;
-    }
 
     .heading {
         font-size: 1.8rem;
@@ -1500,7 +1484,7 @@ a:hover {
     }
 
     .ttl-wrp {
-        top: 6rem;
+        top: 5rem;
     }
 
     .start-btn {
@@ -1921,11 +1905,18 @@ ul.page {
 
 .inner-page-image {
     display: flex;
-    width: 100%;
     justify-content: center;
     position: relative;
-    top: 2.5rem;
+    top: 3.8rem;
+    max-height: 350px;
+    max-width: 350px;
+    margin: 2.5rem auto;
 }
+
+.image--round {
+    border-radius: 5%;
+}
+
 
 input[type='checkbox'] {
     width: 30px;

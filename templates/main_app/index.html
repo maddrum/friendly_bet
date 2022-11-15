@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block banner %}
-      <link href="https://bg.allfont.net/allfont.css?fonts=ds-arabic" rel="stylesheet" type="text/css" />
+    <link href="https://bg.allfont.net/allfont.css?fonts=ds-arabic" rel="stylesheet" type="text/css"/>
     <div class="hero">
         <div class="hero-wrp">
             <div class="ttl-wrp">
@@ -17,14 +17,9 @@
 {% endblock %}
 
 {% block body_content %}
-    <div class="content-wrp">
-        <div class="text-center">
-
-            <video width="300" height="300" playsinline autoplay muted loop style="margin-top:60px;">
-                <source src="{% static 'videos/ronaldo.mp4' %}" type="video/mp4">
-                <source src="{% static 'videos/ronaldo.mp4' %}" type="video/ogg">
-                Your browser does not support the video tag.
-            </video>
+    <div class="content-wrp content-wrp--limits">
+        <div class="text-center ">
+            <img src="{% static 'images/home.gif' %}">
         </div>
         <h1 class=" heading content">ЗА КАКВО СТАВА ВЪПРОС<br></h1>
         <div class="text-block">Нещата не са сложни. Мачът почва след 16 минути, но ти все още можеш да дадеш своята
@@ -43,13 +38,14 @@
         <h1 class="heading content">тук Играете за чест и слава!<br></h1>
         <div class="instructions white">
             <h1 class="heading content">ДРУГИТЕ ЗА НАС</h1>
-            <div class="text-block">Какво сподели Гатузо за прогнозите си на предишното издание</div>
+            <div class="text-block">Какво сподели Кристиано за прогнозите си на предишното издание</div>
             <br>
             <div class="text-center">
-                <iframe width="80%" height="400" src="https://www.youtube.com/embed/QJHUbtR0yI8"
-                        title="YouTube video player" frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen></iframe>
+                <video width="640" height="360" controls="controls" preload="auto">
+                    <source src="{% static 'videos/ronaldo.mp4' %}" type="video/mp4">
+                    <source src="{% static 'videos/ronaldo.mp4' %}" type="video/ogg">
+                    Your browser does not support the video tag.
+                </video>
             </div>
         </div>
     </div>
