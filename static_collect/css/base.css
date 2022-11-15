@@ -66,6 +66,12 @@ img {
     display: inline-block;
 }
 
+video {
+    width: 100%;
+    height: auto;
+    max-width: 640px;
+}
+
 html.w-mod-touch * {
     background-attachment: scroll !important;
 }
