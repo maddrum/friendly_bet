@@ -10,9 +10,13 @@
         {% for item in ranklist %}
             <div class="{% get_rank_html_class forloop.counter %} w-row">
                 <div class="badge w-col w-col-3 w-col-stack">
-                    <img src="{% static 'images' %}/{% get_rank_image_name forloop.counter %}"
-                            width="{% get_rank_image_width forloop.counter %}"
-                            class="image {% get_rank_image_class forloop.counter %}">
+                    {% if item.points > 0 %}
+                        <img src="{% static 'images' %}/{% get_rank_image_name forloop.counter %}"
+                                width="{% get_rank_image_width forloop.counter %}"
+                                class="image {% get_rank_image_class forloop.counter %}">
+                    {% else %}
+                        <img src="{% static 'images/Rank-negative.png' %}" width="100" class="image bojinka">
+                    {% endif %}
                 </div>
                 <div class="info-wirp {% get_row_wrapper forloop.counter %} w-col w-col-9 w-col-stack">
                     <div class="info-table w-row">

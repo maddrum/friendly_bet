@@ -1,5 +1,6 @@
 import datetime
 
+from django.conf import settings
 from django.utils import timezone
 
 from events.models import Event
@@ -28,7 +29,7 @@ class GetEventMatchesMixin:
     def _get_current_time():
         return timezone.now()
 
-    def _get_now_plus_time(self, plus_minutes=15):
+    def _get_now_plus_time(self, plus_minutes=settings.PREDICTION_MINUTES_BEFORE_MATCH):
         return self._get_current_time() + datetime.timedelta(minutes=plus_minutes)
 
     @staticmethod
