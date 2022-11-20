@@ -9,8 +9,8 @@ RANKING_BREAKPOINTS = {
     3: ['rankings1', 'Rank3.png', 200, 'third', 'third-txt'],
     4: ['rankings2', 'Rank4.png', 130, 'napadatel', 'napadatel-txt'],
     6: ['rankings3', 'Rank5.png', 100, 'half', 'napadatel-txt'],
-    9: ['rankings4', 'Rank6.png', 90, 'bek', 'napadatel-txt'],
-    12: ['rankings5', 'Rank7.png', 50, 'bojinka', 'napadatel-txt'],
+    9: ['rankings4', 'Rank6.png', 100, 'bek', 'napadatel-txt'],
+    12: ['rankings5', 'Rank7.png', 100, 'bojinka', 'napadatel-txt'],
 }
 
 BREAKPOINT_KEYS = [item for item in RANKING_BREAKPOINTS.keys()]

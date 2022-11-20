@@ -158,19 +158,15 @@ class PredictionsBaseTestCase(LiveServerTestCase, UserPredictionsToolBox):
         guest_score_element.send_keys(prediction.goals_guest)
 
         # clicks on bet points checkboxes until state is right
-        apply_match_state = self.driver.find_element(By.ID, f'id_form-{form_id}-accept_match_state_bet')
-        while True:
-            if apply_match_state.is_selected() != prediction.apply_match_state:
-                apply_match_state.click()
-            else:
-                break
+        checkbox_id = f'id_form-{form_id}-accept_match_state_bet'
+        apply_match_state = self.driver.find_element(By.ID, checkbox_id)
+        if apply_match_state.is_selected() != prediction.apply_match_state:
+            self.driver.execute_script(f'document.querySelector("#{checkbox_id}").click()')
 
-        apply_result = self.driver.find_element(By.ID, f'id_form-{form_id}-accept_match_result_bet')
-        while True:
-            if apply_result.is_selected() != prediction.apply_result:
-                apply_result.click()
-            else:
-                break
+        checkbox_id = f'id_form-{form_id}-accept_match_result_bet'
+        apply_result = self.driver.find_element(By.ID, checkbox_id)
+        if apply_result.is_selected() != prediction.apply_result:
+            self.driver.execute_script(f'document.querySelector("#{checkbox_id}").click()')
 
     def validate_submit_btn(self, should_have_submit_btn=True):
         submit = self.driver.find_elements(By.CSS_SELECTOR, 'input[type=submit]')
@@ -245,7 +241,8 @@ class PredictionsCreateUpdateTest(PredictionsBaseTestCase):
             counter += 1
 
         match = self.mixin.matches.first()
-        mocked_datetime.return_value = match.match_start_time + timezone.timedelta(minutes=30)
+        delta_minutes = settings.PREDICTION_MINUTES_BEFORE_MATCH - 1
+        mocked_datetime.return_value = match.match_start_time - timezone.timedelta(minutes=delta_minutes)
         submit.send_keys(Keys.RETURN)
         self.assertEqual(self.test_users[0].predictions.all().count(), 0)
         self.validate_404()
@@ -297,7 +294,9 @@ class PredictionsCreateUpdateTest(PredictionsBaseTestCase):
         predictions_url = reverse('update_prediction', kwargs={'pk': prediction.pk})
         self.driver.get(f'{self.live_server_url}{predictions_url}')
         submit = self.validate_submit_btn()
-        mocked_datetime.return_value = prediction.match.match_start_time + timezone.timedelta(minutes=30)
+
+        delta_minutes = settings.PREDICTION_MINUTES_BEFORE_MATCH - 1
+        mocked_datetime.return_value = prediction.match.match_start_time - timezone.timedelta(minutes=delta_minutes)
         while True:
             prediction_data = create_valid_prediction()
             if prediction_data.event_match_state == prediction.match_state:
@@ -325,7 +324,8 @@ class PredictionsCreateUpdateTest(PredictionsBaseTestCase):
         predictions_url = reverse('update_prediction', kwargs={'pk': prediction.pk})
         self.driver.get(f'{self.live_server_url}{predictions_url}')
         submit = self.validate_submit_btn()
-        mocked_datetime.return_value = prediction.match.match_start_time - timezone.timedelta(minutes=30)
+        delta_minutes = settings.PREDICTION_MINUTES_BEFORE_MATCH + 1
+        mocked_datetime.return_value = prediction.match.match_start_time - timezone.timedelta(minutes=delta_minutes)
         while True:
             prediction_data = create_valid_prediction()
             if prediction_data.event_match_state == prediction.match_state:
@@ -365,7 +365,8 @@ class PredictionsCreateUpdateTest(PredictionsBaseTestCase):
         add_user_predictions(event=self.event, users=0)
         self.login_user(user=self.test_users[0])
         prediction = self.test_users[0].predictions.all().first()
-        mocked_datetime.return_value = prediction.match.match_start_time - timezone.timedelta(minutes=30)
+        delta_minutes = settings.PREDICTION_MINUTES_BEFORE_MATCH + 1
+        mocked_datetime.return_value = prediction.match.match_start_time - timezone.timedelta(minutes=delta_minutes)
         predictions_url = reverse('update_prediction', kwargs={'pk': prediction.pk})
         # validate applied
         bet_points_obj = prediction.bet_points
