@@ -46,12 +46,16 @@
     {% if predictions|length == 0 %}
         <div class="w-row">
             <div class="w-col w-col-12">
-                <h1 class="heading tab-heading history-ttl">
-                    Свърши то! Каквото прогнозира за днес - прогнозира!
-                </h1>
-                <h1 class="heading tab-heading history-ttl">
-                    Сега седи гледай мача!
-                </h1>
+                <p class="heading tab-heading history-ttl">
+                    Или не си дал прогноза за днес, или вече работата е отекла.
+                </p>
+                <p class="heading tab-heading history-ttl">
+                    Ako e първото <a href="{% url 'create_predictions' %}">напомпи тука</a>.
+                </p>
+                 <p class="heading tab-heading history-ttl">
+                    Ако не - пий една студена бира.
+                </p>
+
             </div>
         </div>
     {% endif %}
