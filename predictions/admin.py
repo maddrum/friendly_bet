@@ -9,8 +9,13 @@ class ReadOnlyFields(admin.ModelAdmin):
 
 class UserPredictionsAdmin(ReadOnlyFields):
     list_display = (
-        'user', 'match', 'match_state_guess', 'goals_home', 'goals_guest', 'valid_prediction', 'guessed_match_state',
-        'guessed_goals_home', 'guessed_goals_guest', 'points_gained')
+        'user',
+        'match', 'match_state_guess',
+        'goals_home', 'goals_guest', 'valid_prediction',
+        'guessed_match_state', 'guessed_result', 'points_gained',
+        'bet_state', 'bet_result',
+    )
+    list_filter = ('bet_points__apply_match_state', 'bet_points__apply_result')
 
     def match_state_guess(self, obj):
         return obj.match_state.get_match_state_display()
@@ -25,23 +30,34 @@ class UserPredictionsAdmin(ReadOnlyFields):
 
     guessed_match_state.boolean = True
 
-    def guessed_goals_home(self, obj):
+    def guessed_result(self, obj):
         if obj.match.match_result.penalties:
-            return obj.goals_home == obj.match.match_result.score_after_penalties_home
-        return obj.goals_home == obj.match.match_result.score_home
+            result_home = obj.goals_home == obj.match.match_result.score_after_penalties_home
+        else:
+            result_home = obj.goals_home == obj.match.match_result.score_home
 
-    guessed_goals_home.boolean = True
-
-    def guessed_goals_guest(self, obj):
         if obj.match.match_result.penalties:
-            return obj.goals_guest == obj.match.match_result.score_after_penalties_guest
-        return obj.goals_guest == obj.match.match_result.score_guest
+            result_guest = obj.goals_guest == obj.match.match_result.score_after_penalties_guest
+        else:
+            result_guest = obj.goals_guest == obj.match.match_result.score_guest
 
-    guessed_goals_guest.boolean = True
+        return result_home and result_guest
 
-    @admin.display(ordering='prediction_points')
+    guessed_result.boolean = True
+
+    @admin.display(ordering='prediction_points__points_gained')
     def points_gained(self, obj):
         return obj.prediction_points.points_gained
+
+    def bet_state(self, obj):
+        return obj.bet_points.apply_match_state
+
+    bet_state.boolean = True
+
+    def bet_result(self, obj):
+        return obj.bet_points.apply_result
+
+    bet_result.boolean = True
 
 
 class BetAdditionalPointAdmin(ReadOnlyFields):
