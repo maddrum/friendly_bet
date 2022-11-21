@@ -622,10 +622,10 @@ a:hover {
 }
 
 .game-single.inprofile {
-    margin-top: 0px;
-    margin-bottom: 43px;
-    padding-top: 18px;
-    padding-bottom: 78px;
+    margin-top: 0;
+    margin-bottom: 20px;
+    padding-top: 20px;
+    padding-bottom: 30px;
     border-bottom: 1px solid #5da4e6;
 }
 
@@ -825,16 +825,16 @@ a:hover {
 
 .submit-btn-no-glow {
     display: block;
-    width: 250px;
-    height: 75px;
-    margin: 89px auto 19px;
-    padding-top: 14px;
+    width: 200px;
+    height: 60px;
+    margin: 2px auto;
+    padding-top: 22px;
     border-radius: 80px;
     background-color: #f3daa8;
     font-family: 'BaseFont', sans-serif;
     color: #044a9e;
-    font-size: 22px;
-    font-weight: 400;
+    font-size: 1.8rem;
+    font-weight: bold;
     text-align: center;
     text-transform: uppercase;
     text-decoration: InfoText;
