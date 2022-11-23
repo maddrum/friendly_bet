@@ -68,7 +68,7 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
     success_url = reverse_lazy('predictions_success')
     user_gave_prediction = False
 
-    _number_of_memes = 11  # assign this according to the total number of meme files
+    _number_of_memes = 12  # assign this according to the total number of meme files
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
