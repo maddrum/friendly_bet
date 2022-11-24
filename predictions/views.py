@@ -1,4 +1,5 @@
 import datetime
+import os
 import random
 
 from django.conf import settings
@@ -68,8 +69,6 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
     success_url = reverse_lazy('predictions_success')
     user_gave_prediction = False
 
-    _number_of_memes = 12  # assign this according to the total number of meme files
-
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return super().dispatch(request, *args, **kwargs)
@@ -118,15 +117,19 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
         kwargs['matches'] = self.matches
         return kwargs
 
-    def get_random_meme(self):
-        animation_picture_names = [f'meme{str(item)}.png' for item in range(self._number_of_memes)]
-        random.shuffle(animation_picture_names)
-        return animation_picture_names[0]
+    def get_meme_filenames(self):
+        meme_folder = os.path.join(settings.STATIC_ROOT, 'images', 'side_pictures')
+        for root, dirs, files in os.walk(meme_folder):
+            images = [file for file in files]
+            images.sort()
+            return images
+        return []
 
     def get_head_img(self):
-        meme_number = 0 if 'meme_number' not in self.request.session else self.request.session['meme_number']
-        self.request.session['meme_number'] = meme_number + 1 if meme_number < self._number_of_memes-1 else 0
-        picture = f'{settings.STATIC_URL}images/side_pictures/meme{meme_number}.png'
+        images = self.get_meme_filenames()
+        meme_index = 0 if 'meme_number' not in self.request.session else self.request.session['meme_number']
+        self.request.session['meme_number'] = meme_index + 1 if meme_index < len(images) - 1 else 0
+        picture = f'{settings.STATIC_URL}images/side_pictures/{images[meme_index]}'
         return picture
 
     def get_context_data(self, *args, **kwargs):
