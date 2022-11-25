@@ -129,7 +129,13 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
         images = self.get_meme_filenames()
         meme_index = 0 if 'meme_number' not in self.request.session else self.request.session['meme_number']
         self.request.session['meme_number'] = meme_index + 1 if meme_index < len(images) - 1 else 0
-        picture = f'{settings.STATIC_URL}images/side_pictures/{images[meme_index]}'
+        try:
+            image_name = images[meme_index]
+        except IndexError:
+            self.request.session['meme_number'] = 0
+            image_name = images[0]
+
+        picture = f'{settings.STATIC_URL}images/side_pictures/{image_name}'
         return picture
 
     def get_context_data(self, *args, **kwargs):
