@@ -1,5 +1,5 @@
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, CreateView
+from django.views.generic import CreateView, TemplateView
 
 from main_app.forms import ContactForm
 from main_app.models import SiteContact

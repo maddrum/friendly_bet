@@ -1,0 +1,27 @@
+{% extends 'ranklists/gin/base.html' %}
+{% load custom_tags %}
+{% block users_active %}w--current{% endblock %}
+
+{% block  gin_content %}
+    <div class="form-txt">
+        <div class="text-block histprylist bonus-list">
+            <h1 class="color-primary--inverted">КЛАСАЦИЯ</h1>
+            <hr>
+            {% for user,points in per_user.items %}
+
+                {% if points > 0 %}
+                    <p class="color-negative">
+                        <strong>{{ user }}</strong> ми е ВЗЕЛ <strong>{{ points|absolute_value }}</strong> точки.
+                        ГАДНЯР/КА!
+                    </p>
+                {% elif points < 0 %}
+                    <p class="color-positive">
+                        <strong>{{ user }}</strong> ми е ДАЛ <strong>{{ points|absolute_value }}</strong> точки.
+                        ДОБРЯК/ЧКА!
+                    </p>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% include 'main_app/components/paginator.html' %}
+{% endblock %}

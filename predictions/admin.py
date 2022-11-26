@@ -67,7 +67,11 @@ class BetAdditionalPointAdmin(ReadOnlyFields):
     )
 
 
+class PredictionPointAdmin(ReadOnlyFields):
+    list_display = ('prediction', 'points_gained', 'base_points', 'additional_points', 'note')
+
+
 admin.site.register(UserPrediction, UserPredictionsAdmin)
-admin.site.register(PredictionPoint, ReadOnlyFields)
+admin.site.register(PredictionPoint, PredictionPointAdmin)
 admin.site.register(UserScore, ReadOnlyFields)
 admin.site.register(BetAdditionalPoint, BetAdditionalPointAdmin)

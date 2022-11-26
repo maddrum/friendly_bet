@@ -1,0 +1,52 @@
+{% extends 'ranklists/gin/base.html' %}
+{% load custom_tags %}
+{% block balance_active %}w--current{% endblock %}
+
+{% block  gin_content %}
+    <div class="form-txt">
+        <div class="text-block histprylist bonus-list">
+            <h1 class="color-primary--inverted">
+                БАЛАНС: {{ total_balance }} точки
+            </h1>
+            <h3 class="color-primary--inverted mb20">
+                {% if total_balance < 0 %}
+                    Джинът е ГЛАДЕН!
+                {% else %}
+                    Джинът е сит.
+                {% endif %}
+            </h3>
+            <h4 class="color-primary--inverted">Резултата по мачове</h4>
+            <hr>
+            {% for match in page_obj.object_list %}
+                {% get_values_from_dictionary_tag per_match match as points %}
+                {% with match.match_result as match_result %}
+                    <p>
+                        <span class="color-primary--inverted">
+                            От {% replace_str match '|' '' %}
+                            {% if points > 0 %}
+                                джина ВЗЕ
+                            {% else %}
+                                джина ДАДЕ
+                            {% endif %}
+                            {{ points|absolute_value }}
+                            {% if points == 1 %}
+                                точка
+                            {% else %}
+                                точки
+                            {% endif %}
+                        </span>
+                        <br>
+                        Завършил: {{ match_result.match_state.get_match_state_display }} |
+                        {{ match_result.score_home }} : {{ match_result.score_guest }}
+                        {% if match_result.penalties %}
+                            ( {{ match_result.score_after_penalties_home }} :
+                            {{ match_result.score_after_penalties_guest }} )
+                        {% endif %}
+                    </p>
+                {% endwith %}
+                <br>
+            {% endfor %}
+        </div>
+    </div>
+    {% include 'main_app/components/paginator.html' %}
+{% endblock %}

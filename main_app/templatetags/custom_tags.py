@@ -16,3 +16,13 @@ def get_value_from_dict_key(dictionary, key):
 @register.simple_tag
 def get_values_from_dictionary_tag(dictionary, key):
     return dictionary.get(key)
+
+
+@register.filter
+def absolute_value(value):
+    return abs(value)
+
+
+@register.simple_tag
+def replace_str(initial_str, value_to_replace, value_to_replace_with):
+    return str(initial_str).replace(value_to_replace, value_to_replace_with)

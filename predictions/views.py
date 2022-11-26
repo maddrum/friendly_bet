@@ -1,63 +1,19 @@
 import datetime
 import os
-import random
 
 from django.conf import settings
-from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.urls.exceptions import Http404
-from django.views.generic import ListView, TemplateView
+from django.views.generic import TemplateView
 from extra_views import ModelFormSetView
 
 from accounts.models import LastUserMatchInputStart
-from bonus_points.models import UserBonusSummary
 from predictions.forms import PredictionForm
 from predictions.formsets import PredictionFormSet
-from predictions.models import BetAdditionalPoint, UserPrediction, UserScore
+from predictions.models import BetAdditionalPoint, UserPrediction
 from predictions.views_mixins import GetEventMatchesMixin
-
-
-class RankList(ListView):
-    template_name = 'predictions/ranklist.html'
-    model = UserScore
-    context_object_name = 'ranklist'
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        queryset = queryset.order_by('-points')
-        return queryset
-
-
-class RankilstUserPoints(ListView):
-    model = UserPrediction
-    template_name = 'main_app/ranklist-detail.html'
-    context_object_name = 'ranklist'
-    user = None
-    paginate_by = 4
-
-    def get_queryset(self):
-        self.user = get_user_model().objects.get(pk=self.kwargs['pk'])
-        queryset = UserPrediction.objects.filter(
-            user=self.user, match__match_result__match_is_over=True).order_by(
-            '-match__match_start_time').select_related('match').prefetch_related('match__match_result')
-        return queryset
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data()
-        try:
-            bonuses_added_check = UserScore.objects.get(user=self.user).bonus_points_added
-        except UserScore.DoesNotExist:
-            bonuses_added_check = False
-        if bonuses_added_check:
-            bonuses = UserBonusSummary.objects.get(user=self.user)
-        else:
-            bonuses = False
-        context['bonuses'] = bonuses
-        context['username'] = self.user
-
-        return context
 
 
 class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelFormSetView):

@@ -11,6 +11,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('matches/', include('matches.urls')),
     path('predictions/', include('predictions.urls')),
+    path('ranklist/', include('ranklists.urls')),
     path('bonus/', include('bonus_points.urls')),
     path('klimatik/', admin.site.urls),
 

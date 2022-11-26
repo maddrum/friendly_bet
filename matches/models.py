@@ -13,7 +13,8 @@ class Match(models.Model):
     edited_on = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return_str = f'мач {self.match_number} | {self.home.name} - {self.guest.name} @ {self.match_start_time}'
+        return_str = f'мач {self.match_number} | ' \
+                     f'{self.home.name} - {self.guest.name} | {self.match_start_time.strftime("%d.%m.%Y - %H:%M")}'
         return return_str
 
     class Meta:
