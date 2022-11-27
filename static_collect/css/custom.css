@@ -192,6 +192,7 @@ a:hover {
     text-align: center;
 }
 
+
 .heading.tab-heading.history-ttl {
     margin-top: 20px;
     margin-bottom: 29px;
@@ -1736,6 +1737,18 @@ a:hover {
     color: #f3daa8 !important;
 }
 
+.color-primary--inverted {
+    color: #470e1f !important;
+}
+
+.color-positive {
+    color: #55917f !important;
+}
+
+.color-negative {
+    color: #470e1f !important;
+}
+
 .text-left {
     text-align: left !important;
 }
@@ -1770,8 +1783,8 @@ a:hover {
 }
 
 :root {
-    --primary: #23adad;
-    --greyLight: #23adade1;
+    --primary: #470e1f;
+    --greyLight: #f2c464;
     --greyLight-2: #cbe0dd;
     --greyDark: #2d4848;
 }
@@ -1823,6 +1836,10 @@ ul.page {
     border-radius: 0.4rem;
 }
 
+.page__numbers > a, .page__btn > a {
+    color: #044a9e;
+}
+
 .page__numbers:hover {
     color: var(--primary);
 }
@@ -1846,7 +1863,7 @@ ul.page {
     color: #f3daa8;
 }
 
-.page__numbers.inverted > a {
+.page__numbers.inverted, .page__numbers.inverted > a {
     color: #f3daa8;
 }
 
