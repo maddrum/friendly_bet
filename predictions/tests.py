@@ -24,9 +24,34 @@ from predictions.tools import add_user_predictions, create_invalid_prediction, c
 from predictions.views_mixins import GetEventMatchesMixin
 
 logger = logging.getLogger('friendly_bet')
+logger.propagate = False
 
 
 class UserPredictionsToolBox:
+    _generate_methods = {
+        'generate_match_prediction_nothing_guessed': 'Nothing guessed -> 1 pt',
+        'generate_match_prediction_guessed_state': 'Guessed state -> 4 pt',
+        'generate_match_prediction_guessed_result': 'Guessed result -> 9 pt',
+    }
+
+    @staticmethod
+    def handle_user_prediction_bet_points(user_prediction, guessed_state=False, guessed_result=False):
+        extra_points = 0
+        bet_points = user_prediction.bet_points
+        if bet_points.apply_match_state:
+            if guessed_state:
+                extra_points += bet_points.points_match_state_to_give
+            else:
+                extra_points -= bet_points.points_match_state_to_take
+
+        if bet_points.apply_result:
+            if guessed_result:
+                extra_points += bet_points.points_result_to_give
+            else:
+                extra_points -= bet_points.points_result_to_take
+
+        return extra_points
+
     @staticmethod
     def create_user_prediction(user, match, apply_result=False, apply_match_state=False):
         match_state = random.choice(ALL_MATCH_STATES_LIST)
@@ -60,7 +85,7 @@ class UserPredictionsToolBox:
         match_result.save()
         return match_result
 
-    def generate_match_prediction_nothing_guessed(self, user_prediction):
+    def generate_match_prediction_nothing_guessed(self, user_prediction, base_points_only=True):
         return_points = 1
         state = user_prediction.match_state
         while True:
@@ -77,9 +102,12 @@ class UserPredictionsToolBox:
         match_result.score_guest = result_goals_guest
         match_result.match_is_over = True
         match_result.save()
+        # extra bet points
+        if not base_points_only:
+            return_points += self.handle_user_prediction_bet_points(user_prediction=user_prediction)
         return return_points
 
-    def generate_match_prediction_guessed_state(self, user_prediction):
+    def generate_match_prediction_guessed_state(self, user_prediction, base_points_only=True):
         return_points = 4
         match_result = self.get_match_result_obj(match=user_prediction.match)
         match_result.match_state = user_prediction.match_state
@@ -87,9 +115,12 @@ class UserPredictionsToolBox:
         match_result.score_guest = user_prediction.goals_guest
         match_result.match_is_over = True
         match_result.save()
+        # extra bet points
+        if not base_points_only:
+            return_points += self.handle_user_prediction_bet_points(user_prediction=user_prediction, guessed_state=True)
         return return_points
 
-    def generate_match_prediction_guessed_result(self, user_prediction):
+    def generate_match_prediction_guessed_result(self, user_prediction, base_points_only=True):
         return_points = 9
         match_result = self.get_match_result_obj(match=user_prediction.match)
         match_result.match_state = user_prediction.match_state
@@ -97,6 +128,13 @@ class UserPredictionsToolBox:
         match_result.score_guest = user_prediction.goals_guest
         match_result.match_is_over = True
         match_result.save()
+        # extra bet points
+        if not base_points_only:
+            return_points += self.handle_user_prediction_bet_points(
+                user_prediction=user_prediction,
+                guessed_state=True,
+                guessed_result=True,
+            )
         return return_points
 
 
@@ -217,7 +255,7 @@ class PredictionsBaseTestCase(LiveServerTestCase, UserPredictionsToolBox):
             bet_points.points_result_to_give = prediction.match.phase.bet_points.return_points_result
 
 
-class PredictionsCreateUpdateTest(PredictionsBaseTestCase):
+class TestPredictionsCreateUpdateWithBrowser(PredictionsBaseTestCase):
 
     def test_create_prediction_form(self):
         for user in self.test_users:
@@ -384,32 +422,24 @@ class PredictionsCreateUpdateTest(PredictionsBaseTestCase):
         self.assertFalse(checkbox.is_selected())
 
 
-class PredictionCalculatorTest(PredictionsBaseTestCase):
+class TestPredictionCalculator(PredictionsBaseTestCase):
     def check_prediction_points(self, user):
-        generate_methods = {
-            'generate_match_prediction_nothing_guessed': 'Nothing guessed -> 1 pt',
-            'generate_match_prediction_guessed_state': 'Guessed state -> 4 pt',
-            'generate_match_prediction_guessed_result': 'Guessed result -> 9 pt',
-        }
         points = 0
         for match in Match.objects.all():
             user_prediction, bet_points = self.create_user_prediction(user, match)
-            chosen_method = random.choice(list(generate_methods.keys()))
+            chosen_method = random.choice(list(self._generate_methods.keys()))
             klass_method = getattr(self, chosen_method)
             points_gained = klass_method(user_prediction=user_prediction)
-            logger.info(
-                'user: %s | match: %s | chosen result: %s | points_gained: %s',
-                str(user),
-                str(match),
-                generate_methods[chosen_method],
-                points_gained,
-            )
             points += points_gained
             # score tests
             user_score = UserScore.objects.get(user=user)
             self.assertEqual(user_score.points, points)
             prediction_obj = PredictionPoint.objects.get(prediction=user_prediction)
             self.assertEqual(prediction_obj.points_gained, points_gained)
+            self.assertEqual(
+                prediction_obj.points_gained,
+                (prediction_obj.base_points + prediction_obj.additional_points),
+            )
 
     def test_base_user_prediction_points(self):
         for user in self.test_users:
@@ -423,30 +453,33 @@ class PredictionCalculatorTest(PredictionsBaseTestCase):
         user_score = UserScore.objects.get(user=user)
         self.assertEqual(user_score.points, points - bet_points.points_match_state_to_take)
         prediction_obj = PredictionPoint.objects.get(prediction=user_prediction)
+        self.assertEqual(prediction_obj.base_points, points)
+        self.assertEqual(prediction_obj.additional_points, 0 - bet_points.points_match_state_to_take)
         self.assertEqual(prediction_obj.points_gained, points - bet_points.points_match_state_to_take)
-        logger.info('bet_points match_state note is: %s', prediction_obj.note)
 
     def test_apply_match_state_bet_guessed_state(self):
         user = self.test_users[0]
         match = self.mixin.matches[0]
         user_prediction, bet_points = self.create_user_prediction(user, match, apply_match_state=True)
         points = self.generate_match_prediction_guessed_state(user_prediction)
-        prediction_obj = PredictionPoint.objects.get(prediction=user_prediction)
-        self.assertEqual(prediction_obj.points_gained, points + bet_points.points_match_state_to_give)
         user_score = UserScore.objects.get(user=user)
         self.assertEqual(user_score.points, points + bet_points.points_match_state_to_give)
-        logger.info('bet_points match_state note is: %s', prediction_obj.note)
+        prediction_obj = PredictionPoint.objects.get(prediction=user_prediction)
+        self.assertEqual(prediction_obj.base_points, points)
+        self.assertEqual(prediction_obj.additional_points, bet_points.points_match_state_to_give)
+        self.assertEqual(prediction_obj.points_gained, points + bet_points.points_match_state_to_give)
 
     def test_apply_match_state_bet_guessed_result(self):
         user = self.test_users[0]
         match = self.mixin.matches[0]
         user_prediction, bet_points = self.create_user_prediction(user, match, apply_match_state=True)
         points = self.generate_match_prediction_guessed_result(user_prediction)
-        prediction_obj = PredictionPoint.objects.get(prediction=user_prediction)
-        self.assertEqual(prediction_obj.points_gained, points + bet_points.points_match_state_to_give)
         user_score = UserScore.objects.get(user=user)
         self.assertEqual(user_score.points, points + bet_points.points_match_state_to_give)
-        logger.info('bet_points match_state note is: %s', prediction_obj.note)
+        prediction_obj = PredictionPoint.objects.get(prediction=user_prediction)
+        self.assertEqual(prediction_obj.base_points, points)
+        self.assertEqual(prediction_obj.additional_points, bet_points.points_match_state_to_give)
+        self.assertEqual(prediction_obj.points_gained, points + bet_points.points_match_state_to_give)
 
     def test_apply_result_bet_nothing_guessed(self):
         user = self.test_users[0]
@@ -456,8 +489,9 @@ class PredictionCalculatorTest(PredictionsBaseTestCase):
         user_score = UserScore.objects.get(user=user)
         self.assertEqual(user_score.points, points - bet_points.points_result_to_take)
         prediction_obj = PredictionPoint.objects.get(prediction=user_prediction)
+        self.assertEqual(prediction_obj.base_points, points)
+        self.assertEqual(prediction_obj.additional_points, 0 - bet_points.points_result_to_take)
         self.assertEqual(prediction_obj.points_gained, points - bet_points.points_result_to_take)
-        logger.info('bet_points match_state note is: %s', prediction_obj.note)
 
     def test_apply_result_bet_guessed_state(self):
         user = self.test_users[0]
@@ -467,8 +501,9 @@ class PredictionCalculatorTest(PredictionsBaseTestCase):
         user_score = UserScore.objects.get(user=user)
         self.assertEqual(user_score.points, points - bet_points.points_result_to_take)
         prediction_obj = PredictionPoint.objects.get(prediction=user_prediction)
+        self.assertEqual(prediction_obj.base_points, points)
+        self.assertEqual(prediction_obj.additional_points, 0 - bet_points.points_result_to_take)
         self.assertEqual(prediction_obj.points_gained, points - bet_points.points_result_to_take)
-        logger.info('bet_points match_state note is: %s', prediction_obj.note)
 
     def test_apply_result_bet_guessed_result(self):
         user = self.test_users[0]
@@ -476,7 +511,37 @@ class PredictionCalculatorTest(PredictionsBaseTestCase):
         user_prediction, bet_points = self.create_user_prediction(user, match, apply_result=True)
         points = self.generate_match_prediction_guessed_result(user_prediction)
         user_score = UserScore.objects.get(user=user)
-        prediction_obj = PredictionPoint.objects.get(prediction=user_prediction)
-        self.assertEqual(prediction_obj.points_gained, points + bet_points.points_result_to_give)
         self.assertEqual(user_score.points, points + bet_points.points_result_to_give)
-        logger.info('bet_points match_state note is: %s', prediction_obj.note)
+        prediction_obj = PredictionPoint.objects.get(prediction=user_prediction)
+        self.assertEqual(prediction_obj.base_points, points)
+        self.assertEqual(prediction_obj.additional_points, bet_points.points_result_to_give)
+        self.assertEqual(prediction_obj.points_gained, points + bet_points.points_result_to_give)
+
+
+class TestCalculateExtraBetPointsBalance(PredictionsBaseTestCase):
+    def test_random_calculate_extra_bet_points(self):
+        counter = 0
+        for user in self.test_users:
+            points_gained = 0
+            for match in Match.objects.all():
+                user_prediction, bet_points = self.create_user_prediction(
+                    user,
+                    match,
+                    apply_result=random.choice([True, False]),
+                    apply_match_state=random.choice([True, False]),
+                )
+                chosen_method = random.choice(list(self._generate_methods.keys()))
+                klass_method = getattr(self, chosen_method)
+                temp_points_gained = klass_method(user_prediction=user_prediction, base_points_only=False)
+                points_gained += temp_points_gained
+                # actual tests
+                user_score = UserScore.objects.get(user=user)
+                self.assertEqual(user_score.points, points_gained)
+                prediction_obj = PredictionPoint.objects.get(prediction=user_prediction)
+                self.assertEqual(prediction_obj.points_gained, temp_points_gained)
+                self.assertEqual(
+                    prediction_obj.points_gained,
+                    prediction_obj.base_points + prediction_obj.additional_points,
+                )
+                counter += 1
+        logger.info('Passed < test_random_calculate_extra_bet_points >  %s times', str(counter))

@@ -17,7 +17,7 @@ def check_full_score(prediction):
 
 def calculate_user_predictions(instance_id=None):
     if instance_id is None:
-        queryset = UserPrediction.objects.all()
+        queryset = UserPrediction.objects.filter(match__match_result__isnull=False)
     else:
         try:
             match_result_instance = MatchResult.objects.get(pk=instance_id)
@@ -41,12 +41,11 @@ def calculate_user_predictions(instance_id=None):
                 note = note + f'\n3.Познат точен резултат: {temp_points} т.'
         # handle extra bet points
         extra_bet_points, extra_bet_note = calculate_extra_points(prediction)
-        points += extra_bet_points
         note += extra_bet_note
-
         # update points object
         prediction_points_obj, created = PredictionPoint.objects.get_or_create(prediction=prediction)
-        prediction_points_obj.points_gained = points
+        prediction_points_obj.base_points = points
+        prediction_points_obj.additional_points = extra_bet_points
         prediction_points_obj.note = note
         prediction_points_obj.save()
 

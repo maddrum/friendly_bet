@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static rankings_tags %}
+
+{% block body_classes %}body-2{% endblock %}
+
+{% block body_content %}
+    <div class="inner_page_header">
+        <div class="heading inner-ttl">ДЖИНЩИНИ</div>
+    </div>
+    <div class="inner-page-image">
+        {% gin_is_happy as happy_check %}
+        <img src="{% if happy_check %}{% static 'images/gin2.png' %}{% else %}{% static 'images/gin1.png' %}{% endif %}"
+                class="image--round">
+    </div>
+    <div class="content-wrp">
+        <div data-duration-in="300" data-duration-out="100" class="tabs w-tabs">
+            <div class="tabs-menu w-tab-menu">
+                <a href="{% url 'gin_total' %}"
+                        class="tab-link w-inline-block w-tab-link {% block balance_active %}{% endblock %}">
+                    <div class="tab-text">МАЧОВЕ</div>
+                </a>
+                <a href="{% url 'gin_users' %}"
+                        class="tab-link w-inline-block w-tab-link {% block users_active %}{% endblock %}">
+                    <div class="tab-text">ИГРАЧИ</div>
+                </a>
+                <a href="{% url 'gin_usages' %}"
+                        class="tab-link w-inline-block w-tab-link {% block use_active %}{% endblock %}">
+                    <div class="tab-text">ИЗПОЛЗВАЧИ</div>
+                </a>
+            </div>
+            <div class="tabs-content w-tab-content">
+                {% block gin_content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

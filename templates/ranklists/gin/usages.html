@@ -1,0 +1,22 @@
+{% extends 'ranklists/gin/base.html' %}
+{% load custom_tags %}
+{% block use_active %}w--current{% endblock %}
+
+{% block  gin_content %}
+    <div class="form-txt">
+        <div class="text-block histprylist bonus-list">
+            <h1 class="color-primary--inverted">КЛАСАЦИЯ</h1>
+            <h5 class="color-primary--inverted">*Всяка оферта се брой!
+                Ако си приел оферти за изход от двубоя и за краен резултат, то си приел оферти 2 пъти, нищо че е за един
+                и същи мач.
+            </h5>
+            <hr>
+            {% for user,points in per_user.items %}
+                <p class="color-negative">
+                    <strong>{{ user }}</strong> е приел мои оферти <strong>{{ points }}</strong> пъти
+                </p>
+            {% endfor %}
+        </div>
+    </div>
+    {% include 'main_app/components/paginator.html' %}
+{% endblock %}

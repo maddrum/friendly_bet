@@ -1,0 +1,23 @@
+<ul class="page">
+    {% if page_obj.has_previous %}
+        <li class="page__btn {% if inverted %}inverted{% endif %}">
+            <a href="?page={{ page_obj.previous_page_number }}"> ◀ </a>
+        </li>
+    {% endif %}
+    {% for page in page_obj.paginator.page_range %}
+        {% if forloop.counter == page_obj.number|add:"-1" or  forloop.counter == page_obj.number|add:"1" or forloop.counter == page_obj.number %}
+            <li class="page__numbers {% if inverted %}inverted{% endif %} {% if page_obj.number == forloop.counter %}current{% endif %}">
+                <a href="?page={{ forloop.counter }}">{{ forloop.counter }}</a>
+            </li>
+        {% elif forloop.counter == page_obj.number|add:"-2" or  forloop.counter == page_obj.number|add:"2" %}
+            <li class="page__numbers {% if inverted %}inverted{% endif %}" style="cursor:default; pointer-events: none;">
+                ...
+            </li>
+        {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+        <li class="page__btn {% if inverted %}inverted{% endif %}">
+            <a href="?page={{ page_obj.next_page_number }}"> ▶ </a>
+        </li>
+    {% endif %}
+</ul>
