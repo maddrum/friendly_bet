@@ -68,6 +68,10 @@ a:hover {
     animation: blinker 1s linear infinite;
 }
 
+a.nav-link:hover {
+    color: #f3daa8;
+}
+
 @keyframes blinker {
     50% {
         opacity: 0;
@@ -359,6 +363,7 @@ a:hover {
     background-color: #470e1f;
     padding-top: 1rem;
     padding-bottom: .5rem;
+    z-index: 99;
 }
 
 .footer-btn {

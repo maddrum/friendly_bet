@@ -26,7 +26,7 @@
     <meta property="og:type" content="article"/>
     <meta property="og:description" content="Където разбирачите дават прогнозите си">
     <meta property="og:image"
-            content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{% static 'images/banner.png' %}">
+          content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{% static 'images/banner.png' %}">
     <meta property="og:url" content="{{ request.build_absolute_uri }}">
     <meta name="twitter:card" content="summary_large_image">
     <link href="{% static 'css/normalize.css' %}" rel="stylesheet" type="text/css">
@@ -50,28 +50,22 @@
 <div data-collapse="medium" data-animation="default" data-duration="400" class="navbar w-nav">
     <div class="container w-container"><a href="/" class="brand w-nav-brand"></a>
         <nav role="navigation" class="nav-menu w-nav-menu">
-            <a href="{% url 'create_predictions' %}" data-w-id="ae7752c4-2d27-e763-7bb8-8c9c52735f8d"
-                    class="nav-link w-nav-link">
+            <a href="{% url 'create_predictions' %}" class="nav-link w-nav-link">
                 Дневна Прогноза
             </a>
-            <a href="{% url 'schedule' %}" data-w-id="ae7752c4-2d27-e763-7bb8-8c9c52735f8f"
-                    class="nav-link w-nav-link">
+            <a href="{% url 'schedule' %}" class="nav-link w-nav-link">
                 Програма
             </a>
-            <a href="{% url 'ranklist' %}" data-w-id="ae7752c4-2d27-e763-7bb8-8c9c52735f91"
-                    class="nav-link w-nav-link">
+            <a href="{% url 'ranklist' %}" class="nav-link w-nav-link">
                 Ранглиста
             </a>
-            <a href="{% url 'gin_total' %}" data-w-id="ae7752c4-2d27-e763-7bb8-8c9c52735f91"
-                    class="nav-link w-nav-link">
+            <a href="{% url 'gin_total' %}" class="nav-link w-nav-link">
                 ДЖИНЩИНИ
             </a>
             {% if user.is_authenticated %}
-                <a href="{% url 'profile' %}" data-w-id="ae7752c4-2d27-e763-7bb8-8c9c52735f93"
-                        class="nav-link w-nav-link">Профил</a>
+                <a href="{% url 'profile' %}" class="nav-link w-nav-link">Профил</a>
             {% else %}
-                <a href="{% url 'login' %}" data-w-id="ae7752c4-2d27-e763-7bb8-8c9c52735f93"
-                        class="nav-link w-nav-link">ВЛЕЗ</a>
+                <a href="{% url 'login' %}" class="nav-link w-nav-link">ВЛЕЗ</a>
             {% endif %}
         </nav>
         <div class="menu-button w-nav-button">
@@ -96,7 +90,7 @@
                 </a>
             </div>
             <a href="{% url 'contact' %}" data-w-id="81ebefb1-c4c9-0842-eeae-60febe184d79"
-                    class="footer-btn w-button">
+               class="footer-btn w-button">
                 кажи си мъката
             </a>
             Ⓚoмбайна-Ⓑършачка™<br>
