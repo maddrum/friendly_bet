@@ -1990,3 +1990,21 @@ input[type='checkbox'] {
 .ml10 {
     margin-left: 10px;
 }
+
+
+.error-message {
+    color: white;
+    border: 5px solid red;
+    text-align: center;
+    font-size: 1.5rem;
+    min-height: 5rem;
+    margin: 0 auto;
+    padding: 1.5rem;
+    background-color: #470e1f;
+    font-family: 'BaseFont', sans-serif;
+    line-height: 2rem;
+}
+
+.error-message__title {
+    font-size: 2rem;
+}

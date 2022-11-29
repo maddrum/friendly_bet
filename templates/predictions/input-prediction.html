@@ -4,6 +4,13 @@
 {% block body_classes %}body-2{% endblock %}
 
 {% block body_content %}
+    {% if formset.errors %}
+        <div class="inner_page_header">
+            <div class="error-message error-message__title">
+                Опa! Нещо си омазал. Виж по-долу какво.
+            </div>
+        </div>
+    {% endif %}
     <div class="inner_page_header">
         <div class="heading inner-ttl">
             {% now "j-M-Y" %}
@@ -111,7 +118,7 @@
                             {% endwith %}
 
                             {% if form.errors %}
-                                <div class="text-block white">
+                                <div class="text-block error-message">
                                     {{ form.non_field_errors.as_text }}
                                 </div>
                             {% endif %}

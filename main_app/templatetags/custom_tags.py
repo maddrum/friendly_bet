@@ -1,11 +1,16 @@
 from django import template
+from django.http import Http404
 
 register = template.Library()
 
 
 @register.filter
 def get_list_index_value(input_list, index):
-    return input_list[int(index)]
+    try:
+        result = input_list[int(index)]
+    except IndexError:
+        raise Http404('get_list_index_value has no index')
+    return result
 
 
 @register.filter
