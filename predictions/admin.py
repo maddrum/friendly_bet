@@ -15,7 +15,7 @@ class UserPredictionsAdmin(ReadOnlyFields):
         'guessed_match_state', 'guessed_result', 'points_gained',
         'bet_state', 'bet_result',
     )
-    list_filter = ('bet_points__apply_match_state', 'bet_points__apply_result')
+    list_filter = ('bet_points__apply_match_state', 'bet_points__apply_result', 'created_on')
 
     def match_state_guess(self, obj):
         return obj.match_state.get_match_state_display()
