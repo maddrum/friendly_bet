@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-{% load static bonus_tags %}
+{% load static prediction_tags %}
 
 <html data-wf-page="5b3226fe6e67c336c7107507" data-wf-site="5b28dd2fc27e7d5341dc1103">
 <head>
@@ -26,7 +26,7 @@
     <meta property="og:type" content="article"/>
     <meta property="og:description" content="Където разбирачите дават прогнозите си">
     <meta property="og:image"
-          content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{% static 'images/banner.png' %}">
+            content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{% static 'images/banner.png' %}">
     <meta property="og:url" content="{{ request.build_absolute_uri }}">
     <meta name="twitter:card" content="summary_large_image">
     <link href="{% static 'css/normalize.css' %}" rel="stylesheet" type="text/css">
@@ -71,6 +71,14 @@
         <div class="menu-button w-nav-button">
             <div class="icon w-icon-nav-menu"></div>
         </div>
+        {% check_prediction_warning as prediction_warning %}
+        {% if prediction_warning %}
+            <div class="menu-banner">
+                <div class="menu-banner--content">
+                    <a href="{% url 'create_predictions' %}">Дай прогнози днес!!!</a>
+                </div>
+            </div>
+        {% endif %}
     </div>
 </div>
 
@@ -90,7 +98,7 @@
                 </a>
             </div>
             <a href="{% url 'contact' %}" data-w-id="81ebefb1-c4c9-0842-eeae-60febe184d79"
-               class="footer-btn w-button">
+                    class="footer-btn w-button">
                 кажи си мъката
             </a>
             Ⓚoмбайна-Ⓑършачка™<br>
