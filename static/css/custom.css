@@ -1876,40 +1876,51 @@ ul.page {
     color: #fff;
 }
 
-.bonus-banner {
-    z-index: 1000;
-    background-color: #009bb4;
+.menu-banner {
+    z-index: 9999;
+    background-color: #ffd60a;
     box-shadow: 3px 3px 13px -4px rgba(0, 0, 0, .5);
     position: fixed;
-    top: 98px;
+    top: 80px;
     left: 0;
     width: 100%;
     height: 35px;
-    color: #fff;
 }
 
-
-.bonus-banner--content {
+.menu-banner--content {
     font-family: 'Press Start 2P', cursive;
-    animation: marquee 15s linear infinite;
+    animation: flashing-banner .8s linear infinite;
     text-transform: uppercase;
     font-size: 1.4rem;
-    margin-top: 8px;
-    position: relative;
+    position: absolute;
+    margin: 6px;
+    display: block;
+    width: 100%;
+    text-align: center;
 }
 
-.bonus-banner--content > a {
-    color: #f3daa8;
+.menu-banner--content > a {
+    color: #470e1f;
 }
 
-@keyframes marquee {
+@media only screen and (max-width: 700px) {
+    .menu-banner--content {
+        font-size: 0.8rem;
+    }
+}
+
+@keyframes flashing-banner {
     0% {
-        transform: translateX(0%);
+        opacity: 0;
+    }
+    30% {
+        opacity: 0.2;
     }
     100% {
-        transform: translateX(100%);
+        opacity: 1;
     }
 }
+
 
 .points-container {
     position: fixed;

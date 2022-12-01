@@ -422,6 +422,37 @@ class TestPredictionsCreateUpdateWithBrowser(PredictionsBaseTestCase):
         self.assertFalse(checkbox.is_selected())
 
 
+class TestMenuBannerBrowser(PredictionsBaseTestCase):
+    def test_not_logged_in_user_banner(self):
+        self.driver.get(self.live_server_url)
+        banner = self.driver.find_elements(By.CSS_SELECTOR, '.menu-banner')
+        self.assertIsInstance(banner, list)
+        self.assertEqual(len(banner), 0)
+
+    @patch('predictions.views_mixins.GetEventMatchesMixin._get_current_time')
+    def test_user_available_matches_today(self, mocked_datetime):
+        mocked_datetime.return_value = Match.objects.all().first().match_start_time - timezone.timedelta(
+            minutes=60)
+        self.login_user(self.test_users[0])
+        self.driver.get(self.live_server_url)
+        banner = self.driver.find_elements(By.CSS_SELECTOR, '.menu-banner')
+        self.assertIsInstance(banner, list)
+        self.assertEqual(len(banner), 1)
+
+    @patch('predictions.views_mixins.GetEventMatchesMixin._get_current_time')
+    def test_user_gave_predictions(self, mocked_datetime):
+        match = Match.objects.all().first()
+        user = self.test_users[0]
+        mocked_datetime.return_value = match.match_start_time - timezone.timedelta(
+            minutes=60)
+        self.login_user(user)
+        self.create_user_prediction(user=user, match=match)
+        self.driver.get(self.live_server_url)
+        banner = self.driver.find_elements(By.CSS_SELECTOR, '.menu-banner')
+        self.assertIsInstance(banner, list)
+        self.assertEqual(len(banner), 0)
+
+
 class TestPredictionCalculator(PredictionsBaseTestCase):
     def check_prediction_points(self, user):
         points = 0
