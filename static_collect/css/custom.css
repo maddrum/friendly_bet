@@ -2018,4 +2018,5 @@ input[type='checkbox'] {
 
 .error-message__title {
     font-size: 2rem;
+    margin: 1rem;
 }

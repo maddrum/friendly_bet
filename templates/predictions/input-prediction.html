@@ -4,20 +4,20 @@
 {% block body_classes %}body-2{% endblock %}
 
 {% block body_content %}
-    {% if formset.errors %}
-        <div class="inner_page_header">
-            <div class="error-message error-message__title">
-                Опa! Нещо си омазал. Виж по-долу какво.
-            </div>
-        </div>
-    {% endif %}
     <div class="inner_page_header">
         <div class="heading inner-ttl">
             {% now "j-M-Y" %}
         </div>
+
     </div>
     <div class="inner-page-image">
-        <img src="{{ head_img }}" class="image--round">
+        {% if formset.errors %}
+            <div class="error-message error-message__title">
+                Опa! Нещо си омазал. Виж по-долу какво.
+            </div>
+        {% else %}
+            <img src="{{ head_img }}" class="image--round">
+        {% endif %}
     </div>
     <div class="content-wrp">
         {% if match_check %}

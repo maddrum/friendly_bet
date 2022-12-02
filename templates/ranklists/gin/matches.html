@@ -21,7 +21,7 @@
                 {% get_values_from_dictionary_tag per_match match as points %}
                 {% with match.match_result as match_result %}
                     <p>
-                        <span class="color-primary--inverted">
+                        <span class="color-primary--inverted {% if points > 0 %} color-positive{% endif %}">
                             От {% replace_str match '|' '' %}
                             {% if points > 0 %}
                                 джина ВЗЕ

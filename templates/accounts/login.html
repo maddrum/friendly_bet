@@ -8,8 +8,22 @@
         <div class="form-txt">
             <a href="{% url 'register' %}" class="btn mb20 mt10 register-btn text-center">НЯМАМ ПРОФИЛ БЕ!</a>
             <form method="POST">
-                {{ form.as_p }}
                 {% csrf_token %}
+                <p>
+                    {{ form.username.label_tag }}
+                    {{ form.username }}
+                </p>
+                <p>
+                    {{ form.password.label_tag }}
+                    {{ form.password }}
+                </p>
+                {% if form.non_field_errors %}
+                    <div class="error-message">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
                 <div class="buttons">
                     <input type="submit" data-w-id="8782863a-1d5d-0d40-92f8-45790f30b309" class="submit-btn w-button"
                             value="ВЛЕЗ">
