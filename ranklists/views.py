@@ -3,7 +3,6 @@ from django.core.paginator import Paginator
 from django.db.models import Count, Sum
 from django.views.generic import ListView, TemplateView
 
-from bonus_points.models import UserBonusSummary
 from matches.models import Match
 from predictions.models import PredictionPoint, UserPrediction, UserScore
 
@@ -38,17 +37,7 @@ class RankilstUserPointsView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data()
-        try:
-            bonuses_added_check = UserScore.objects.get(user=self.user).bonus_points_added
-        except UserScore.DoesNotExist:
-            bonuses_added_check = False
-        if bonuses_added_check:
-            bonuses = UserBonusSummary.objects.get(user=self.user)
-        else:
-            bonuses = False
-        context["bonuses"] = bonuses
         context["username"] = self.user
-
         return context
 
 

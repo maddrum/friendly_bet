@@ -19,11 +19,11 @@ omit =
     static/*
     requirements/*
     */admin.py
-    no_git_upload/*
+    \#no_git_upload/*
     static_collect/*
     # speciffic files
     manage.py
-    app/wsgi.py
+    friendly_bet/wsgi.py
     requirements.txt
 
 [html]

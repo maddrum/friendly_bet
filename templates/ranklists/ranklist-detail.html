@@ -6,18 +6,7 @@
     <div class="inner_page_header">
         <div class="heading inner-ttl">Прогнози на {{ username.get_user_names }}</div>
     </div>
-    <div class="content-wrp">
-        {% if bonuses and page_obj.number == 1 %}
-            <h1 class="heading tab-heading history-ttl color-primary">Получени бонус точки:</h1>
-            <div class="text-block histprylist white"> {{ bonuses.total_summary|linebreaks }}<br>
-            </div>
-            <div class="text-block histprylist points-indicator color-primary">
-                Общо бонус точки: {{ bonuses.total_bonus_points }} т.<br>
-            </div>
-            <div class="text-block histprylist points-indicator color-primary">
-                Всички бонус точки са прибавени към крайния резултат!<br>
-            </div>
-        {% endif %}
+    <div class="content-wrp">        
         {% for item in page_obj %}
             <div class="game-single inprofile">
                 <div class="match-number matchnumberprofile color-primary">

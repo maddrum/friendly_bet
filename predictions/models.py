@@ -7,9 +7,7 @@ from matches.models import Match
 
 
 class UserPrediction(models.Model):
-    user = models.ForeignKey(
-        get_user_model(), on_delete=models.CASCADE, related_name="predictions"
-    )
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="predictions")
     match = models.ForeignKey(Match, on_delete=models.CASCADE, related_name="match")
     match_state = models.ForeignKey(EventMatchState, on_delete=models.CASCADE)
     goals_home = models.IntegerField(default=0)
@@ -26,9 +24,7 @@ class UserPrediction(models.Model):
 
 
 class BetAdditionalPoint(models.Model):
-    prediction = models.OneToOneField(
-        UserPrediction, on_delete=models.CASCADE, related_name="bet_points"
-    )
+    prediction = models.OneToOneField(UserPrediction, on_delete=models.CASCADE, related_name="bet_points")
     apply_match_state = models.BooleanField(default=False)
     apply_result = models.BooleanField(default=False)
     points_match_state_to_take = models.SmallIntegerField(
@@ -59,18 +55,10 @@ class BetAdditionalPoint(models.Model):
 
 
 class PredictionPoint(models.Model):
-    prediction = models.OneToOneField(
-        UserPrediction, on_delete=models.CASCADE, related_name="prediction_points"
-    )
-    points_gained = models.IntegerField(
-        default=0, null=False, help_text="Final sum of total points gained"
-    )
-    base_points = models.IntegerField(
-        default=0, null=False, help_text="Points from base game only"
-    )
-    additional_points = models.IntegerField(
-        default=0, null=False, help_text="Points from extra bets only"
-    )
+    prediction = models.OneToOneField(UserPrediction, on_delete=models.CASCADE, related_name="prediction_points")
+    points_gained = models.IntegerField(default=0, null=False, help_text="Final sum of total points gained")
+    base_points = models.IntegerField(default=0, null=False, help_text="Points from base game only")
+    additional_points = models.IntegerField(default=0, null=False, help_text="Points from extra bets only")
     note = models.TextField(default="Дал си прогноза за мача: 1 т.")
     created_on = models.DateTimeField(auto_now_add=True)
     edited_on = models.DateTimeField(auto_now=True)
@@ -84,14 +72,9 @@ class PredictionPoint(models.Model):
 
 
 class UserScore(models.Model):
-    user = models.ForeignKey(
-        get_user_model(), on_delete=models.CASCADE, related_name="user_points"
-    )
-    event = models.ForeignKey(
-        Event, on_delete=models.CASCADE, related_name="event_points"
-    )
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="user_points")
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="event_points")
     points = models.IntegerField(null=True, default=0)
-    bonus_points_added = models.BooleanField(default=False)
     created_on = models.DateTimeField(auto_now_add=True)
     edited_on = models.DateTimeField(auto_now=True)
 
