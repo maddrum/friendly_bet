@@ -1,4 +1,5 @@
 import random
+import typing
 from dataclasses import dataclass
 
 from django.contrib.auth import get_user_model
@@ -30,7 +31,7 @@ class PredictionDTO:
     apply_result: bool
 
 
-def generate_valid_goals_by_match_state(match_state):
+def generate_valid_goals_by_match_state(match_state: str) -> typing.Tuple[typing.Optional[int], typing.Optional[int]]:
     goals_home = random.randint(1, 10)
     if match_state in [MATCH_STATE_HOME, MATCH_STATE_PENALTIES_HOME]:
         goals_guest = goals_home - 1
@@ -46,17 +47,13 @@ def generate_valid_goals_by_match_state(match_state):
 
 def create_valid_prediction() -> PredictionDTO:
     iter_items = [
-        item[0]
-        for item in MATCH_STATES
-        if item[0] not in [MATCH_STATE_PENALTIES_HOME, MATCH_STATE_PENALTIES_GUEST]
+        item[0] for item in MATCH_STATES if item[0] not in [MATCH_STATE_PENALTIES_HOME, MATCH_STATE_PENALTIES_GUEST]
     ]
     match_state = random.choice(iter_items)
     event_match_state = EventMatchState.objects.get(match_state=match_state)
     pk = event_match_state.pk
 
-    goals_home, goals_guest = generate_valid_goals_by_match_state(
-        match_state=match_state
-    )
+    goals_home, goals_guest = generate_valid_goals_by_match_state(match_state=match_state)
     apply_match_state = random.choice([True, False])
     apply_result = random.choice([True, False])
     prediction_dto = PredictionDTO(
@@ -72,7 +69,7 @@ def create_valid_prediction() -> PredictionDTO:
     return prediction_dto
 
 
-def create_invalid_prediction():
+def create_invalid_prediction() -> PredictionDTO:
     prediction_dto = create_valid_prediction()
 
     if prediction_dto.match_state == MATCH_STATE_TIE:
@@ -97,9 +94,7 @@ def create_invalid_prediction():
 @transaction.atomic
 def add_user_predictions(event, users=5):
     for item in range(users):
-        temp_user = UserFactory()
-        temp_user.set_password("qqwerty123")
-        temp_user.save()
+        UserFactory()
 
     for user in get_user_model().objects.all():
         for match in Match.objects.filter(phase__event=event):
@@ -111,11 +106,8 @@ def add_user_predictions(event, users=5):
                 goals_home=prediction_data.goals_home,
                 goals_guest=prediction_data.goals_guest,
             )
-            prediction.save()
 
-            add_points_obj, created = BetAdditionalPoint.objects.get_or_create(
-                prediction=prediction
-            )
+            add_points_obj, created = BetAdditionalPoint.objects.get_or_create(prediction=prediction)
             phase_points = match.phase.bet_points
             add_points_obj.apply_match_state = random.choice([True, False])
             add_points_obj.apply_result = random.choice([True, False])

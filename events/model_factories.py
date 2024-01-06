@@ -3,6 +3,7 @@ import datetime
 import factory
 from django.utils import timezone
 from django.utils.timezone import make_aware
+from factory.django import DjangoModelFactory
 from faker import Faker
 
 from .models import Event, EventGroup, EventMatchState, EventPhase, PhaseBetPoint, Team
@@ -25,15 +26,13 @@ def get_start_datetime(plus_days=1):
     return start_datetime
 
 
-class EventFactory(factory.Factory):
+class EventFactory(DjangoModelFactory):
     class Meta:
         model = Event
 
     event_name = factory.Faker("company", locale="bg_BG")
     event_start_date = factory.LazyFunction(get_start_datetime)
-    event_end_date = factory.LazyAttribute(
-        lambda o: o.event_start_date + datetime.timedelta(days=30)
-    )
+    event_end_date = factory.LazyAttribute(lambda o: o.event_start_date + datetime.timedelta(days=30))
     event_total_matches = 8
 
     @factory.lazy_attribute
@@ -42,7 +41,7 @@ class EventFactory(factory.Factory):
         return words.title()
 
 
-class EventGroupFactory(factory.Factory):
+class EventGroupFactory(DjangoModelFactory):
     class Meta:
         model = EventGroup
 
@@ -50,7 +49,7 @@ class EventGroupFactory(factory.Factory):
     event_group = factory.Sequence(lambda n: "GROUP-%s" % str(n + 1))
 
 
-class EventMatchStateFactory(factory.Factory):
+class EventMatchStateFactory(DjangoModelFactory):
     class Meta:
         model = EventMatchState
 
@@ -58,7 +57,7 @@ class EventMatchStateFactory(factory.Factory):
     match_state = factory.Sequence(lambda n: MATCH_STATES[n][0])
 
 
-class EventPhaseFactory(factory.Factory):
+class EventPhaseFactory(DjangoModelFactory):
     class Meta:
         model = EventPhase
 
@@ -78,13 +77,11 @@ class EventPhaseFactory(factory.Factory):
             ):
                 self.phase_match_states.add(state)
         else:
-            for state in EventMatchState.objects.all().exclude(
-                match_state=MATCH_STATE_TIE
-            ):
+            for state in EventMatchState.objects.all().exclude(match_state=MATCH_STATE_TIE):
                 self.phase_match_states.add(state)
 
 
-class TeamFactory(factory.Factory):
+class TeamFactory(DjangoModelFactory):
     class Meta:
         model = Team
 
@@ -101,7 +98,7 @@ class TeamFactory(factory.Factory):
         return name
 
 
-class PhaseBetPointFactory(factory.Factory):
+class PhaseBetPointFactory(DjangoModelFactory):
     class Meta:
         model = PhaseBetPoint
 
