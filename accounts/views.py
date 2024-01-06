@@ -44,9 +44,7 @@ class UserPredictionsListView(LoginRequiredMixin, GetEventMatchesMixin, ListView
 
     def get_queryset(self):
         current_matches = list(self.matches)
-        queryset = UserPrediction.objects.filter(
-            user=self.request.user, match__in=current_matches
-        )
+        queryset = UserPrediction.objects.filter(user=self.request.user, match__in=current_matches)
         return queryset
 
 
@@ -57,9 +55,7 @@ class ProfilePredictionStats(LoginRequiredMixin, ListView):
     paginate_by = 4
 
     def get_queryset(self):
-        queryset = UserPrediction.objects.filter(user=self.request.user).order_by(
-            "-match__match_start_time"
-        )
+        queryset = UserPrediction.objects.filter(user=self.request.user).order_by("-match__match_start_time")
         return queryset
 
 
