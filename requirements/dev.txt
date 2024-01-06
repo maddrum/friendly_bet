@@ -1,0 +1,14 @@
+-r prod.txt
+factory-boy
+Faker
+selenium
+tblib
+coverage
+django_coverage_plugin
+pylint
+pylint-django
+flake8
+flake8-django
+# might remove if docker is added
+chromedriver_autoinstaller
+black[d]

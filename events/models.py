@@ -34,33 +34,39 @@ class Event(models.Model):
 
 
 class EventGroup(models.Model):
-    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='event_group')
+    event = models.ForeignKey(
+        Event, on_delete=models.CASCADE, related_name="event_group"
+    )
     event_group = models.CharField(max_length=200)
     created_on = models.DateTimeField(auto_now_add=True)
     edited_on = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'{self.event} -> {self.event_group}'
+        return f"{self.event} -> {self.event_group}"
 
     class Meta:
-        unique_together = ['event', 'event_group']
+        unique_together = ["event", "event_group"]
 
 
 class EventMatchState(models.Model):
-    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='event_match_states')
+    event = models.ForeignKey(
+        Event, on_delete=models.CASCADE, related_name="event_match_states"
+    )
     match_state = models.CharField(max_length=20, choices=event_settings.MATCH_STATES)
     created_on = models.DateTimeField(auto_now_add=True)
     edited_on = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'{self.event} -> {self.get_match_state_display()}'
+        return f"{self.event} -> {self.get_match_state_display()}"
 
     class Meta:
-        unique_together = ['event', 'match_state']
+        unique_together = ["event", "match_state"]
 
 
 class EventPhase(models.Model):
-    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='event_phases')
+    event = models.ForeignKey(
+        Event, on_delete=models.CASCADE, related_name="event_phases"
+    )
     phase = models.CharField(max_length=20, choices=event_settings.PHASE_SELECTOR)
     phase_match_states = models.ManyToManyField(EventMatchState)
     multiplier = models.IntegerField(default=1)
@@ -68,10 +74,10 @@ class EventPhase(models.Model):
     edited_on = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'{self.event} -> {self.get_phase_display()}'
+        return f"{self.event} -> {self.get_phase_display()}"
 
     class Meta:
-        unique_together = ['event', 'phase']
+        unique_together = ["event", "phase"]
 
     def limit_event_phases_choices(self):
         choices = EventMatchState.objects.filter(event=self.event).values_list()
@@ -79,40 +85,45 @@ class EventPhase(models.Model):
 
 
 class Team(models.Model):
-    group = models.ForeignKey(EventGroup, on_delete=models.CASCADE, related_name='group')
+    group = models.ForeignKey(
+        EventGroup, on_delete=models.CASCADE, related_name="group"
+    )
     name = models.CharField(max_length=100, blank=False, unique=True)
     created_on = models.DateTimeField(auto_now_add=True)
     edited_on = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'{self.group} -> {self.name}'
+        return f"{self.group} -> {self.name}"
 
     class Meta:
-        unique_together = ['group', 'name']
-        ordering = ('-group__event_group', 'name')
+        unique_together = ["group", "name"]
+        ordering = ("-group__event_group", "name")
 
 
 class PhaseBetPoint(models.Model):
-    phase = models.OneToOneField(EventPhase, on_delete=models.CASCADE, related_name='bet_points')
+    phase = models.OneToOneField(
+        EventPhase, on_delete=models.CASCADE, related_name="bet_points"
+    )
     points_state = models.SmallIntegerField(
         default=0,
         validators=[MinValueValidator(0), MaxValueValidator(1000)],
-        help_text='Defines how much points will be TAKEN from the user on FAILED bet on match state.',
+        help_text="Defines how much points will be TAKEN from the user on FAILED bet on match state.",
     )
     return_points_state = models.SmallIntegerField(
-        default=0, validators=[MinValueValidator(0), MaxValueValidator(5000)],
-        help_text='Defines how much points will be GIVEN to the user on SUCCESS bet on match state.',
+        default=0,
+        validators=[MinValueValidator(0), MaxValueValidator(5000)],
+        help_text="Defines how much points will be GIVEN to the user on SUCCESS bet on match state.",
     )
     points_result = models.SmallIntegerField(
         default=0,
         validators=[MinValueValidator(0), MaxValueValidator(1000)],
-        help_text='Defines how much points will be TAKEN from the user on FAILED bet on match result.',
+        help_text="Defines how much points will be TAKEN from the user on FAILED bet on match result.",
     )
     return_points_result = models.SmallIntegerField(
         default=0,
         validators=[MinValueValidator(0), MaxValueValidator(5000)],
-        help_text='Defines how much points will be GIVEN from the user on SUCCESS bet on match result.',
+        help_text="Defines how much points will be GIVEN from the user on SUCCESS bet on match result.",
     )
 
     def __str__(self):
-        return f'PhaseBetPoints -> {str(self.phase)}'
+        return f"PhaseBetPoints -> {str(self.phase)}"

@@ -13,6 +13,8 @@ def check_prediction_warning(context):
     mixin = GetEventMatchesMixin()
     if not mixin.matches.exists():
         return False
-    if UserPrediction.objects.filter(user=context.request.user, match__in=mixin.matches).exists():
+    if UserPrediction.objects.filter(
+        user=context.request.user, match__in=mixin.matches
+    ).exists():
         return False
     return True

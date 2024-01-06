@@ -1,10 +1,15 @@
 from django.contrib import admin
-from bonus_points.models import BonusDescription, BonusUserPrediction, BonusUserScore, UserBonusSummary, \
-    AutoBonusUserScore
+from bonus_points.models import (
+    BonusDescription,
+    BonusUserPrediction,
+    BonusUserScore,
+    UserBonusSummary,
+    AutoBonusUserScore,
+)
 
 
 class ReadOnlyFields(admin.ModelAdmin):
-    readonly_fields = ('created_on', 'edited_on')
+    readonly_fields = ("created_on", "edited_on")
 
 
 admin.site.register(BonusDescription, ReadOnlyFields)

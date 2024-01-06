@@ -1,0 +1,6 @@
+ipython
+Django==4.2
+argon2-cffi
+django-extra-views==0.14.0
+django-recaptcha==4.0.0
+unidecode==1.3.7

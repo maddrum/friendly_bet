@@ -1,7 +1,13 @@
 from django.db import transaction
 
-from events.model_factories import EventFactory, EventGroupFactory, EventMatchStateFactory, EventPhaseFactory, \
-    PhaseBetPointFactory, TeamFactory
+from events.model_factories import (
+    EventFactory,
+    EventGroupFactory,
+    EventMatchStateFactory,
+    EventPhaseFactory,
+    PhaseBetPointFactory,
+    TeamFactory,
+)
 from events.models import EventGroup, EventPhase
 from events.settings import MATCH_STATES, PHASE_SELECTOR
 from matches.model_factories import generate_group_matches, MatchFactory
@@ -48,7 +54,11 @@ def initialize_matches(groups=8):
     MatchFactory.reset_sequence()
     for group in EventGroup.objects.filter(event=event):
         for match in generate_group_matches(group):
-            match = MatchFactory(home=match[0], guest=match[1], phase=EventPhase.objects.filter(event=event).first())
+            match = MatchFactory(
+                home=match[0],
+                guest=match[1],
+                phase=EventPhase.objects.filter(event=event).first(),
+            )
             match.save()
 
     return event

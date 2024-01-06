@@ -6,91 +6,243 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Event',
+            name="Event",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('event_name', models.CharField(max_length=60)),
-                ('slug_name', models.SlugField(blank=True, max_length=180, unique=True)),
-                ('event_start_date', models.DateField()),
-                ('event_end_date', models.DateField()),
-                ('top_event', models.BooleanField(default=False)),
-                ('event_total_matches', models.IntegerField(default=0)),
-                ('created_on', models.DateTimeField(auto_now_add=True)),
-                ('edited_on', models.DateTimeField(auto_now=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("event_name", models.CharField(max_length=60)),
+                (
+                    "slug_name",
+                    models.SlugField(blank=True, max_length=180, unique=True),
+                ),
+                ("event_start_date", models.DateField()),
+                ("event_end_date", models.DateField()),
+                ("top_event", models.BooleanField(default=False)),
+                ("event_total_matches", models.IntegerField(default=0)),
+                ("created_on", models.DateTimeField(auto_now_add=True)),
+                ("edited_on", models.DateTimeField(auto_now=True)),
             ],
         ),
         migrations.CreateModel(
-            name='EventGroup',
+            name="EventGroup",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('event_group', models.CharField(max_length=200)),
-                ('created_on', models.DateTimeField(auto_now_add=True)),
-                ('edited_on', models.DateTimeField(auto_now=True)),
-                ('event', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='event_group', to='events.event')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("event_group", models.CharField(max_length=200)),
+                ("created_on", models.DateTimeField(auto_now_add=True)),
+                ("edited_on", models.DateTimeField(auto_now=True)),
+                (
+                    "event",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="event_group",
+                        to="events.event",
+                    ),
+                ),
             ],
             options={
-                'unique_together': {('event', 'event_group')},
+                "unique_together": {("event", "event_group")},
             },
         ),
         migrations.CreateModel(
-            name='EventMatchState',
+            name="EventMatchState",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('match_state', models.CharField(choices=[('home', 'Победа домакин'), ('guest', 'Победа гост'), ('tie', 'Равен'), ('penalties_home', 'Победа за домакин след дузпи'), ('penalties_guest', 'Победа за гост след дузпи')], max_length=20)),
-                ('created_on', models.DateTimeField(auto_now_add=True)),
-                ('edited_on', models.DateTimeField(auto_now=True)),
-                ('event', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='event_match_states', to='events.event')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "match_state",
+                    models.CharField(
+                        choices=[
+                            ("home", "Победа домакин"),
+                            ("guest", "Победа гост"),
+                            ("tie", "Равен"),
+                            ("penalties_home", "Победа за домакин след дузпи"),
+                            ("penalties_guest", "Победа за гост след дузпи"),
+                        ],
+                        max_length=20,
+                    ),
+                ),
+                ("created_on", models.DateTimeField(auto_now_add=True)),
+                ("edited_on", models.DateTimeField(auto_now=True)),
+                (
+                    "event",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="event_match_states",
+                        to="events.event",
+                    ),
+                ),
             ],
             options={
-                'unique_together': {('event', 'match_state')},
+                "unique_together": {("event", "match_state")},
             },
         ),
         migrations.CreateModel(
-            name='EventPhase',
+            name="EventPhase",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('phase', models.CharField(choices=[('group', 'Групова фаза'), ('eight_final', 'Осминафинали'), ('quarter_final', 'Четвъртфинал'), ('semi_final', 'Полуфинал'), ('little_final', 'Малък финал'), ('final', 'Финал')], max_length=20)),
-                ('multiplier', models.IntegerField(default=1)),
-                ('created_on', models.DateTimeField(auto_now_add=True)),
-                ('edited_on', models.DateTimeField(auto_now=True)),
-                ('event', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='event_phases', to='events.event')),
-                ('phase_match_states', models.ManyToManyField(to='events.EventMatchState')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "phase",
+                    models.CharField(
+                        choices=[
+                            ("group", "Групова фаза"),
+                            ("eight_final", "Осминафинали"),
+                            ("quarter_final", "Четвъртфинал"),
+                            ("semi_final", "Полуфинал"),
+                            ("little_final", "Малък финал"),
+                            ("final", "Финал"),
+                        ],
+                        max_length=20,
+                    ),
+                ),
+                ("multiplier", models.IntegerField(default=1)),
+                ("created_on", models.DateTimeField(auto_now_add=True)),
+                ("edited_on", models.DateTimeField(auto_now=True)),
+                (
+                    "event",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="event_phases",
+                        to="events.event",
+                    ),
+                ),
+                (
+                    "phase_match_states",
+                    models.ManyToManyField(to="events.EventMatchState"),
+                ),
             ],
             options={
-                'unique_together': {('event', 'phase')},
+                "unique_together": {("event", "phase")},
             },
         ),
         migrations.CreateModel(
-            name='PhaseBetPoint',
+            name="PhaseBetPoint",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('points_state', models.SmallIntegerField(default=0, help_text='Defines how much points will be TAKEN from the user on FAILED bet on match state.', validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(1000)])),
-                ('return_points_state', models.SmallIntegerField(default=0, help_text='Defines how much points will be GIVEN to the user on SUCCESS bet on match state.', validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(5000)])),
-                ('points_result', models.SmallIntegerField(default=0, help_text='Defines how much points will be TAKEN from the user on FAILED bet on match result.', validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(1000)])),
-                ('return_points_result', models.SmallIntegerField(default=0, help_text='Defines how much points will be GIVEN from the user on SUCCESS bet on match result.', validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(5000)])),
-                ('phase', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='bet_points', to='events.eventphase')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "points_state",
+                    models.SmallIntegerField(
+                        default=0,
+                        help_text="Defines how much points will be TAKEN from the user on FAILED bet on match state.",
+                        validators=[
+                            django.core.validators.MinValueValidator(0),
+                            django.core.validators.MaxValueValidator(1000),
+                        ],
+                    ),
+                ),
+                (
+                    "return_points_state",
+                    models.SmallIntegerField(
+                        default=0,
+                        help_text="Defines how much points will be GIVEN to the user on SUCCESS bet on match state.",
+                        validators=[
+                            django.core.validators.MinValueValidator(0),
+                            django.core.validators.MaxValueValidator(5000),
+                        ],
+                    ),
+                ),
+                (
+                    "points_result",
+                    models.SmallIntegerField(
+                        default=0,
+                        help_text="Defines how much points will be TAKEN from the user on FAILED bet on match result.",
+                        validators=[
+                            django.core.validators.MinValueValidator(0),
+                            django.core.validators.MaxValueValidator(1000),
+                        ],
+                    ),
+                ),
+                (
+                    "return_points_result",
+                    models.SmallIntegerField(
+                        default=0,
+                        help_text="Defines how much points will be GIVEN from the user on SUCCESS bet on match result.",
+                        validators=[
+                            django.core.validators.MinValueValidator(0),
+                            django.core.validators.MaxValueValidator(5000),
+                        ],
+                    ),
+                ),
+                (
+                    "phase",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="bet_points",
+                        to="events.eventphase",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Team',
+            name="Team",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100, unique=True)),
-                ('created_on', models.DateTimeField(auto_now_add=True)),
-                ('edited_on', models.DateTimeField(auto_now=True)),
-                ('group', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='group', to='events.eventgroup')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100, unique=True)),
+                ("created_on", models.DateTimeField(auto_now_add=True)),
+                ("edited_on", models.DateTimeField(auto_now=True)),
+                (
+                    "group",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="group",
+                        to="events.eventgroup",
+                    ),
+                ),
             ],
             options={
-                'ordering': ('-group__event_group', 'name'),
-                'unique_together': {('group', 'name')},
+                "ordering": ("-group__event_group", "name"),
+                "unique_together": {("group", "name")},
             },
         ),
     ]

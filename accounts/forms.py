@@ -1,7 +1,7 @@
-from captcha.fields import ReCaptchaField
-from captcha.widgets import ReCaptchaV2Checkbox
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
+from django_recaptcha.fields import ReCaptchaField
+from django_recaptcha.widgets import ReCaptchaV2Checkbox
 
 
 class AccountRegisterForm(UserCreationForm):
@@ -9,4 +9,4 @@ class AccountRegisterForm(UserCreationForm):
 
     class Meta:
         model = get_user_model()
-        fields = ('username', 'password1', 'password2')
+        fields = ("username", "password1", "password2")

@@ -1,16 +1,23 @@
 from django.contrib import admin
 
-from events.models import Event, EventGroup, EventMatchState, EventPhase, PhaseBetPoint, Team
+from events.models import (
+    Event,
+    EventGroup,
+    EventMatchState,
+    EventPhase,
+    PhaseBetPoint,
+    Team,
+)
 
 
 class ReadOnlyFields(admin.ModelAdmin):
-    readonly_fields = ('created_on', 'edited_on')
+    readonly_fields = ("created_on", "edited_on")
 
 
 class EventPhasesAdmin(ReadOnlyFields):
     obj = None
-    search_fields = ['phase_match_states']
-    list_display = ('phase', 'event', 'multiplier')
+    search_fields = ["phase_match_states"]
+    list_display = ("phase", "event", "multiplier")
 
     def get_object(self, request, object_id, from_field=None):
         self.obj = super().get_object(request, object_id, from_field=None)
@@ -28,12 +35,18 @@ class EventPhasesAdmin(ReadOnlyFields):
 
 
 class TeamAdmin(ReadOnlyFields):
-    search_fields = ('name',)
-    list_display = ('group', 'name')
+    search_fields = ("name",)
+    list_display = ("group", "name")
 
 
 class PhaseBetPointAdmin(admin.ModelAdmin):
-    list_display = ('phase', 'points_state', 'return_points_state', 'points_result', 'return_points_result')
+    list_display = (
+        "phase",
+        "points_state",
+        "return_points_state",
+        "points_result",
+        "return_points_result",
+    )
 
 
 admin.site.register(Event, ReadOnlyFields)

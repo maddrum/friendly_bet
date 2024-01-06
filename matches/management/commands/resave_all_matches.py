@@ -8,4 +8,4 @@ class Command(BaseCommand):
         all_results = MatchResult.objects.all()
         for result in all_results:
             result.save()
-            self.stdout.write(self.style.SUCCESS(f'[INFO]Saved: {result}'))
+            self.stdout.write(self.style.SUCCESS(f"[INFO]Saved: {result}"))
