@@ -5,45 +5,94 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('events', '0001_initial'),
+        ("events", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Match',
+            name="Match",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('match_number', models.IntegerField()),
-                ('match_start_time', models.DateTimeField()),
-                ('created_on', models.DateTimeField(auto_now_add=True)),
-                ('edited_on', models.DateTimeField(auto_now=True)),
-                ('guest', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='country_guest', to='events.team')),
-                ('home', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='country_home', to='events.team')),
-                ('phase', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='match_phase', to='events.eventphase')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("match_number", models.IntegerField()),
+                ("match_start_time", models.DateTimeField()),
+                ("created_on", models.DateTimeField(auto_now_add=True)),
+                ("edited_on", models.DateTimeField(auto_now=True)),
+                (
+                    "guest",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="country_guest",
+                        to="events.team",
+                    ),
+                ),
+                (
+                    "home",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="country_home",
+                        to="events.team",
+                    ),
+                ),
+                (
+                    "phase",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="match_phase",
+                        to="events.eventphase",
+                    ),
+                ),
             ],
             options={
-                'ordering': ['match_start_time'],
-                'unique_together': {('home', 'guest', 'phase')},
+                "ordering": ["match_start_time"],
+                "unique_together": {("home", "guest", "phase")},
             },
         ),
         migrations.CreateModel(
-            name='MatchResult',
+            name="MatchResult",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('score_home', models.IntegerField(default=0)),
-                ('score_guest', models.IntegerField(default=0)),
-                ('score_after_penalties_home', models.IntegerField(default=0)),
-                ('score_after_penalties_guest', models.IntegerField(default=0)),
-                ('penalties', models.BooleanField(default=False)),
-                ('match_is_over', models.BooleanField(default=False)),
-                ('created_on', models.DateTimeField(auto_now_add=True)),
-                ('edited_on', models.DateTimeField(auto_now=True)),
-                ('match', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='match_result', to='matches.match')),
-                ('match_state', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='events.eventmatchstate')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("score_home", models.IntegerField(default=0)),
+                ("score_guest", models.IntegerField(default=0)),
+                ("score_after_penalties_home", models.IntegerField(default=0)),
+                ("score_after_penalties_guest", models.IntegerField(default=0)),
+                ("penalties", models.BooleanField(default=False)),
+                ("match_is_over", models.BooleanField(default=False)),
+                ("created_on", models.DateTimeField(auto_now_add=True)),
+                ("edited_on", models.DateTimeField(auto_now=True)),
+                (
+                    "match",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="match_result",
+                        to="matches.match",
+                    ),
+                ),
+                (
+                    "match_state",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to="events.eventmatchstate",
+                    ),
+                ),
             ],
         ),
     ]

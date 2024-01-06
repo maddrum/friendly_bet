@@ -6,8 +6,14 @@ from django.utils.timezone import make_aware
 from faker import Faker
 
 from .models import Event, EventGroup, EventMatchState, EventPhase, PhaseBetPoint, Team
-from .settings import MATCH_STATE_PENALTIES_GUEST, MATCH_STATE_PENALTIES_HOME, MATCH_STATE_TIE, MATCH_STATES, \
-    PHASE_GROUP, PHASE_SELECTOR
+from .settings import (
+    MATCH_STATE_PENALTIES_GUEST,
+    MATCH_STATE_PENALTIES_HOME,
+    MATCH_STATE_TIE,
+    MATCH_STATES,
+    PHASE_GROUP,
+    PHASE_SELECTOR,
+)
 
 fake = Faker()
 
@@ -23,14 +29,16 @@ class EventFactory(factory.Factory):
     class Meta:
         model = Event
 
-    event_name = factory.Faker('company', locale='bg_BG')
+    event_name = factory.Faker("company", locale="bg_BG")
     event_start_date = factory.LazyFunction(get_start_datetime)
-    event_end_date = factory.LazyAttribute(lambda o: o.event_start_date + datetime.timedelta(days=30))
+    event_end_date = factory.LazyAttribute(
+        lambda o: o.event_start_date + datetime.timedelta(days=30)
+    )
     event_total_matches = 8
 
     @factory.lazy_attribute
     def event_name(self):
-        words = ' '.join([fake.word() for item in range(2)]) + ' cup'
+        words = " ".join([fake.word() for item in range(2)]) + " cup"
         return words.title()
 
 
@@ -39,7 +47,7 @@ class EventGroupFactory(factory.Factory):
         model = EventGroup
 
     event = factory.SubFactory(EventFactory)
-    event_group = factory.Sequence(lambda n: 'GROUP-%s' % str(n + 1))
+    event_group = factory.Sequence(lambda n: "GROUP-%s" % str(n + 1))
 
 
 class EventMatchStateFactory(factory.Factory):
@@ -63,10 +71,16 @@ class EventPhaseFactory(factory.Factory):
         self.save()
         if self.phase == PHASE_GROUP:
             for state in EventMatchState.objects.all().exclude(
-                    match_state__in=[MATCH_STATE_PENALTIES_HOME, MATCH_STATE_PENALTIES_GUEST]):
+                match_state__in=[
+                    MATCH_STATE_PENALTIES_HOME,
+                    MATCH_STATE_PENALTIES_GUEST,
+                ]
+            ):
                 self.phase_match_states.add(state)
         else:
-            for state in EventMatchState.objects.all().exclude(match_state=MATCH_STATE_TIE):
+            for state in EventMatchState.objects.all().exclude(
+                match_state=MATCH_STATE_TIE
+            ):
                 self.phase_match_states.add(state)
 
 

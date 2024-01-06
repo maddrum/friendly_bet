@@ -6,68 +6,147 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('events', '0001_initial'),
-        ('matches', '0001_initial'),
+        ("events", "0001_initial"),
+        ("matches", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='UserScore',
+            name="UserScore",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('points', models.IntegerField(default=0, null=True)),
-                ('bonus_points_added', models.BooleanField(default=False)),
-                ('created_on', models.DateTimeField(auto_now_add=True)),
-                ('edited_on', models.DateTimeField(auto_now=True)),
-                ('event', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='event_points', to='events.event')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='user_points', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("points", models.IntegerField(default=0, null=True)),
+                ("bonus_points_added", models.BooleanField(default=False)),
+                ("created_on", models.DateTimeField(auto_now_add=True)),
+                ("edited_on", models.DateTimeField(auto_now=True)),
+                (
+                    "event",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="event_points",
+                        to="events.event",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="user_points",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='UserPrediction',
+            name="UserPrediction",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('goals_home', models.IntegerField(default=0)),
-                ('goals_guest', models.IntegerField(default=0)),
-                ('created_on', models.DateTimeField(auto_now_add=True)),
-                ('edited_on', models.DateTimeField(auto_now=True)),
-                ('match', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='match', to='matches.match')),
-                ('match_state', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='events.eventmatchstate')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='predictions', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("goals_home", models.IntegerField(default=0)),
+                ("goals_guest", models.IntegerField(default=0)),
+                ("created_on", models.DateTimeField(auto_now_add=True)),
+                ("edited_on", models.DateTimeField(auto_now=True)),
+                (
+                    "match",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="match",
+                        to="matches.match",
+                    ),
+                ),
+                (
+                    "match_state",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="events.eventmatchstate",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="predictions",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'unique_together': {('user', 'match')},
+                "unique_together": {("user", "match")},
             },
         ),
         migrations.CreateModel(
-            name='PredictionPoint',
+            name="PredictionPoint",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('points_gained', models.IntegerField(default=0)),
-                ('note', models.TextField(default='Дал си прогноза за мача: 1 т.')),
-                ('created_on', models.DateTimeField(auto_now_add=True)),
-                ('edited_on', models.DateTimeField(auto_now=True)),
-                ('prediction', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='prediction_points', to='predictions.userprediction')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("points_gained", models.IntegerField(default=0)),
+                ("note", models.TextField(default="Дал си прогноза за мача: 1 т.")),
+                ("created_on", models.DateTimeField(auto_now_add=True)),
+                ("edited_on", models.DateTimeField(auto_now=True)),
+                (
+                    "prediction",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="prediction_points",
+                        to="predictions.userprediction",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='BetAdditionalPoint',
+            name="BetAdditionalPoint",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('apply_match_state', models.BooleanField(default=False)),
-                ('apply_result', models.BooleanField(default=False)),
-                ('points_match_state_to_take', models.SmallIntegerField(default=0)),
-                ('points_result_to_take', models.SmallIntegerField(default=0)),
-                ('points_match_state_to_give', models.SmallIntegerField(default=0)),
-                ('points_result_to_give', models.SmallIntegerField(default=0)),
-                ('created_on', models.DateTimeField(auto_now_add=True)),
-                ('edited_on', models.DateTimeField(auto_now=True)),
-                ('prediction', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='bet_points', to='predictions.userprediction')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("apply_match_state", models.BooleanField(default=False)),
+                ("apply_result", models.BooleanField(default=False)),
+                ("points_match_state_to_take", models.SmallIntegerField(default=0)),
+                ("points_result_to_take", models.SmallIntegerField(default=0)),
+                ("points_match_state_to_give", models.SmallIntegerField(default=0)),
+                ("points_result_to_give", models.SmallIntegerField(default=0)),
+                ("created_on", models.DateTimeField(auto_now_add=True)),
+                ("edited_on", models.DateTimeField(auto_now=True)),
+                (
+                    "prediction",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="bet_points",
+                        to="predictions.userprediction",
+                    ),
+                ),
             ],
         ),
     ]

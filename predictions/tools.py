@@ -6,8 +6,14 @@ from django.db import transaction
 
 from accounts.model_factories import UserFactory
 from events.models import EventMatchState
-from events.settings import MATCH_STATE_GUEST, MATCH_STATE_HOME, MATCH_STATE_PENALTIES_GUEST, \
-    MATCH_STATE_PENALTIES_HOME, MATCH_STATE_TIE, MATCH_STATES
+from events.settings import (
+    MATCH_STATE_GUEST,
+    MATCH_STATE_HOME,
+    MATCH_STATE_PENALTIES_GUEST,
+    MATCH_STATE_PENALTIES_HOME,
+    MATCH_STATE_TIE,
+    MATCH_STATES,
+)
 from matches.models import Match
 from predictions.model_factories import UserPredictionFactory
 from predictions.models import BetAdditionalPoint
@@ -39,13 +45,18 @@ def generate_valid_goals_by_match_state(match_state):
 
 
 def create_valid_prediction() -> PredictionDTO:
-    iter_items = [item[0] for item in MATCH_STATES if
-                  item[0] not in [MATCH_STATE_PENALTIES_HOME, MATCH_STATE_PENALTIES_GUEST]]
+    iter_items = [
+        item[0]
+        for item in MATCH_STATES
+        if item[0] not in [MATCH_STATE_PENALTIES_HOME, MATCH_STATE_PENALTIES_GUEST]
+    ]
     match_state = random.choice(iter_items)
     event_match_state = EventMatchState.objects.get(match_state=match_state)
     pk = event_match_state.pk
 
-    goals_home, goals_guest = generate_valid_goals_by_match_state(match_state=match_state)
+    goals_home, goals_guest = generate_valid_goals_by_match_state(
+        match_state=match_state
+    )
     apply_match_state = random.choice([True, False])
     apply_result = random.choice([True, False])
     prediction_dto = PredictionDTO(
@@ -87,7 +98,7 @@ def create_invalid_prediction():
 def add_user_predictions(event, users=5):
     for item in range(users):
         temp_user = UserFactory()
-        temp_user.set_password('qqwerty123')
+        temp_user.set_password("qqwerty123")
         temp_user.save()
 
     for user in get_user_model().objects.all():
@@ -102,7 +113,9 @@ def add_user_predictions(event, users=5):
             )
             prediction.save()
 
-            add_points_obj, created = BetAdditionalPoint.objects.get_or_create(prediction=prediction)
+            add_points_obj, created = BetAdditionalPoint.objects.get_or_create(
+                prediction=prediction
+            )
             phase_points = match.phase.bet_points
             add_points_obj.apply_match_state = random.choice([True, False])
             add_points_obj.apply_result = random.choice([True, False])

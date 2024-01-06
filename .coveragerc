@@ -1,0 +1,36 @@
+[run]
+source = .
+parallel = true
+branch = true
+concurrency = multiprocessing,thread
+plugins = django_coverage_plugin
+sigterm = true
+# following are slow
+# timid = true
+# dynamic_context = test_function
+
+omit =
+    */tests/*
+    */tests.py
+    */migrations/*
+    */apps.py
+    friendly_bet/settings/*
+    */site-packages/*
+    static/*
+    requirements/*
+    */admin.py
+    no_git_upload/*
+    static_collect/*
+    # speciffic files
+    manage.py
+    app/wsgi.py
+    requirements.txt
+
+[html]
+directory = ./coverage/reports/html
+
+[report]
+exclude_lines =
+    pragma: no cover
+    if TYPE_CHECKING:
+    if typing.TYPE_CHECKING:

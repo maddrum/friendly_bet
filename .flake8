@@ -1,0 +1,18 @@
+[flake8]
+extend-ignore = E203,C812,E122
+import-order-style = smarkets
+application_import_names =
+    app
+exclude =
+    ENV,
+    VENV,
+    env,
+    .env-*,
+    venv,
+    */tests/*,
+    */migrations/*.py,
+    app/settings/local*,
+    app/settings/test*,
+    app/settings/production.py
+max-line-length = 120
+application-import-names = api,app

@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class RanklistsConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'ranklists'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "ranklists"

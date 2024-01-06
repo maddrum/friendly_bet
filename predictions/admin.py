@@ -1,21 +1,36 @@
 from django.contrib import admin
 
-from predictions.models import BetAdditionalPoint, UserPrediction, PredictionPoint, UserScore
+from predictions.models import (
+    BetAdditionalPoint,
+    UserPrediction,
+    PredictionPoint,
+    UserScore,
+)
 
 
 class ReadOnlyFields(admin.ModelAdmin):
-    readonly_fields = ('created_on', 'edited_on')
+    readonly_fields = ("created_on", "edited_on")
 
 
 class UserPredictionsAdmin(ReadOnlyFields):
     list_display = (
-        'user',
-        'match', 'match_state_guess',
-        'goals_home', 'goals_guest', 'valid_prediction',
-        'guessed_match_state', 'guessed_result', 'points_gained',
-        'bet_state', 'bet_result',
+        "user",
+        "match",
+        "match_state_guess",
+        "goals_home",
+        "goals_guest",
+        "valid_prediction",
+        "guessed_match_state",
+        "guessed_result",
+        "points_gained",
+        "bet_state",
+        "bet_result",
     )
-    list_filter = ('bet_points__apply_match_state', 'bet_points__apply_result', 'created_on')
+    list_filter = (
+        "bet_points__apply_match_state",
+        "bet_points__apply_result",
+        "created_on",
+    )
 
     def match_state_guess(self, obj):
         return obj.match_state.get_match_state_display()
@@ -32,12 +47,16 @@ class UserPredictionsAdmin(ReadOnlyFields):
 
     def guessed_result(self, obj):
         if obj.match.match_result.penalties:
-            result_home = obj.goals_home == obj.match.match_result.score_after_penalties_home
+            result_home = (
+                obj.goals_home == obj.match.match_result.score_after_penalties_home
+            )
         else:
             result_home = obj.goals_home == obj.match.match_result.score_home
 
         if obj.match.match_result.penalties:
-            result_guest = obj.goals_guest == obj.match.match_result.score_after_penalties_guest
+            result_guest = (
+                obj.goals_guest == obj.match.match_result.score_after_penalties_guest
+            )
         else:
             result_guest = obj.goals_guest == obj.match.match_result.score_guest
 
@@ -45,7 +64,7 @@ class UserPredictionsAdmin(ReadOnlyFields):
 
     guessed_result.boolean = True
 
-    @admin.display(ordering='prediction_points__points_gained')
+    @admin.display(ordering="prediction_points__points_gained")
     def points_gained(self, obj):
         return obj.prediction_points.points_gained
 
@@ -62,13 +81,24 @@ class UserPredictionsAdmin(ReadOnlyFields):
 
 class BetAdditionalPointAdmin(ReadOnlyFields):
     list_display = (
-        'prediction', 'apply_match_state', 'apply_result', 'points_match_state_to_take', 'points_match_state_to_give',
-        'points_result_to_take', 'points_result_to_give'
+        "prediction",
+        "apply_match_state",
+        "apply_result",
+        "points_match_state_to_take",
+        "points_match_state_to_give",
+        "points_result_to_take",
+        "points_result_to_give",
     )
 
 
 class PredictionPointAdmin(ReadOnlyFields):
-    list_display = ('prediction', 'points_gained', 'base_points', 'additional_points', 'note')
+    list_display = (
+        "prediction",
+        "points_gained",
+        "base_points",
+        "additional_points",
+        "note",
+    )
 
 
 admin.site.register(UserPrediction, UserPredictionsAdmin)

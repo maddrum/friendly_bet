@@ -12,52 +12,66 @@ def forwards_func(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('predictions', '0001_initial'),
+        ("predictions", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='predictionpoint',
-            name='additional_points',
-            field=models.IntegerField(default=0, help_text='Points from extra bets only'),
+            model_name="predictionpoint",
+            name="additional_points",
+            field=models.IntegerField(
+                default=0, help_text="Points from extra bets only"
+            ),
         ),
         migrations.AddField(
-            model_name='predictionpoint',
-            name='base_points',
-            field=models.IntegerField(default=0, help_text='Points from base game only'),
+            model_name="predictionpoint",
+            name="base_points",
+            field=models.IntegerField(
+                default=0, help_text="Points from base game only"
+            ),
         ),
         migrations.AlterField(
-            model_name='betadditionalpoint',
-            name='points_match_state_to_give',
-            field=models.SmallIntegerField(default=0,
-                                           help_text='Points which will be GIVEN TO the user if match STATE bet is successful.',
-                                           validators=[django.core.validators.MinValueValidator(1)]),
+            model_name="betadditionalpoint",
+            name="points_match_state_to_give",
+            field=models.SmallIntegerField(
+                default=0,
+                help_text="Points which will be GIVEN TO the user if match STATE bet is successful.",
+                validators=[django.core.validators.MinValueValidator(1)],
+            ),
         ),
         migrations.AlterField(
-            model_name='betadditionalpoint',
-            name='points_match_state_to_take',
-            field=models.SmallIntegerField(default=0,
-                                           help_text='Points which will be TAKEN FROM the user if match STATE bet fails.',
-                                           validators=[django.core.validators.MinValueValidator(1)]),
+            model_name="betadditionalpoint",
+            name="points_match_state_to_take",
+            field=models.SmallIntegerField(
+                default=0,
+                help_text="Points which will be TAKEN FROM the user if match STATE bet fails.",
+                validators=[django.core.validators.MinValueValidator(1)],
+            ),
         ),
         migrations.AlterField(
-            model_name='betadditionalpoint',
-            name='points_result_to_give',
-            field=models.SmallIntegerField(default=0,
-                                           help_text='Points which will be GIVEN TO the user if match RESULT bet is successful.',
-                                           validators=[django.core.validators.MinValueValidator(1)]),
+            model_name="betadditionalpoint",
+            name="points_result_to_give",
+            field=models.SmallIntegerField(
+                default=0,
+                help_text="Points which will be GIVEN TO the user if match RESULT bet is successful.",
+                validators=[django.core.validators.MinValueValidator(1)],
+            ),
         ),
         migrations.AlterField(
-            model_name='betadditionalpoint',
-            name='points_result_to_take',
-            field=models.SmallIntegerField(default=0,
-                                           help_text='Points which will be TAKEN FROM the user if match RESULT bet fails.',
-                                           validators=[django.core.validators.MinValueValidator(1)]),
+            model_name="betadditionalpoint",
+            name="points_result_to_take",
+            field=models.SmallIntegerField(
+                default=0,
+                help_text="Points which will be TAKEN FROM the user if match RESULT bet fails.",
+                validators=[django.core.validators.MinValueValidator(1)],
+            ),
         ),
         migrations.AlterField(
-            model_name='predictionpoint',
-            name='points_gained',
-            field=models.IntegerField(default=0, help_text='Final sum of total points gained'),
+            model_name="predictionpoint",
+            name="points_gained",
+            field=models.IntegerField(
+                default=0, help_text="Final sum of total points gained"
+            ),
         ),
         migrations.RunPython(forwards_func, reverse_code=migrations.RunPython.noop),
     ]

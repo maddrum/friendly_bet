@@ -16,13 +16,15 @@ from predictions.models import BetAdditionalPoint, UserPrediction
 from predictions.views_mixins import GetEventMatchesMixin
 
 
-class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelFormSetView):
-    template_name = 'predictions/input-prediction.html'
-    fields = ('match_state', 'goals_home', 'goals_guest')
+class EventCreatePredictionView(
+    LoginRequiredMixin, GetEventMatchesMixin, ModelFormSetView
+):
+    template_name = "predictions/input-prediction.html"
+    fields = ("match_state", "goals_home", "goals_guest")
     model = UserPrediction
     form_class = PredictionForm
     formset_class = PredictionFormSet
-    success_url = reverse_lazy('predictions_success')
+    success_url = reverse_lazy("predictions_success")
     user_gave_prediction = False
 
     def dispatch(self, request, *args, **kwargs):
@@ -33,13 +35,15 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
         return super().dispatch(request, *args, **kwargs)
 
     def do_initial_checks(self):
-        if self.request.method == 'POST':
+        if self.request.method == "POST":
             if self.user_gave_prediction:
                 raise Http404()
             if not self.matches.exists():
                 raise Http404()
             try:
-                user_last_input_start = LastUserMatchInputStart.objects.get(user=self.request.user)
+                user_last_input_start = LastUserMatchInputStart.objects.get(
+                    user=self.request.user
+                )
             except LastUserMatchInputStart.DoesNotExist:
                 raise Http404()
             if user_last_input_start.valid_to is None:
@@ -49,12 +53,17 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
 
     def check_for_user_predictions(self):
         self.user_gave_prediction = UserPrediction.objects.filter(
-            user=self.request.user, match__in=self.all_today_matches).exists()
+            user=self.request.user, match__in=self.all_today_matches
+        ).exists()
 
     def update_form_input_object(self):
-        form_check_obj, created = LastUserMatchInputStart.objects.get_or_create(user=self.request.user)
-        form_check_obj.valid_to = self._get_first_match_start_time() - datetime.timedelta(
-            minutes=settings.PREDICTION_MINUTES_BEFORE_MATCH)
+        form_check_obj, created = LastUserMatchInputStart.objects.get_or_create(
+            user=self.request.user
+        )
+        form_check_obj.valid_to = (
+            self._get_first_match_start_time()
+            - datetime.timedelta(minutes=settings.PREDICTION_MINUTES_BEFORE_MATCH)
+        )
         form_check_obj.save()
 
     def get_queryset(self):
@@ -63,18 +72,18 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
     def get_factory_kwargs(self):
         kwargs = super().get_factory_kwargs()
         if self.user_gave_prediction:
-            kwargs['extra'] = 0
+            kwargs["extra"] = 0
         else:
-            kwargs['extra'] = self.matches.count()
+            kwargs["extra"] = self.matches.count()
         return kwargs
 
     def get_formset_kwargs(self):
         kwargs = super().get_formset_kwargs()
-        kwargs['matches'] = self.matches
+        kwargs["matches"] = self.matches
         return kwargs
 
     def get_meme_filenames(self):
-        meme_folder = os.path.join(settings.STATIC_ROOT, 'images', 'side_pictures')
+        meme_folder = os.path.join(settings.STATIC_ROOT, "images", "side_pictures")
         for root, dirs, files in os.walk(meme_folder):
             images = [file for file in files]
             images.sort()
@@ -83,15 +92,21 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
 
     def get_head_img(self):
         images = self.get_meme_filenames()
-        meme_index = 0 if 'meme_number' not in self.request.session else self.request.session['meme_number']
-        self.request.session['meme_number'] = meme_index + 1 if meme_index < len(images) - 1 else 0
+        meme_index = (
+            0
+            if "meme_number" not in self.request.session
+            else self.request.session["meme_number"]
+        )
+        self.request.session["meme_number"] = (
+            meme_index + 1 if meme_index < len(images) - 1 else 0
+        )
         try:
             image_name = images[meme_index]
         except IndexError:
-            self.request.session['meme_number'] = 0
+            self.request.session["meme_number"] = 0
             image_name = images[0]
 
-        picture = f'{settings.STATIC_URL}images/side_pictures/{image_name}'
+        picture = f"{settings.STATIC_URL}images/side_pictures/{image_name}"
         return picture
 
     def get_context_data(self, *args, **kwargs):
@@ -100,23 +115,26 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
         match_check = self.matches.exists()
         if match_check:
             time_delta = self._get_first_match_start_time() - datetime.timedelta(
-                minutes=settings.PREDICTION_MINUTES_BEFORE_MATCH)
+                minutes=settings.PREDICTION_MINUTES_BEFORE_MATCH
+            )
         else:
             time_delta = False
         if self.user_gave_prediction:
-            context['match_check'] = False
+            context["match_check"] = False
         else:
-            context['match_check'] = match_check
-        context['matches'] = list(self.matches)
-        context['time_delta'] = time_delta
-        context['head_img'] = self.get_head_img()
+            context["match_check"] = match_check
+        context["matches"] = list(self.matches)
+        context["time_delta"] = time_delta
+        context["head_img"] = self.get_head_img()
         return context
 
     def update_bet_points(self, form):
         # additional bet points
-        add_points_obj, created = BetAdditionalPoint.objects.get_or_create(prediction=form.instance)
-        add_points_obj.apply_match_state = form.cleaned_data['accept_match_state_bet']
-        add_points_obj.apply_result = form.cleaned_data['accept_match_result_bet']
+        add_points_obj, created = BetAdditionalPoint.objects.get_or_create(
+            prediction=form.instance
+        )
+        add_points_obj.apply_match_state = form.cleaned_data["accept_match_state_bet"]
+        add_points_obj.apply_result = form.cleaned_data["accept_match_result_bet"]
         phase_points = form.instance.match.phase.bet_points
         add_points_obj.points_match_state_to_take = phase_points.points_state
         add_points_obj.points_match_state_to_give = phase_points.return_points_state
@@ -140,12 +158,11 @@ class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelF
 
 
 class UserUpdatePredictionView(EventCreatePredictionView):
-
     def check_for_user_predictions(self):
         self.user_gave_prediction = False
 
     def get_queryset(self):
-        qs = UserPrediction.objects.filter(pk=self.kwargs['pk'])
+        qs = UserPrediction.objects.filter(pk=self.kwargs["pk"])
         obj = qs.first()
         match = obj.match
         self.matches = self.matches.filter(pk=match.pk)
@@ -157,9 +174,9 @@ class UserUpdatePredictionView(EventCreatePredictionView):
 
     def get_factory_kwargs(self):
         kwargs = super().get_factory_kwargs()
-        kwargs['extra'] = 0
+        kwargs["extra"] = 0
         return kwargs
 
 
 class PredictionSuccess(TemplateView):
-    template_name = 'predictions/prediction-success.html'
+    template_name = "predictions/prediction-success.html"

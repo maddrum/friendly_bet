@@ -22,7 +22,11 @@ class GetEventMatchesMixin:
             self.event = Event.objects.all().first()
 
     def _get_event_start_wrap(self):
-        first_match = Match.objects.filter(phase__event=self.event).order_by('match_start_time').first()
+        first_match = (
+            Match.objects.filter(phase__event=self.event)
+            .order_by("match_start_time")
+            .first()
+        )
         return first_match.match_start_time
 
     @staticmethod
@@ -33,7 +37,7 @@ class GetEventMatchesMixin:
         return self._get_current_time() + datetime.timedelta(minutes=plus_minutes)
 
     def _get_first_match_start_time(self):
-        qs = self.matches.order_by('match_start_time')
+        qs = self.matches.order_by("match_start_time")
         if not qs.exists():
             return timezone.now() - datetime.timedelta(minutes=10)
         return qs.first().match_start_time
@@ -41,7 +45,13 @@ class GetEventMatchesMixin:
     def get_current_matches(self):
         now_plus_time = self._get_now_plus_time()
         event_start = self._get_event_start_wrap()
-        check_datetime = event_start if now_plus_time.date() < event_start.date() else now_plus_time
+        check_datetime = (
+            event_start if now_plus_time.date() < event_start.date() else now_plus_time
+        )
 
-        self.all_today_matches = Match.objects.get_matches_for_date(event=self.event, date=check_datetime)
-        self.matches = self.all_today_matches.filter(match_start_time__gte=now_plus_time).order_by('match_start_time')
+        self.all_today_matches = Match.objects.get_matches_for_date(
+            event=self.event, date=check_datetime
+        )
+        self.matches = self.all_today_matches.filter(
+            match_start_time__gte=now_plus_time
+        ).order_by("match_start_time")

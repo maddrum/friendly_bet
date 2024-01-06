@@ -9,7 +9,7 @@ def get_list_index_value(input_list, index):
     try:
         result = input_list[int(index)]
     except IndexError:
-        raise Http404('get_list_index_value has no index')
+        raise Http404("get_list_index_value has no index")
     return result
 
 
