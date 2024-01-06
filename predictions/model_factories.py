@@ -1,4 +1,5 @@
 import factory
+from factory.django import DjangoModelFactory
 from factory.fuzzy import FuzzyInteger
 
 from accounts.model_factories import UserFactory
@@ -6,7 +7,7 @@ from matches.model_factories import MatchFactory
 from predictions.models import UserPrediction
 
 
-class UserPredictionFactory(factory.Factory):
+class UserPredictionFactory(DjangoModelFactory):
     class Meta:
         model = UserPrediction
 
