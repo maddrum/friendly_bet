@@ -1,4 +1,6 @@
 -r prod.txt
+Werkzeug==2.0.0
+django-extensions
 factory-boy
 Faker
 selenium
@@ -9,6 +11,3 @@ pylint
 pylint-django
 flake8
 flake8-django
-# might remove if docker is added
-chromedriver_autoinstaller
-black[d]

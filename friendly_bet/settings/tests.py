@@ -1,9 +1,8 @@
 # settings to run tests with
 # Use
 #   python manage.py test --settings=friendly_bet.settings.tests
-from .base import *
+from .local import *
 
-BASE_DIR = BASE_DIR
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
