@@ -4,3 +4,9 @@ __pycache__/
 *.py[cod]
 /.coverage
 coverage
+/docker-compose.tests.yml
+/docker-compose.yml
+/docker/.env
+/.cache/
+/.local/
+/dbdata/

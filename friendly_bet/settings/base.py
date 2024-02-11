@@ -2,21 +2,11 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# valuable information read
-NO_GIT_FOLDER = os.path.join(BASE_DIR, "#no_git_upload")
-KEY_FILE = os.path.join(NO_GIT_FOLDER, "key_no_git_upload.txt")
-RECAPTCHA_SECRET_FILE = os.path.join(NO_GIT_FOLDER, "recaptcha_secret_key.txt")
-email_password_file = os.path.join(NO_GIT_FOLDER, "еmail_password.txt")
-with open(KEY_FILE) as f:
-    SECRET_KEY = f.read().strip()
+# VALUABLE INFORMATION
+SECRET_KEY = os.environ.get("FRIENDLY_BET_DJANGO_SECRET_KEY")
+RECAPTCHA_SECRET = os.environ.get("FRIENDLY_BET_GOOGLE_RECAPTCHA_SECRET_KEY")
 
-with open(RECAPTCHA_SECRET_FILE) as f:
-    RECAPTCHA_SECRET = f.read().strip()
-
-with open(email_password_file, "r") as file:
-    MAIL_PASSWORD = file.read()
-    file.close()
-
+# SECURITY
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
@@ -37,17 +27,19 @@ LOGGING = {
 }
 
 # EMAIL CONFIGURATIONS
-EMAIL_HOST = "mail.privateemail.com"
-EMAIL_HOST_USER = "no-reply@selapt.com"
-EMAIL_HOST_PASSWORD = MAIL_PASSWORD
-EMAIL_PORT = 465
-EMAIL_USE_TLS = False
-EMAIL_USE_SSL = True
+EMAIL_HOST = os.environ.get("FRIENDLY_BET_EMAIL_HOST")
+EMAIL_HOST_USER = os.environ.get("FRIENDLY_BET_EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("FRIENDLY_BET_MAIL_PASSWORD")
+EMAIL_PORT = os.environ.get("FRIENDLY_BET_EMAIL_PORT", 465)
+EMAIL_USE_TLS = os.environ.get("FRIENDLY_BET_EMAIL_USE_TLS", False) == "True"
+EMAIL_USE_SSL = os.environ.get("FRIENDLY_BET_EMAIL_USE_SSL", True) == "True"
 
+# EMAILS
+ADMIN_EMAIL = os.environ.get("FRIENDLY_BET_ADMIN_EMAIL")
 ADMINS = [
-    ("default", "support@selapt.com"),
+    ("default", ADMIN_EMAIL),
 ]
-SERVER_EMAIL = "no-reply@selapt.com"
+SERVER_EMAIL = os.environ.get("FRIENDLY_BET_SERVER_EMAIL")
 
 AUTH_USER_MODEL = "accounts.User"
 
@@ -86,8 +78,6 @@ TEMPLATES = [
 WSGI_APPLICATION = "friendly_bet.wsgi.application"
 
 # Database
-# https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",

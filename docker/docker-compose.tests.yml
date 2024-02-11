@@ -1,0 +1,48 @@
+version: "3.8"
+
+# use for running local tests
+# changes settings to app.settings.tests for django and celery
+# removes mySQL db service to, since sqlite3 is used
+# changes keycloak-db to keycloak-test-db folder, not to flood normal keycloak with test users
+
+services:
+  web:
+    command: /docker/run-server.sh local  # always use `local` option for tests
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    image: friendly-bet/django:4.2
+    container_name: friendly-bet.django
+    env_file: ./docker/.env
+    environment:
+      DJANGO_SETTINGS_MODULE: friendly_bet.settings.tests
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/project
+
+  python-black:
+    image: pyfound/black:latest
+    container_name: friendly-bet.python-black
+    command: blackd --bind-host 0.0.0.0 --bind-port 45484
+    ports:
+      - "45484:45484"
+
+  selenium:
+    image: selenium/standalone-chrome
+    container_name: friendly-bet.e2e
+    shm_size: "6gb"
+    environment:
+      SE_NODE_OVERRIDE_MAX_SESSIONS: "true"
+      SE_NODE_MAX_SESSIONS: 20
+      SCREEN_WIDTH: 1920
+      SCREEN_HEIGHT: 1080
+      VNC_NO_PASSWORD: 1
+      HOME: /home/seluser
+    ports:
+      - "4444:4444"
+      - "5900:5900"
+    # linking browser download folder to the artifacts dir
+    volumes:
+      - ./__browser_tests/__browser_downloads:/home/seluser/Downloads
+      - ./utils/tests/media_assets:/home/seluser/media_assets
