@@ -12,19 +12,9 @@ def check_full_score(prediction):
     if prediction.match_state != match_result.match_state:
         return False
 
-    goals_home = (
-        match_result.score_after_penalties_home
-        if match_result.penalties
-        else match_result.score_home
-    )
-    goals_guest = (
-        match_result.score_after_penalties_guest
-        if match_result.penalties
-        else match_result.score_guest
-    )
-    result = (
-        prediction.goals_home == goals_home and prediction.goals_guest == goals_guest
-    )
+    goals_home = match_result.score_after_penalties_home if match_result.penalties else match_result.score_home
+    goals_guest = match_result.score_after_penalties_guest if match_result.penalties else match_result.score_guest
+    result = prediction.goals_home == goals_home and prediction.goals_guest == goals_guest
 
     return result
 
@@ -61,9 +51,7 @@ def calculate_user_predictions(instance_id=None):
         extra_bet_points, extra_bet_note = calculate_extra_points(prediction)
         note += extra_bet_note
         # update points object
-        prediction_points_obj, created = PredictionPoint.objects.get_or_create(
-            prediction=prediction
-        )
+        prediction_points_obj, created = PredictionPoint.objects.get_or_create(prediction=prediction)
         prediction_points_obj.base_points = points
         prediction_points_obj.additional_points = extra_bet_points
         prediction_points_obj.note = note
@@ -97,9 +85,7 @@ def calculate_ranklist(instance_id=None):
         ranklist[key] = points
 
     for item in ranklist:
-        obj, created = UserScore.objects.get_or_create(
-            user_id=item, event=ranklist_event[item]
-        )
+        obj, created = UserScore.objects.get_or_create(user_id=item, event=ranklist_event[item])
         if instance_id is None:
             obj.points = ranklist[obj.user.id]
         else:
@@ -117,28 +103,28 @@ def calculate_extra_points(prediction):
         if prediction.match_state == prediction.match.match_result.match_state:
             result_points += bet_points_obj.points_match_state_to_give
             result_note += (
-                f"\n Обложи се с джина за изхода от двубоя и взе че позна! "
-                f"Джинът ДАДЕ {bet_points_obj.points_match_state_to_give} точки."
+                f"\n Обложи се с АНГЕЛ-А за изхода от двубоя и взе че позна! "
+                f"АНГЕЛ-А ДАДЕ {bet_points_obj.points_match_state_to_give} точки."
             )
         else:
             result_points -= bet_points_obj.points_match_state_to_take
             result_note += (
-                f"\n Обложи се с джина за изхода от двубоя ама удари греда! "
-                f'Джинът ВЗЕ {bet_points_obj.points_match_state_to_take} точки от тази "прогноза".'
+                f"\n Обложи се с АНГЕЛ-А за изхода от двубоя ама удари греда! "
+                f'АНГЕЛ-А ВЗЕ {bet_points_obj.points_match_state_to_take} точки от тази "прогноза".'
             )
 
     if bet_points_obj.apply_result:
         if check_full_score(prediction=bet_points_obj.prediction):
             result_points += bet_points_obj.points_result_to_give
             result_note += (
-                f"\n Обложи се с джина за резултата от двубоя и го тресна! "
-                f"Джинът ДАДЕ {bet_points_obj.points_result_to_give} точки."
+                f"\n Обложи се с АНГЕЛ-А за резултата от двубоя и го тресна! "
+                f"АНГЕЛ-А ДАДЕ {bet_points_obj.points_result_to_give} точки."
             )
         else:
             result_points -= bet_points_obj.points_result_to_take
             result_note += (
-                f"\n Обложи се с джина за резултата от двубоя ама това беше кур капан! "
-                f'Джинът ВЗЕ {bet_points_obj.points_result_to_take} точки от тази "прогноза".'
+                f"\n Обложи се с АНГЕЛ-А за резултата от двубоя ама това беше кур капан! "
+                f'АНГЕЛ-А ВЗЕ {bet_points_obj.points_result_to_take} точки от тази "прогноза".'
             )
 
     return result_points, result_note

@@ -1,12 +1,27 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
+@font-face {
+    font-family: 'GothicFont';
+    src: url('../fonts/Cattedrale-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BaseFont';
+    src: url('../fonts/Vulgat-Regular.otf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+
 a {
     color: rgb(0, 191, 214);
     text-decoration: none;
 }
 
 a:hover {
-    color: #711631;
+    color: #044a9e;
 }
 
 .brand {
@@ -33,7 +48,7 @@ a:hover {
     background-size: 1060px 136px;
     background-repeat: repeat-x;
     box-shadow: 3px 3px 13px -4px rgba(0, 0, 0, .5);
-    background-color: #470e1f;
+    background-color: #143cda;
     width: 100%;
 }
 
@@ -89,13 +104,13 @@ a.nav-link:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-image: url('../images/Bg.png');
+    background-image: url('../images/Bg.jpg');
     background-size: cover;
     border-bottom-style: solid;
     border-bottom-width: 10px;
     border-color: #ffd60a;
+    background-color: #0e2a99;
 }
-
 
 .hero::before {
     content: "";
@@ -135,7 +150,7 @@ a.nav-link:hover {
     margin-top: 34px;
     margin-bottom: 34px;
     font-family: 'BaseFont', sans-serif;
-    color: #f9e2b2;
+    color: #e6b000;
     font-size: 2.5rem;
     font-weight: 400;
     text-transform: uppercase;
@@ -146,9 +161,10 @@ a.nav-link:hover {
     display: block;
     margin-right: auto;
     margin-left: auto;
-    font-family: 'ArabicFont', sans-serif;
-    color: #ffc300;
-    font-size: 5rem;
+    font-family: 'GothicFont', sans-serif;
+    font-weight: normal;
+    color: #fff;
+    font-size: 4rem;
     text-transform: uppercase;
     text-align: left;
     /*text-shadow: 16px 22px 11px rgba(219, 180, 44, .6);*/
@@ -161,7 +177,7 @@ a.nav-link:hover {
     margin-right: auto;
     margin-left: auto;
     font-family: 'BaseFont', sans-serif;
-    color: #f2c464;
+    color: #081857;
     font-size: 46px;
     line-height: 145%;
     text-align: center;
@@ -196,7 +212,6 @@ a.nav-link:hover {
     text-align: center;
 }
 
-
 .heading.tab-heading.history-ttl {
     margin-top: 20px;
     margin-bottom: 29px;
@@ -230,8 +245,11 @@ a.nav-link:hover {
 }
 
 .start-btn:hover {
-    background-color: #ffc300;
-    transform: scale(1.1);
+    background-color: white;
+    transform: scale(1.2);
+    color: #ffc300;
+    border: 5px solid #ffc300;
+    padding-top: 1.8rem;
 }
 
 .logout-bn {
@@ -289,7 +307,7 @@ a.nav-link:hover {
     margin-right: auto;
     margin-left: auto;
     font-family: Montserrat, sans-serif;
-    color: #f2c464;
+    color: #806b05;
     font-size: 21px;
     line-height: 143%;
     font-weight: 500;
@@ -299,6 +317,7 @@ a.nav-link:hover {
 .text-block.numbers {
     font-size: 75px;
     font-weight: 900;
+    color: #143cda;
 }
 
 .text-block.ftr {
@@ -360,7 +379,7 @@ a.nav-link:hover {
     border-style: solid none none;
     border-width: 10px 3px 3px;
     border-color: #ffd60a;
-    background-color: #470e1f;
+    background-color: #143cda;
     padding-top: 1rem;
     padding-bottom: .5rem;
     z-index: 99;
@@ -474,7 +493,7 @@ a.nav-link:hover {
 
 .team-ttl {
     padding-top: 29px;
-    color: #8d1b3d;
+    color: #0e2a99;
     font-size: 36px;
 }
 
@@ -489,9 +508,7 @@ a.nav-link:hover {
 }
 
 .body-2 {
-    background-color: #711631;
-    background-image: url('../images/Bg.png');
-    background-size: cover;
+    background-color: #0e2a99;
 }
 
 .rarnk-txt {
@@ -804,13 +821,27 @@ a.nav-link:hover {
     border-radius: 80px;
     background-color: #f3daa8;
     font-family: 'BaseFont', sans-serif;
-    color: #711631;
+    color: #0e2a99;
     font-size: 22px;
     font-weight: 400;
     text-align: center;
     text-transform: uppercase;
     text-decoration: InfoText;
-    border: 2px solid #711631;
+    border: 2px solid #0e2a99;
+}
+
+.register-btn {
+    display: block;
+    width: 320px;
+    height: 50px;
+    font-size: 1.5rem;
+    color: #0e2a99;
+    padding-top: 13px;
+    background-color: #f3daa8;
+    border-radius: 80px;
+    border: 2px solid #0e2a99;
+    margin: 0 auto;
+    box-shadow: rgba(213, 218, 168, 0.4) 0 19px 38px, rgba(113, 22, 49, 0.22) 0 15px 12px;
 }
 
 .small-btn {
@@ -858,20 +889,6 @@ a.nav-link:hover {
 .small-btn:hover {
     transform: translateX(0px) translateY(0px) translateZ(0px) scaleX(2) scaleY(2) scaleZ(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skewX(0deg) skewY(0deg);
 
-}
-
-.register-btn {
-    display: block;
-    width: 320px;
-    height: 50px;
-    font-size: 1.5rem;
-    color: #711631;
-    padding-top: 13px;
-    background-color: #f3daa8;
-    border-radius: 80px;
-    border: 2px solid #711631;
-    margin: 0 auto;
-    box-shadow: rgba(213, 218, 168, 0.4) 0 19px 38px, rgba(113, 22, 49, 0.22) 0 15px 12px;
 }
 
 .star-big {
@@ -1642,20 +1659,6 @@ a.nav-link:hover {
     }
 }
 
-@font-face {
-    font-family: 'ArabicFont';
-    src: url('../fonts/ds_izmir.ttf') format('truetype');
-    font-weight: 400;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'BaseFont';
-    src: url('../fonts/Vulgat-Regular.otf') format('truetype');
-    font-weight: 400;
-    font-style: normal;
-}
-
 
 .accordion {
     background-color: transparent;
@@ -1743,7 +1746,7 @@ a.nav-link:hover {
 }
 
 .color-primary--inverted {
-    color: #470e1f !important;
+    color: #143cda !important;
 }
 
 .color-positive {
@@ -1788,7 +1791,7 @@ a.nav-link:hover {
 }
 
 :root {
-    --primary: #470e1f;
+    --primary: #143cda;
     --greyLight: #f2c464;
     --greyLight-2: #cbe0dd;
     --greyDark: #2d4848;
@@ -1900,7 +1903,7 @@ ul.page {
 }
 
 .menu-banner--content > a {
-    color: #470e1f;
+    color: #143cda;
 }
 
 @media only screen and (max-width: 700px) {
@@ -2005,13 +2008,13 @@ input[type='checkbox'] {
 
 .error-message {
     color: white;
-    border: 5px solid red;
+    border: 5px solid #ffd60a;;
     text-align: center;
     font-size: 1.5rem;
     min-height: 5rem;
     margin: 0 auto;
     padding: 1.5rem;
-    background-color: #470e1f;
+    background-color: #143cda;
     font-family: 'BaseFont', sans-serif;
     line-height: 2rem;
 }

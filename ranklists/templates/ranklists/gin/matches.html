@@ -10,9 +10,9 @@
             </h1>
             <h3 class="color-primary--inverted mb20">
                 {% if total_balance < 0 %}
-                    Джинът е ГЛАДЕН!
+                    АНГЕЛ-А е ГЛАДЕН!
                 {% else %}
-                    Джинът е сит.
+                    АНГЕЛ-А е сит.
                 {% endif %}
             </h3>
             <h4 class="color-primary--inverted">Резултата по мачове</h4>
@@ -24,9 +24,9 @@
                         <span class="color-primary--inverted {% if points > 0 %} color-positive{% endif %}">
                             От {% replace_str match '|' '' %}
                             {% if points > 0 %}
-                                джина ВЗЕ
+                                АНГЕЛ-А ВЗЕ
                             {% else %}
-                                джина ДАДЕ
+                                АНГЕЛ-А ДАДЕ
                             {% endif %}
                             {{ points|absolute_value }}
                             {% if points == 1 %}
