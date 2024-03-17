@@ -33,7 +33,7 @@ a:hover {
     background-size: 1060px 136px;
     background-repeat: repeat-x;
     box-shadow: 3px 3px 13px -4px rgba(0, 0, 0, .5);
-    background-color: #470e1f;
+    background-color: #143cda;
     width: 100%;
 }
 
@@ -90,7 +90,7 @@ a.nav-link:hover {
     align-items: center;
     justify-content: center;
     background-image: url('../images/Bg.png');
-    background-size: cover;
+    background-size: contain;
     border-bottom-style: solid;
     border-bottom-width: 10px;
     border-color: #ffd60a;
@@ -289,7 +289,7 @@ a.nav-link:hover {
     margin-right: auto;
     margin-left: auto;
     font-family: Montserrat, sans-serif;
-    color: #f2c464;
+    color: #ffd60a;
     font-size: 21px;
     line-height: 143%;
     font-weight: 500;
@@ -360,7 +360,7 @@ a.nav-link:hover {
     border-style: solid none none;
     border-width: 10px 3px 3px;
     border-color: #ffd60a;
-    background-color: #470e1f;
+    background-color: #143cda;
     padding-top: 1rem;
     padding-bottom: .5rem;
     z-index: 99;
@@ -491,7 +491,7 @@ a.nav-link:hover {
 .body-2 {
     background-color: #711631;
     background-image: url('../images/Bg.png');
-    background-size: cover;
+    background-size: contain;
 }
 
 .rarnk-txt {
@@ -1743,7 +1743,7 @@ a.nav-link:hover {
 }
 
 .color-primary--inverted {
-    color: #470e1f !important;
+    color: #143cda !important;
 }
 
 .color-positive {
@@ -1788,7 +1788,7 @@ a.nav-link:hover {
 }
 
 :root {
-    --primary: #470e1f;
+    --primary: #143cda;
     --greyLight: #f2c464;
     --greyLight-2: #cbe0dd;
     --greyDark: #2d4848;
@@ -1900,7 +1900,7 @@ ul.page {
 }
 
 .menu-banner--content > a {
-    color: #470e1f;
+    color: #143cda;
 }
 
 @media only screen and (max-width: 700px) {
@@ -2011,7 +2011,7 @@ input[type='checkbox'] {
     min-height: 5rem;
     margin: 0 auto;
     padding: 1.5rem;
-    background-color: #470e1f;
+    background-color: #143cda;
     font-family: 'BaseFont', sans-serif;
     line-height: 2rem;
 }
