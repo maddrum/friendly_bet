@@ -1,0 +1,47 @@
+{% load matches_tags %}
+
+<div class="game-wrp {{ dummy_classes }}" data-uuid="{{ match.uuid }}">
+    <div class="match-number">
+        Мач {{ match.match_number }}
+    </div>
+    <div class="w-row">
+        <div class="column-4 w-col w-col-5 w-col-medium-5 w-col-small-5 w-col-tiny-5">
+            <div class="team">
+                <div class="team-ttl dummy--home-name">{{ match.home.name }}</div>
+            </div>
+        </div>
+        <div class="column-3 w-col w-col-1 w-col-medium-1 w-col-small-1 w-col-tiny-1">
+            <div class="score">
+                <div class="score-txt dummy--home-score">
+                    {% if match.match_result.match_is_over %}
+                        {% get_match_home_result match.match_result %}
+                    {% else %}
+                        ⚽
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="column-2 w-col w-col-1 w-col-medium-1 w-col-small-1 w-col-tiny-1">
+            <div class="score">
+                <div class="score-txt dummy--guest-score">
+                    {% if match.match_result.match_is_over %}
+                        {% get_match_guest_result match.match_result %}
+                    {% else %}
+                        ⚽
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="column w-col w-col-5 w-col-medium-5 w-col-small-5 w-col-tiny-5">
+            <div class="team">
+                <div class="team-ttl dummy--guest-name">{{ match.guest.name }}</div>
+            </div>
+        </div>
+    </div>
+    {% if match.match_result.match_is_over and match.match_result.penalties %}
+        <div class="match-date dummy--penalties">след дузпи</div>
+    {% endif %}
+    <div class="match-date">{{ match.match_start_time|date:"l" }}, <span
+            class="dummy--date">{{ match.match_start_time|date:"d.m.Y@H:i" }}</span>
+    </div>
+</div>

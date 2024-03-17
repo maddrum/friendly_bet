@@ -25,6 +25,7 @@ omit =
     manage.py
     friendly_bet/wsgi.py
     requirements.txt
+    main_app/management/commands/generate_sample_data.py
 
 [html]
 directory = ./coverage/reports/html

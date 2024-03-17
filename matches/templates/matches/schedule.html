@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load matches_tags %}
+
+{% block body_classes %}body-2{% endblock %}
+
+{% block body_content %}
+    <div class="inner_page_header">
+        <div class="heading inner-ttl">Програма</div>
+    </div>
+    <div class="content-wrp">
+        <div class="results">
+            {% if today_matches %}
+                <h2>Мачовете днес</h2>
+                {% for match in today_matches %}
+                    {% include 'components/match_detail.html' with match=match dummy_classes="dummy--today" %}
+                {% endfor %}
+            {% endif %}
+            {% for phase,date_mathes in matches.items %}
+                <button class="accordion">{{ phase.get_phase_display }}</button>
+                <div class="panel">
+                    {% for date, matches in date_mathes.items %}
+                        <h2>{{ date }}</h2>
+                        <hr class="white">
+                        {% for match in matches %}
+                            {% include 'components/match_detail.html' with match=match dummy_classes="dummy--all" %}
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <script>
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function () {
+                /* Toggle between adding and removing the "active" class,
+                to highlight the button that controls the panel */
+                this.classList.toggle("active");
+
+                /* Toggle between hiding and showing the active panel */
+                var panel = this.nextElementSibling;
+                if (panel.style.display === "block") {
+                    panel.style.display = "none";
+                } else {
+                    panel.style.display = "block";
+                }
+            });
+        }
+    </script>
+{% endblock %}

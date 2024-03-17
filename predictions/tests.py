@@ -28,6 +28,7 @@ from predictions.tools import (
     PredictionDTO,
 )
 from predictions.views_mixins import GetEventMatchesMixin
+from utlis.tests.browser_test_utils import handle_failed_browser_test
 from utlis.tests.browser_tests import BrowserTestBase
 
 logger = logging.getLogger("friendly_bet")
@@ -151,37 +152,37 @@ class PredictionsBaseTestCase(UserPredictionsToolBox, BrowserTestBase):
     mixin = None
 
     def setUp(self) -> None:
+        super().setUp()
         self.test_users = []
         for item in range(10):
             temp_user = UserFactory()
             self.test_users.append(temp_user)
         self.event = initialize_matches()
         self.mixin = GetEventMatchesMixin(event=self.event)
-        self.driver.get(self.live_server_url)
 
     def fill_in_prediction(self, form_id, prediction: PredictionDTO):
-        match_state_element = self.driver.find_element(By.ID, f"id_form-{str(form_id)}-match_state")
+        match_state_element = self.browser.find_element(By.ID, f"id_form-{str(form_id)}-match_state")
         match_state_selector = Select(match_state_element)
         match_state_selector.select_by_value(str(prediction.pk))
 
-        home_score_element = self.driver.find_element(By.ID, f"id_form-{str(form_id)}-goals_home")
+        home_score_element = self.browser.find_element(By.ID, f"id_form-{str(form_id)}-goals_home")
         home_score_element.clear()
         home_score_element.send_keys(prediction.goals_home)
 
-        guest_score_element = self.driver.find_element(By.ID, f"id_form-{str(form_id)}-goals_guest")
+        guest_score_element = self.browser.find_element(By.ID, f"id_form-{str(form_id)}-goals_guest")
         guest_score_element.clear()
         guest_score_element.send_keys(prediction.goals_guest)
 
         # clicks on bet points checkboxes until state is right
         checkbox_id = f"id_form-{form_id}-accept_match_state_bet"
-        apply_match_state = self.driver.find_element(By.ID, checkbox_id)
+        apply_match_state = self.browser.find_element(By.ID, checkbox_id)
         if apply_match_state.is_selected() != prediction.apply_match_state:
-            self.driver.execute_script(f'document.querySelector("#{checkbox_id}").click()')
+            self.browser.execute_script(f'document.querySelector("#{checkbox_id}").click()')
 
         checkbox_id = f"id_form-{form_id}-accept_match_result_bet"
-        apply_result = self.driver.find_element(By.ID, checkbox_id)
+        apply_result = self.browser.find_element(By.ID, checkbox_id)
         if apply_result.is_selected() != prediction.apply_result:
-            self.driver.execute_script(f'document.querySelector("#{checkbox_id}").click()')
+            self.browser.execute_script(f'document.querySelector("#{checkbox_id}").click()')
 
     def validate_user_predictions(self, user, matches):
         matches_prediction = {}
@@ -189,8 +190,8 @@ class PredictionsBaseTestCase(UserPredictionsToolBox, BrowserTestBase):
         for match in matches:
             # validate apply initial state
             if not UserPrediction.objects.filter(user=user, match=match).exists():
-                checkbox_state = self.driver.find_element(By.NAME, f"form-{counter}-accept_match_state_bet")
-                checkbox_result = self.driver.find_element(By.NAME, f"form-{counter}-accept_match_result_bet")
+                checkbox_state = self.browser.find_element(By.NAME, f"form-{counter}-accept_match_state_bet")
+                checkbox_result = self.browser.find_element(By.NAME, f"form-{counter}-accept_match_result_bet")
                 self.assertFalse(checkbox_state.is_selected())
                 self.assertFalse(checkbox_result.is_selected())
             # input prediction is driven by the matches which are ordered like
@@ -199,7 +200,7 @@ class PredictionsBaseTestCase(UserPredictionsToolBox, BrowserTestBase):
             self.fill_in_prediction(form_id=str(counter), prediction=prediction_data)
             matches_prediction[match] = prediction_data
             counter += 1
-        submit = self.driver.find_elements(By.CSS_SELECTOR, "input[type=submit]")[0]
+        submit = self.browser.find_elements(By.CSS_SELECTOR, "input[type=submit]")[0]
         submit.send_keys(Keys.RETURN)
 
         for match in matches:
@@ -220,20 +221,20 @@ class PredictionsBaseTestCase(UserPredictionsToolBox, BrowserTestBase):
 
 
 class TestPredictionsCreateUpdateWithBrowser(PredictionsBaseTestCase):
+    @handle_failed_browser_test
     def test_create_prediction_form(self):
         for user in self.test_users:
             self.login_user(user=user)
-            predictions_url = reverse("create_predictions")
-            self.driver.get(f"{self.live_server_url}{predictions_url}")
+            self.load_page(namespace="create_predictions")
             self.validate_submit_btn()
             self.validate_user_predictions(user=user, matches=self.mixin.matches)
 
+    @handle_failed_browser_test
     @patch("predictions.views_mixins.GetEventMatchesMixin._get_current_time")
     def test_user_try_to_create_prediction_for_started_match(self, mocked_datetime):
         mocked_datetime.return_value = timezone.now()
         self.login_user(user=self.test_users[0])
-        predictions_url = reverse("create_predictions")
-        self.driver.get(f"{self.live_server_url}{predictions_url}")
+        self.load_page(namespace="create_predictions")
         submit = self.validate_submit_btn()
         counter = 0
         for match in self.mixin.matches:
@@ -248,17 +249,18 @@ class TestPredictionsCreateUpdateWithBrowser(PredictionsBaseTestCase):
         self.assertEqual(self.test_users[0].predictions.all().count(), 0)
         self.validate_404()
 
+    @handle_failed_browser_test
     @patch("predictions.views_mixins.GetEventMatchesMixin._get_current_time")
     def test_user_create_prediction_some_matches_started(self, mocked_datetime):
         mocked_datetime.return_value = Match.objects.first().match_start_time + timezone.timedelta(minutes=30)
         mixin = GetEventMatchesMixin(event=self.event)
         self.login_user(user=self.test_users[0])
-        predictions_url = reverse("create_predictions")
-        self.driver.get(f"{self.live_server_url}{predictions_url}")
+        self.load_page(namespace="create_predictions")
         self.validate_user_predictions(matches=mixin.matches, user=self.test_users[0])
         self.assertEqual(self.test_users[0].predictions.all().count(), mixin.matches.count())
         self.assertNotEqual(self.test_users[0].predictions.all().count(), self.mixin.matches.count())
 
+    @handle_failed_browser_test
     def test_update_prediction_form(self):
         add_user_predictions(event=self.event, users=0)
         for user in self.test_users:
@@ -267,19 +269,19 @@ class TestPredictionsCreateUpdateWithBrowser(PredictionsBaseTestCase):
                 if prediction.match not in self.mixin.matches:
                     break
                 match = Match.objects.filter(pk=prediction.match.pk)
-                predictions_url = reverse("update_prediction", kwargs={"pk": prediction.pk})
-                self.driver.get(f"{self.live_server_url}{predictions_url}")
+                self.load_page(namespace="update_prediction", reverse_kwargs={"pk": prediction.pk})
                 self.validate_submit_btn()
                 self.validate_user_predictions(user=user, matches=match)
 
+    @handle_failed_browser_test
     def test_user_update_prediction_of_other_user(self):
         add_user_predictions(event=self.event, users=0)
         self.login_user(user=self.test_users[0])
         prediction = self.test_users[1].predictions.all().first()
-        predictions_url = reverse("update_prediction", kwargs={"pk": prediction.pk})
-        self.driver.get(f"{self.live_server_url}{predictions_url}")
+        self.load_page(namespace="update_prediction", reverse_kwargs={"pk": prediction.pk})
         self.validate_404()
 
+    @handle_failed_browser_test
     @patch("predictions.views_mixins.GetEventMatchesMixin._get_current_time")
     def test_user_update_prediction_of_started_match(self, mocked_datetime):
         add_user_predictions(event=self.event, users=0)
@@ -297,8 +299,7 @@ class TestPredictionsCreateUpdateWithBrowser(PredictionsBaseTestCase):
             prediction.bet_points.apply_match_state,
             prediction.bet_points.apply_result,
         ]
-        predictions_url = reverse("update_prediction", kwargs={"pk": prediction.pk})
-        self.driver.get(f"{self.live_server_url}{predictions_url}")
+        self.load_page(namespace="update_prediction", reverse_kwargs={"pk": prediction.pk})
         submit = self.validate_submit_btn()
 
         delta_minutes = settings.PREDICTION_MINUTES_BEFORE_MATCH - 1
@@ -320,6 +321,7 @@ class TestPredictionsCreateUpdateWithBrowser(PredictionsBaseTestCase):
         self.validate_submit_btn(should_have_submit_btn=False)
         self.validate_404()
 
+    @handle_failed_browser_test
     @patch("predictions.views_mixins.GetEventMatchesMixin._get_current_time")
     def test_user_update_prediction_of_not_started_match(self, mocked_datetime):
         add_user_predictions(event=self.event, users=0)
@@ -332,8 +334,7 @@ class TestPredictionsCreateUpdateWithBrowser(PredictionsBaseTestCase):
             prediction.goals_home,
             prediction.goals_guest,
         ]
-        predictions_url = reverse("update_prediction", kwargs={"pk": prediction.pk})
-        self.driver.get(f"{self.live_server_url}{predictions_url}")
+        self.load_page(namespace="update_prediction", reverse_kwargs={"pk": prediction.pk})
         submit = self.validate_submit_btn()
         delta_minutes = settings.PREDICTION_MINUTES_BEFORE_MATCH + 1
         mocked_datetime.return_value = prediction.match.match_start_time - timezone.timedelta(minutes=delta_minutes)
@@ -350,10 +351,10 @@ class TestPredictionsCreateUpdateWithBrowser(PredictionsBaseTestCase):
         self.assertNotEqual(prediction.match_state, prediction_specs[1])
         self.validate_submit_btn(should_have_submit_btn=False)
 
+    @handle_failed_browser_test
     def test_invalid_form_check(self):
         self.login_user(user=self.test_users[0])
-        predictions_url = reverse("create_predictions")
-        self.driver.get(f"{self.live_server_url}{predictions_url}")
+        self.load_page(namespace="create_predictions")
         wrong_prediction_match = 0
         for match in self.mixin.matches:
             counter = 0
@@ -366,11 +367,12 @@ class TestPredictionsCreateUpdateWithBrowser(PredictionsBaseTestCase):
                     self.fill_in_prediction(form_id=str(counter), prediction=prediction_data)
                 counter += 1
 
-            submit = self.driver.find_elements(By.CSS_SELECTOR, "input[type=submit]")[0]
+            submit = self.browser.find_elements(By.CSS_SELECTOR, "input[type=submit]")[0]
             submit.send_keys(Keys.RETURN)
             wrong_prediction_match += 1
         self.assertEqual(self.test_users[0].predictions.all().count(), 0)
 
+    @handle_failed_browser_test
     @patch("predictions.views_mixins.GetEventMatchesMixin._get_current_time")
     def test_user_update_prediction_valid_apply_match_state_initial_value(self, mocked_datetime):
         add_user_predictions(event=self.event, users=0)
@@ -378,39 +380,40 @@ class TestPredictionsCreateUpdateWithBrowser(PredictionsBaseTestCase):
         prediction = self.test_users[0].predictions.all().first()
         delta_minutes = settings.PREDICTION_MINUTES_BEFORE_MATCH + 1
         mocked_datetime.return_value = prediction.match.match_start_time - timezone.timedelta(minutes=delta_minutes)
-        predictions_url = reverse("update_prediction", kwargs={"pk": prediction.pk})
         # validate applied
         bet_points_obj = prediction.bet_points
         bet_points_obj.apply_match_state = True
         bet_points_obj.save()
-        self.driver.get(f"{self.live_server_url}{predictions_url}")
-        checkbox = self.driver.find_element(By.NAME, "form-0-accept_match_state_bet")
+        self.load_page(namespace="update_prediction", reverse_kwargs={"pk": prediction.pk})
+        checkbox = self.browser.find_element(By.NAME, "form-0-accept_match_state_bet")
         self.assertTrue(checkbox.is_selected())
         # validate not applied
         bet_points_obj = prediction.bet_points
         bet_points_obj.apply_match_state = False
         bet_points_obj.save()
-        self.driver.get(f"{self.live_server_url}{predictions_url}")
-        checkbox = self.driver.find_element(By.NAME, "form-0-accept_match_state_bet")
+        self.load_page(namespace="update_prediction", reverse_kwargs={"pk": prediction.pk})
+        checkbox = self.browser.find_element(By.NAME, "form-0-accept_match_state_bet")
         self.assertFalse(checkbox.is_selected())
 
 
 class TestMenuBannerBrowser(PredictionsBaseTestCase):
+    @handle_failed_browser_test
     def test_not_logged_in_user_banner(self):
-        self.driver.get(self.live_server_url)
-        banner = self.driver.find_elements(By.CSS_SELECTOR, ".menu-banner")
+        banner = self.browser.find_elements(By.CSS_SELECTOR, ".menu-banner")
         self.assertIsInstance(banner, list)
         self.assertEqual(len(banner), 0)
 
+    @handle_failed_browser_test
     @patch("predictions.views_mixins.GetEventMatchesMixin._get_current_time")
     def test_user_available_matches_today(self, mocked_datetime):
         mocked_datetime.return_value = Match.objects.all().first().match_start_time - timezone.timedelta(minutes=60)
         self.login_user(self.test_users[0])
-        self.driver.get(self.live_server_url)
-        banner = self.driver.find_elements(By.CSS_SELECTOR, ".menu-banner")
+        self.load_page(namespace="index")
+        banner = self.browser.find_elements(By.CSS_SELECTOR, ".menu-banner")
         self.assertIsInstance(banner, list)
         self.assertEqual(len(banner), 1)
 
+    @handle_failed_browser_test
     @patch("predictions.views_mixins.GetEventMatchesMixin._get_current_time")
     def test_user_gave_predictions(self, mocked_datetime):
         match = Match.objects.all().first()
@@ -418,8 +421,7 @@ class TestMenuBannerBrowser(PredictionsBaseTestCase):
         mocked_datetime.return_value = match.match_start_time - timezone.timedelta(minutes=60)
         self.login_user(user)
         self.create_user_prediction(user=user, match=match)
-        self.driver.get(self.live_server_url)
-        banner = self.driver.find_elements(By.CSS_SELECTOR, ".menu-banner")
+        banner = self.browser.find_elements(By.CSS_SELECTOR, ".menu-banner")
         self.assertIsInstance(banner, list)
         self.assertEqual(len(banner), 0)
 
@@ -443,10 +445,12 @@ class TestPredictionCalculator(PredictionsBaseTestCase):
                 (prediction_obj.base_points + prediction_obj.additional_points),
             )
 
+    @handle_failed_browser_test
     def test_base_user_prediction_points(self):
         for user in self.test_users:
             self.check_prediction_points(user=user)
 
+    @handle_failed_browser_test
     def test_apply_match_state_bet_nothing_guessed(self):
         user = self.test_users[0]
         match = self.mixin.matches[0]
@@ -459,6 +463,7 @@ class TestPredictionCalculator(PredictionsBaseTestCase):
         self.assertEqual(prediction_obj.additional_points, 0 - bet_points.points_match_state_to_take)
         self.assertEqual(prediction_obj.points_gained, points - bet_points.points_match_state_to_take)
 
+    @handle_failed_browser_test
     def test_apply_match_state_bet_guessed_state(self):
         user = self.test_users[0]
         match = self.mixin.matches[0]
@@ -471,6 +476,7 @@ class TestPredictionCalculator(PredictionsBaseTestCase):
         self.assertEqual(prediction_obj.additional_points, bet_points.points_match_state_to_give)
         self.assertEqual(prediction_obj.points_gained, points + bet_points.points_match_state_to_give)
 
+    @handle_failed_browser_test
     def test_apply_match_state_bet_guessed_result(self):
         user = self.test_users[0]
         match = self.mixin.matches[0]
@@ -483,6 +489,7 @@ class TestPredictionCalculator(PredictionsBaseTestCase):
         self.assertEqual(prediction_obj.additional_points, bet_points.points_match_state_to_give)
         self.assertEqual(prediction_obj.points_gained, points + bet_points.points_match_state_to_give)
 
+    @handle_failed_browser_test
     def test_apply_result_bet_nothing_guessed(self):
         user = self.test_users[0]
         match = self.mixin.matches[0]
@@ -495,6 +502,7 @@ class TestPredictionCalculator(PredictionsBaseTestCase):
         self.assertEqual(prediction_obj.additional_points, 0 - bet_points.points_result_to_take)
         self.assertEqual(prediction_obj.points_gained, points - bet_points.points_result_to_take)
 
+    @handle_failed_browser_test
     def test_apply_result_bet_guessed_state(self):
         user = self.test_users[0]
         match = self.mixin.matches[0]
@@ -507,6 +515,7 @@ class TestPredictionCalculator(PredictionsBaseTestCase):
         self.assertEqual(prediction_obj.additional_points, 0 - bet_points.points_result_to_take)
         self.assertEqual(prediction_obj.points_gained, points - bet_points.points_result_to_take)
 
+    @handle_failed_browser_test
     def test_apply_result_bet_guessed_result(self):
         user = self.test_users[0]
         match = self.mixin.matches[0]
@@ -521,6 +530,7 @@ class TestPredictionCalculator(PredictionsBaseTestCase):
 
 
 class TestCalculateExtraBetPointsBalance(PredictionsBaseTestCase):
+    @handle_failed_browser_test
     def test_random_calculate_extra_bet_points(self):
         counter = 0
         for user in self.test_users:

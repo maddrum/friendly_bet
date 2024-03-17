@@ -45,4 +45,3 @@ services:
     # linking browser download folder to the artifacts dir
     volumes:
       - ./__browser_tests/__browser_downloads:/home/seluser/Downloads
-      - ./utils/tests/media_assets:/home/seluser/media_assets
