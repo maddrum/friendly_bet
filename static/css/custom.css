@@ -21,7 +21,7 @@ a {
 }
 
 a:hover {
-    color: #711631;
+    color: #044a9e;
 }
 
 .brand {
@@ -104,13 +104,13 @@ a.nav-link:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-image: url('../images/Bg.png');
-    background-size: contain;
+    background-image: url('../images/Bg.jpg');
+    background-size: cover;
     border-bottom-style: solid;
     border-bottom-width: 10px;
     border-color: #ffd60a;
+    background-color: #0e2a99;
 }
-
 
 .hero::before {
     content: "";
@@ -163,7 +163,7 @@ a.nav-link:hover {
     margin-left: auto;
     font-family: 'GothicFont', sans-serif;
     font-weight: normal;
-    color: #ffcb50;
+    color: #fff;
     font-size: 4rem;
     text-transform: uppercase;
     text-align: left;
@@ -177,7 +177,7 @@ a.nav-link:hover {
     margin-right: auto;
     margin-left: auto;
     font-family: 'BaseFont', sans-serif;
-    color: #f2c464;
+    color: #081857;
     font-size: 46px;
     line-height: 145%;
     text-align: center;
@@ -211,7 +211,6 @@ a.nav-link:hover {
     font-size: 36px;
     text-align: center;
 }
-
 
 .heading.tab-heading.history-ttl {
     margin-top: 20px;
@@ -308,7 +307,7 @@ a.nav-link:hover {
     margin-right: auto;
     margin-left: auto;
     font-family: Montserrat, sans-serif;
-    color: #ffd60a;
+    color: #806b05;
     font-size: 21px;
     line-height: 143%;
     font-weight: 500;
@@ -318,6 +317,7 @@ a.nav-link:hover {
 .text-block.numbers {
     font-size: 75px;
     font-weight: 900;
+    color: #143cda;
 }
 
 .text-block.ftr {
@@ -493,7 +493,7 @@ a.nav-link:hover {
 
 .team-ttl {
     padding-top: 29px;
-    color: #8d1b3d;
+    color: #0e2a99;
     font-size: 36px;
 }
 
@@ -508,9 +508,7 @@ a.nav-link:hover {
 }
 
 .body-2 {
-    background-color: #711631;
-    background-image: url('../images/Bg.png');
-    background-size: contain;
+    background-color: #0e2a99;
 }
 
 .rarnk-txt {
@@ -823,13 +821,27 @@ a.nav-link:hover {
     border-radius: 80px;
     background-color: #f3daa8;
     font-family: 'BaseFont', sans-serif;
-    color: #711631;
+    color: #0e2a99;
     font-size: 22px;
     font-weight: 400;
     text-align: center;
     text-transform: uppercase;
     text-decoration: InfoText;
-    border: 2px solid #711631;
+    border: 2px solid #0e2a99;
+}
+
+.register-btn {
+    display: block;
+    width: 320px;
+    height: 50px;
+    font-size: 1.5rem;
+    color: #0e2a99;
+    padding-top: 13px;
+    background-color: #f3daa8;
+    border-radius: 80px;
+    border: 2px solid #0e2a99;
+    margin: 0 auto;
+    box-shadow: rgba(213, 218, 168, 0.4) 0 19px 38px, rgba(113, 22, 49, 0.22) 0 15px 12px;
 }
 
 .small-btn {
@@ -877,20 +889,6 @@ a.nav-link:hover {
 .small-btn:hover {
     transform: translateX(0px) translateY(0px) translateZ(0px) scaleX(2) scaleY(2) scaleZ(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skewX(0deg) skewY(0deg);
 
-}
-
-.register-btn {
-    display: block;
-    width: 320px;
-    height: 50px;
-    font-size: 1.5rem;
-    color: #711631;
-    padding-top: 13px;
-    background-color: #f3daa8;
-    border-radius: 80px;
-    border: 2px solid #711631;
-    margin: 0 auto;
-    box-shadow: rgba(213, 218, 168, 0.4) 0 19px 38px, rgba(113, 22, 49, 0.22) 0 15px 12px;
 }
 
 .star-big {
@@ -2010,7 +2008,7 @@ input[type='checkbox'] {
 
 .error-message {
     color: white;
-    border: 5px solid red;
+    border: 5px solid #ffd60a;;
     text-align: center;
     font-size: 1.5rem;
     min-height: 5rem;
