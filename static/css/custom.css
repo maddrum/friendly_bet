@@ -1,5 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
+@font-face {
+    font-family: 'GothicFont';
+    src: url('../fonts/Cattedrale-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BaseFont';
+    src: url('../fonts/Vulgat-Regular.otf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+
 a {
     color: rgb(0, 191, 214);
     text-decoration: none;
@@ -135,7 +150,7 @@ a.nav-link:hover {
     margin-top: 34px;
     margin-bottom: 34px;
     font-family: 'BaseFont', sans-serif;
-    color: #f9e2b2;
+    color: #e6b000;
     font-size: 2.5rem;
     font-weight: 400;
     text-transform: uppercase;
@@ -146,9 +161,10 @@ a.nav-link:hover {
     display: block;
     margin-right: auto;
     margin-left: auto;
-    font-family: 'ArabicFont', sans-serif;
-    color: #ffc300;
-    font-size: 5rem;
+    font-family: 'GothicFont', sans-serif;
+    font-weight: normal;
+    color: #ffcb50;
+    font-size: 4rem;
     text-transform: uppercase;
     text-align: left;
     /*text-shadow: 16px 22px 11px rgba(219, 180, 44, .6);*/
@@ -230,8 +246,11 @@ a.nav-link:hover {
 }
 
 .start-btn:hover {
-    background-color: #ffc300;
-    transform: scale(1.1);
+    background-color: white;
+    transform: scale(1.2);
+    color: #ffc300;
+    border: 5px solid #ffc300;
+    padding-top: 1.8rem;
 }
 
 .logout-bn {
@@ -1640,20 +1659,6 @@ a.nav-link:hover {
     .gin-checkboxes {
         padding-top: 3rem !important;
     }
-}
-
-@font-face {
-    font-family: 'ArabicFont';
-    src: url('../fonts/ds_izmir.ttf') format('truetype');
-    font-weight: 400;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'BaseFont';
-    src: url('../fonts/Vulgat-Regular.otf') format('truetype');
-    font-weight: 400;
-    font-style: normal;
 }
 
 
