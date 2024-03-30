@@ -16,9 +16,7 @@ from predictions.models import BetAdditionalPoint, UserPrediction
 from predictions.views_mixins import GetEventMatchesMixin
 
 
-class EventCreatePredictionView(
-    LoginRequiredMixin, GetEventMatchesMixin, ModelFormSetView
-):
+class EventCreatePredictionView(LoginRequiredMixin, GetEventMatchesMixin, ModelFormSetView):
     template_name = "predictions/input-prediction.html"
     fields = ("match_state", "goals_home", "goals_guest")
     model = UserPrediction
@@ -41,9 +39,7 @@ class EventCreatePredictionView(
             if not self.matches.exists():
                 raise Http404()
             try:
-                user_last_input_start = LastUserMatchInputStart.objects.get(
-                    user=self.request.user
-                )
+                user_last_input_start = LastUserMatchInputStart.objects.get(user=self.request.user)
             except LastUserMatchInputStart.DoesNotExist:
                 raise Http404()
             if user_last_input_start.valid_to is None:
@@ -57,12 +53,9 @@ class EventCreatePredictionView(
         ).exists()
 
     def update_form_input_object(self):
-        form_check_obj, created = LastUserMatchInputStart.objects.get_or_create(
-            user=self.request.user
-        )
-        form_check_obj.valid_to = (
-            self._get_first_match_start_time()
-            - datetime.timedelta(minutes=settings.PREDICTION_MINUTES_BEFORE_MATCH)
+        form_check_obj, created = LastUserMatchInputStart.objects.get_or_create(user=self.request.user)
+        form_check_obj.valid_to = self._get_first_match_start_time() - datetime.timedelta(
+            minutes=settings.PREDICTION_MINUTES_BEFORE_MATCH
         )
         form_check_obj.save()
 
@@ -92,14 +85,8 @@ class EventCreatePredictionView(
 
     def get_head_img(self):
         images = self.get_meme_filenames()
-        meme_index = (
-            0
-            if "meme_number" not in self.request.session
-            else self.request.session["meme_number"]
-        )
-        self.request.session["meme_number"] = (
-            meme_index + 1 if meme_index < len(images) - 1 else 0
-        )
+        meme_index = 0 if "meme_number" not in self.request.session else self.request.session["meme_number"]
+        self.request.session["meme_number"] = meme_index + 1 if meme_index < len(images) - 1 else 0
         try:
             image_name = images[meme_index]
         except IndexError:
@@ -130,9 +117,7 @@ class EventCreatePredictionView(
 
     def update_bet_points(self, form):
         # additional bet points
-        add_points_obj, created = BetAdditionalPoint.objects.get_or_create(
-            prediction=form.instance
-        )
+        add_points_obj, created = BetAdditionalPoint.objects.get_or_create(prediction=form.instance)
         add_points_obj.apply_match_state = form.cleaned_data["accept_match_state_bet"]
         add_points_obj.apply_result = form.cleaned_data["accept_match_result_bet"]
         phase_points = form.instance.match.phase.bet_points

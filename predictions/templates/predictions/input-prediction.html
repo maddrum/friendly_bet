@@ -8,7 +8,6 @@
         <div class="heading inner-ttl">
             {% now "j-M-Y" %}
         </div>
-
     </div>
     <div class="inner-page-image">
         {% if formset.errors %}
@@ -64,18 +63,19 @@
                                 <div class="w-row mt10">
                                     <div class="w-col w-col-12 w-col-small-12 w-col-tiny-12">
                                         <h4>
-                                            Облог с джина
+                                            Облог с АНГЕЛ-А
                                         </h4>
                                     </div>
                                     <div class="w-col w-col-3 w-col-small-12 w-col-tiny-12">
                                         <div class="white">
                                             <div class="inner-page-image">
                                                 <img src="{% static 'images/gin1.png' %}"
-                                                        id="gin-image-{{ forloop.counter0 }}" class="gin-image">
+                                                     id="gin-image-{{ forloop.counter0 }}" class="gin-image">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="w-col w-col-9 w-col-small-12 w-col-tiny-12 gin-checkboxes">
+                                    <div class="w-col w-col-9 w-col-small-12 w-col-tiny-12 gin-checkboxes"
+                                         data-image-id="gin-image-{{ forloop.counter0 }}">
                                         <div class="w-row mt10 mb20">
                                             <div class="w-col w-col-2 w-col-small-2 w-col-tiny-2">
                                                 {{ form.accept_match_state_bet }}
@@ -124,11 +124,10 @@
                             {% endif %}
                         </div>
                     </div>
-
                 {% endfor %}
                 <div class="buttons">
                     <input type="submit" data-w-id="8782863a-1d5d-0d40-92f8-45790f30b309"
-                            class="submit-btn w-button" value="дай прогноза">
+                           class="submit-btn w-button" value="дай прогноза">
                 </div>
             </form>
             {# counter #}
@@ -165,14 +164,22 @@
             {# gin #}
             <script>
                 let offerChecks = document.querySelectorAll('.prediction_offer');
-
+                let isChecked = [];
                 offerChecks.forEach(el => {
                     el.addEventListener('change', ev => {
-                        if (ev.target.checked) {
-                            document.getElementById('gin-image-' + ev.target.id.split('-')[1]).src = "{% static 'images/gin2.png' %}"
-                        } else {
-                            document.getElementById('gin-image-' + ev.target.id.split('-')[1]).src = "{% static 'images/gin1.png' %}"
-                        }
+                        isChecked = []
+                        offerChecks.forEach(ell => {
+                            if (ell.checked) {
+                                isChecked.push(ell);
+                            }
+                        });
+                        document.querySelectorAll('.gin-image').forEach(ell => {
+                            ell.src = "{% static 'images/gin1.png' %}"
+                        })
+                        isChecked.forEach(ell => {
+                            let parent = ell.parentElement.parentElement.parentElement;
+                            document.getElementById(parent.getAttribute('data-image-id')).src = "{% static 'images/gin2.png' %}"
+                        })
                     })
                 })
             </script>

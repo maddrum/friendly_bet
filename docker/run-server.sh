@@ -24,7 +24,7 @@ if [ "$1" == "local" ]; then
 	echo "Running local development server, using runserver_plus"
 	echo "Python warnings are enabled"
 	export WERKZEUG_DEBUG_PIN="off"
-	python -W always $DJANGO_PROJECT_DIR/manage.py runserver_plus 0.0.0.0:8000  --noreload
+	python -W always $DJANGO_PROJECT_DIR/manage.py runserver_plus 0.0.0.0:8000
 elif [ "$1" == "django" ]; then
 	echo "Running Django native runserver"
 	python manage.py runserver 0.0.0.0:8000  --noreload
