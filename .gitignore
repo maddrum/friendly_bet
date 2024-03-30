@@ -12,3 +12,4 @@ coverage
 /.ipython/
 /dbdata/
 /__browser_tests/
+/static_collect/
