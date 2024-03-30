@@ -56,11 +56,8 @@ def get_row_wrapper(forloop_counter):
 
 
 @register.simple_tag
-def gin_is_happy():
-    return (
-        PredictionPoint.objects.all()
-        .aggregate(Sum("additional_points"))
-        .get("additional_points__sum")
-        * -1
-        > 0
-    )
+def gin_is_happy() -> bool:
+    result = PredictionPoint.objects.all().aggregate(Sum("additional_points")).get("additional_points__sum")
+    if result is None:
+        return True
+    return result * -1 > 0
