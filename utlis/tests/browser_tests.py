@@ -105,6 +105,6 @@ class BrowserTestBase(StaticLiveServerTestCase):
             'iframe[name^="a-"][src^="https://www.google.com/recaptcha/api2/anchor?"]',
         )
         self.browser.switch_to.frame(captcha)
-        self.action_chain_click(self.brogitwser.find_element(By.XPATH, '//span[@id="recaptcha-anchor"]'))
+        self.action_chain_click(self.browser.find_element(By.XPATH, '//span[@id="recaptcha-anchor"]'))
         time.sleep(1)
         self.browser.switch_to.default_content()

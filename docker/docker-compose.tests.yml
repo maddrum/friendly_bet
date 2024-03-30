@@ -42,6 +42,4 @@ services:
     ports:
       - "4444:4444"
       - "5900:5900"
-    # linking browser download folder to the artifacts dir
-    volumes:
-      - ./__browser_tests/__browser_downloads:/home/seluser/Downloads
+
