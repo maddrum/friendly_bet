@@ -65,6 +65,12 @@ class BrowserTestBase(StaticLiveServerTestCase):
         self.browser.delete_cookie(settings.SESSION_COOKIE_NAME)
         self.browser.add_cookie(session_cookie)
 
+    def logout_user(self):
+        self.browser.delete_cookie(settings.SESSION_COOKIE_NAME)
+
+    def assert_on_login_page(self):
+        self.assertEqual("влез", self.browser.find_element(By.CSS_SELECTOR, ".heading.inner-ttl"))
+
     def validate_submit_btn(self, should_have_submit_btn=True):
         submit = self.browser.find_elements(By.CSS_SELECTOR, "input[type=submit]")
         if should_have_submit_btn:

@@ -1,6 +1,3 @@
-import time
-
-from django.urls import reverse
 from django.utils import timezone
 from freezegun import freeze_time
 from selenium.webdriver.common.by import By
@@ -8,7 +5,7 @@ from selenium.webdriver.common.by import By
 from accounts.model_factories import UserFactory
 from matches.tools import initialize_matches
 from predictions.models import UserPrediction
-from predictions.tools import add_user_predictions, create_valid_prediction
+from predictions.tools import add_user_predictions
 from predictions.views_mixins import GetEventMatchesMixin
 from utlis.tests.browser_test_utils import handle_failed_browser_test
 from utlis.tests.browser_tests import BrowserTestBase
@@ -95,6 +92,12 @@ class TestPredictionList(BaseFreezeTimeMixin, BrowserTestBase):
                 self.get_full_url(namespace="update_prediction", reverse_kwargs={"pk": prediction.pk}),
                 href.get_attribute("href"),
             )
+
+    @handle_failed_browser_test
+    def test_must_be_logged_in(self):
+        self.logout_user()
+        self.load_page(namespace="profile")
+        self.assert_on_login_page()
 
     @handle_failed_browser_test
     def test_list_is_correct(self):

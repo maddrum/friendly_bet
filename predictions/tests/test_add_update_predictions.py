@@ -187,3 +187,7 @@ class TestPredictionsCreateUpdate(PredictionsBaseTestCase):
         self.load_page(namespace="update_prediction", reverse_kwargs={"pk": prediction.pk})
         checkbox = self.browser.find_element(By.NAME, "form-0-accept_match_state_bet")
         self.assertFalse(checkbox.is_selected())
+
+    def test_must_be_logged_in_to_update_prediction(self):
+        self.load_page(namespace="update_prediction", reverse_kwargs={"pk": 1})
+        self.validate_404()
