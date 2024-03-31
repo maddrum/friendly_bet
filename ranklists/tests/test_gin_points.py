@@ -9,4 +9,6 @@ class GinPointsTest(BrowserTestBase):
     def test_no_data_gin_page(self):
         self.load_page(namespace="gin_total")
         self.assertEqual("АНГЕЛ-А", self.browser.find_element(By.CSS_SELECTOR, ".heading.inner-ttl").text)
-        self.assertEqual('Към момента информацията е кът.', self.browser.find_element(By.CLASS_NAME, "dummy--no__info").text)
+        self.assertEqual(
+            "Към момента информацията е кът.", self.browser.find_element(By.CLASS_NAME, "dummy--no__info").text
+        )

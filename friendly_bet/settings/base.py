@@ -51,7 +51,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = "friendly_bet.urls"
@@ -110,8 +109,7 @@ INSTALLED_APPS = [
     "events",
     "matches",
     "predictions",
-    "ranklists"
-    # 'debug_toolbar',
+    "ranklists",
 ]
 
 # Internationalization

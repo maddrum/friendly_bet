@@ -1,4 +1,5 @@
 import datetime
+import typing
 
 from django.conf import settings
 from django.utils import timezone
@@ -8,12 +9,10 @@ from matches.models import Match
 
 
 class GetEventMatchesMixin:
-    event = None
-    matches = None
-    all_today_matches = None
-
     def __init__(self, event=None):
         self.event = event
+        self.matches = Match.objects.none()
+        self.all_today_matches = None
         self._get_event()
         self.get_current_matches()
 
@@ -21,12 +20,10 @@ class GetEventMatchesMixin:
         if self.event is None:
             self.event = Event.objects.all().first()
 
-    def _get_event_start_wrap(self):
-        first_match = (
-            Match.objects.filter(phase__event=self.event)
-            .order_by("match_start_time")
-            .first()
-        )
+    def _get_event_start_wrap(self) -> typing.Optional["Match"]:
+        first_match = Match.objects.filter(phase__event=self.event).order_by("match_start_time").first()
+        if first_match is None:
+            return None
         return first_match.match_start_time
 
     @staticmethod
@@ -42,16 +39,12 @@ class GetEventMatchesMixin:
             return timezone.now() - datetime.timedelta(minutes=10)
         return qs.first().match_start_time
 
-    def get_current_matches(self):
+    def get_current_matches(self) -> None:
         now_plus_time = self._get_now_plus_time()
         event_start = self._get_event_start_wrap()
-        check_datetime = (
-            event_start if now_plus_time.date() < event_start.date() else now_plus_time
-        )
+        if event_start is None:
+            return
+        check_datetime = event_start if now_plus_time.date() < event_start.date() else now_plus_time
 
-        self.all_today_matches = Match.objects.get_matches_for_date(
-            event=self.event, date=check_datetime
-        )
-        self.matches = self.all_today_matches.filter(
-            match_start_time__gte=now_plus_time
-        ).order_by("match_start_time")
+        self.all_today_matches = Match.objects.get_matches_for_date(event=self.event, date=check_datetime)
+        self.matches = self.all_today_matches.filter(match_start_time__gte=now_plus_time).order_by("match_start_time")

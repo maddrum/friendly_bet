@@ -80,3 +80,19 @@ class RegisterLoginLogoutTests(BrowserTestBase):
         self.action_chain_click(self.browser.find_element(By.CSS_SELECTOR, ".dummy--logout__confirm"))
         time.sleep(1)
         self.assertIsNone(self.browser.get_cookie(settings.SESSION_COOKIE_NAME))
+
+    @handle_failed_browser_test
+    def test_login_user(self):
+        user = UserFactory()
+
+        self.assertIsNone(self.browser.get_cookie(settings.SESSION_COOKIE_NAME))
+        self.login_helper(username=user.username, password="qqwerty1234")
+        self.assertIsNone(self.browser.get_cookie(settings.SESSION_COOKIE_NAME))
+        self.browser.find_element(By.CSS_SELECTOR, "div.error-message")
+
+        self.login_helper(username="random-username", password="qqwerty123")
+        self.assertIsNone(self.browser.get_cookie(settings.SESSION_COOKIE_NAME))
+        self.browser.find_element(By.CSS_SELECTOR, "div.error-message")
+
+        self.login_helper(username=user.username, password="qqwerty123")
+        self.assertIsNotNone(self.browser.get_cookie(settings.SESSION_COOKIE_NAME))

@@ -21,6 +21,7 @@ omit =
     */admin.py
     \#no_git_upload/*
     static_collect/*
+    __browser_tests/*
     # speciffic files
     manage.py
     friendly_bet/wsgi.py

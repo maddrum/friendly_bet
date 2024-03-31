@@ -77,20 +77,14 @@ class BrowserTestBase(StaticLiveServerTestCase):
         self.assertEqual("Page not found (404)", self.browser.find_element(By.TAG_NAME, "h1").text.strip())
         self.validate_submit_btn(should_have_submit_btn=False)
 
+    def get_full_url(self, namespace: str, reverse_kwargs):
+        return f"{self.live_server_url}{reverse(namespace, kwargs=reverse_kwargs)}"
+
     def load_page(self, namespace: str, reverse_kwargs: dict = None):
-        self.browser.get(f"{self.live_server_url}{reverse(namespace, kwargs=reverse_kwargs)}")
+        self.browser.get(self.get_full_url(namespace=namespace, reverse_kwargs=reverse_kwargs))
 
     def action_chain_click(self, element: WebElement):
-        actions = ActionChains(self.browser)
-        actions.move_to_element(element)
-        actions.click(element)
-
-        try:
-            actions.perform()
-            return
-        except MoveTargetOutOfBoundsException:
-            self.browser.execute_script("arguments[0].scrollIntoView();", element)
-
+        self.browser.execute_script("arguments[0].scrollIntoView();", element)
         actions = ActionChains(self.browser)
         actions.move_to_element(element)
         actions.click(element)

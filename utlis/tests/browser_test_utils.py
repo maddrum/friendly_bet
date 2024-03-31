@@ -26,7 +26,6 @@ def handle_failed_browser_test(test):
             _write_test_path(self, test_dir=test_dir)
             _take_screenshot(self, test_dir=test_dir)
             _log_traceback(self, test_dir=test_dir, traceback_str=traceback.format_exc())
-            _move_console_log(self, test_dir=test_dir)
 
             raise
 
@@ -69,23 +68,6 @@ def _log_traceback(self, test_dir, traceback_str):
     traceback_path = os.path.join(test_dir, traceback_name)
     with open(traceback_path, "w") as _dst:
         _dst.write(traceback_str)
-
-
-def _move_console_log(self, test_dir):
-    filename = f"{self.__module__}.console.log"
-    absolute_path = os.path.join(settings.RUNLOG_FOLDER, filename)
-
-    counter = 0
-    while not os.path.isfile(absolute_path) and counter < 20:
-        time.sleep(0.5)
-        counter += 1
-
-    if os.path.isfile(absolute_path):
-        new_name = os.path.join(test_dir, "console.log")
-        os.rename(absolute_path, new_name)
-        return
-
-    logger.error("Was not able to store logs to artefacts folder.")
 
 
 def get_django_truncated_str(original_str: str, truncate_chars: int):

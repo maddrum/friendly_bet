@@ -5,7 +5,10 @@
     <div class="text-block tab">Смени своите настройки тук.<br></div>
     <div class="form-txt">
         <div class="text-block histprylist bonus-list">
-            <label>Парола:</label><a href="{% url 'password_change' %}">Натистни тук за смяна на паролата!</a>
+            <label>Парола:</label>
+            <a href="{% url 'password_change' %}" class="dummy--password__change">
+                Натистни тук за смяна на паролата!
+            </a>
         </div>
         <div class="text-block histprylist bonus-list">
             <form method="POST">
@@ -15,13 +18,10 @@
                     <br>
                     Ако те мързи, ще се изпишем твоето потребителско име.
                 </div>
-
                 <input type="submit" data-w-id="8782863a-1d5d-0d40-92f8-45790f30b309"
-                        class="submit-btn-no-glow w-button"
-                        value="Корекция">
-
+                       class="submit-btn-no-glow w-button dummy--submit__button"
+                       value="Корекция">
             </form>
         </div>
     </div>
-
 {% endblock %}

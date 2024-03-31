@@ -10,9 +10,7 @@ urlpatterns = [
         views.UserRegisterSuccessView.as_view(),
         name="register_success",
     ),
-    path(
-        "login/", LoginView.as_view(template_name="accounts/login.html"), name="login"
-    ),
+    path("login/", LoginView.as_view(template_name="accounts/login.html"), name="login"),
     path("logout/", LogoutView.as_view(next_page="../thank-you"), name="logout"),
     path("thank-you/", views.ThankYouView.as_view(), name="thank_you"),
     path("profile/", views.UserPredictionsListView.as_view(), name="profile"),
@@ -34,7 +32,5 @@ urlpatterns = [
         ),
         name="password_change",
     ),
-    path(
-        "logout-confirm/", views.ProfileLogoutConfirm.as_view(), name="logout_confirm"
-    ),
+    path("logout-confirm/", views.ProfileLogoutConfirm.as_view(), name="logout_confirm"),
 ]

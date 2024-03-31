@@ -15,7 +15,7 @@ from events.settings import (
 )
 from matches.models import Match, MatchResult
 from matches.tools import initialize_matches
-from predictions.tests import UserPredictionsToolBox
+from predictions.tests.base import UserPredictionsToolBox
 from utlis.tests.browser_test_utils import handle_failed_browser_test
 from utlis.tests.browser_tests import BrowserTestBase
 from utlis.tests.mixins import BaseFreezeTimeMixin
