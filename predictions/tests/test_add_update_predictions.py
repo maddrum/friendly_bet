@@ -5,6 +5,7 @@ from django.utils import timezone
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 
+from accounts.models import User
 from matches.models import Match
 from predictions.models import UserPrediction
 from predictions.tests.base import PredictionsBaseTestCase
@@ -189,5 +190,16 @@ class TestPredictionsCreateUpdate(PredictionsBaseTestCase):
         self.assertFalse(checkbox.is_selected())
 
     def test_must_be_logged_in_to_update_prediction(self):
-        self.load_page(namespace="update_prediction", reverse_kwargs={"pk": 1})
+        add_user_predictions(event=self.event, users=2)
+        prediction = UserPrediction.objects.all().first()
+        self.logout_user()
+        self.load_page(namespace="update_prediction", reverse_kwargs={"pk": prediction.pk})
+        self.assert_on_login_page()
+
+    def test_can_not_update_other_users_prediction(self):
+        add_user_predictions(event=self.event, users=2)
+        prediction = UserPrediction.objects.all().first()
+        user = User.objects.all().exclude(id=prediction.user.id).first()
+        self.login_user(user=user)
+        self.load_page(namespace="update_prediction", reverse_kwargs={"pk": prediction.pk})
         self.validate_404()
