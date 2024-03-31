@@ -17,10 +17,11 @@
             </h3>
             <h4 class="color-primary--inverted">Резултата по мачове</h4>
             <hr>
-            {% for match in page_obj.object_list %}
-                {% get_values_from_dictionary_tag per_match match as points %}
-                {% with match.match_result as match_result %}
-                    <p>
+            {% if page_obj.object_list %}
+                {% for match in page_obj.object_list %}
+                    {% get_values_from_dictionary_tag per_match match as points %}
+                    {% with match.match_result as match_result %}
+                        <p>
                         <span class="color-primary--inverted {% if points > 0 %} color-positive{% endif %}">
                             От {% replace_str match '|' '' %}
                             {% if points > 0 %}
@@ -35,17 +36,20 @@
                                 точки
                             {% endif %}
                         </span>
-                        <br>
-                        Завършил: {{ match_result.match_state.get_match_state_display }} |
-                        {{ match_result.score_home }} : {{ match_result.score_guest }}
-                        {% if match_result.penalties %}
-                            ( {{ match_result.score_after_penalties_home }} :
-                            {{ match_result.score_after_penalties_guest }} )
-                        {% endif %}
-                    </p>
-                {% endwith %}
-                <br>
-            {% endfor %}
+                            <br>
+                            Завършил: {{ match_result.match_state.get_match_state_display }} |
+                            {{ match_result.score_home }} : {{ match_result.score_guest }}
+                            {% if match_result.penalties %}
+                                ( {{ match_result.score_after_penalties_home }} :
+                                {{ match_result.score_after_penalties_guest }} )
+                            {% endif %}
+                        </p>
+                    {% endwith %}
+                    <br>
+                {% endfor %}
+            {% else %}
+                <p class="dummy--no__info">Към момента информацията е кът.</p>
+            {% endif %}
         </div>
     </div>
     {% include 'main_app/components/paginator.html' %}

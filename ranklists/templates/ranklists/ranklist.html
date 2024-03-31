@@ -27,11 +27,11 @@
                             <div class="rarnk-txt user">
                                 <a href="{% url 'ranklist_detail' pk=item.user.pk %}" class="white">
                                     {% if forloop.counter == 1 %}
-                                        <em class="color-primary">ШЕЙХ </em>
+                                        <em class="color-primary">ФЮРЕР </em>
                                     {% elif forloop.counter == 2 %}
-                                        <em class="color-primary">СУЛТАН-БИН </em>
+                                        <em class="color-primary">КАНЦЛЕР </em>
                                     {% elif forloop.counter == 3 %}
-                                        <em class="color-primary">ХАБИБ-АЛ </em>
+                                        <em class="color-primary">ШЕФ НА БУНДЕСТАГ </em>
                                     {% endif %}
                                     {{ item.user.get_user_names }}
                                     {% if forloop.counter == 1 or forloop.counter == 2 or forloop.counter == 3 %}

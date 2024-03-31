@@ -58,9 +58,10 @@ class GinPointsMatchesView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["total_balance"] = (
-            PredictionPoint.objects.all().aggregate(Sum("additional_points")).get("additional_points__sum") * -1
-        )
+        total_balance = (
+            PredictionPoint.objects.all().aggregate(Sum("additional_points")).get("additional_points__sum")
+        ) or 0
+        context["total_balance"] = total_balance * -1
         context["per_match"] = self.get_points_per_match()
 
         page_number = self.request.GET.get("page")
