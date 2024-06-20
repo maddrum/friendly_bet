@@ -3,6 +3,7 @@ import time
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.test import TestCase
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
@@ -80,3 +81,13 @@ class RegisterLoginLogoutTests(BrowserTestBase):
         self.action_chain_click(self.browser.find_element(By.CSS_SELECTOR, ".dummy--logout__confirm"))
         time.sleep(1)
         self.assertIsNone(self.browser.get_cookie(settings.SESSION_COOKIE_NAME))
+
+
+class UserStrRepresentations(TestCase):
+    def test_username_is_not_email(self):
+        user = UserFactory()
+        self.assertEqual(user.username, str(user))
+
+    def test_userbane_is_email(self):
+        user = UserFactory(username='test@email.com')
+        self.assertEqual('test', str(user))

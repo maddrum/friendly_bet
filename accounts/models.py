@@ -5,6 +5,8 @@ from django.db import models
 
 class User(AbstractUser):
     def __str__(self):
+        if "@" in self.username:
+            return self.username.split("@")[0]
         return f"{self.username}"
 
     def get_user_names(self):
@@ -14,9 +16,7 @@ class User(AbstractUser):
 
 
 class LastUserMatchInputStart(models.Model):
-    user = models.OneToOneField(
-        get_user_model(), on_delete=models.CASCADE, related_name="user_last_input_start"
-    )
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, related_name="user_last_input_start")
     started_on = models.DateTimeField(auto_now=True)
     valid_to = models.DateTimeField(blank=True, null=True)
 
